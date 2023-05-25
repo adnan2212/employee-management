@@ -7,14 +7,19 @@ import team from "../assets/img/team.svg";
 
 const Footer = () => {
   return (
-    <>
-      <div className=" mb-1 mt-auto flex h-24 items-center justify-evenly">
-        <a className="flex w-8  flex-col items-center">
+    <div>
+      <div className="content-container rounded-full  ">
+        <Link to="/form">
+          <div className="plus-button"></div>
+        </Link>
+      </div>
+      <div className=" mb-1  flex h-24 items-center justify-around rounded-t-3xl bg-slate-100 p-14 pt-20">
+        <Link to="/" className="flex w-8  flex-col items-center">
           <img src={Home} className="" />
           <p className="scale-100 transition-transform duration-[250ms] hover:scale-[1.15] hover:transition-all hover:duration-[250ms] focus:scale-[1.15] focus:transition-all focus:duration-[250ms] ">
             Home
           </p>
-        </a>
+        </Link>
         <span className="flex w-8 flex-col items-center">
           <img src={team} />
           <p className="scale-100 transition-transform duration-[250ms] hover:scale-[1.15] hover:transition-all hover:duration-[250ms] focus:scale-[1.15] focus:transition-all focus:duration-[250ms] ">
@@ -39,13 +44,8 @@ const Footer = () => {
             Profile
           </p>
         </span>
-        {/* <div className="relative">
-          <Link to="/form">
-            <div className="add-button">+</div>
-          </Link>
-        </div> */}
       </div>
-    </>
+    </div>
   );
 };
 

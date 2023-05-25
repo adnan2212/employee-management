@@ -11,23 +11,22 @@ const Header = ({ userName }) => {
     >
       <div className="main ml-3 pt-6 text-white">
         <img className="absolute left-0 top-0" src={Vector} />
-        <h1 className="text-neutral-400 ">
+        <h1 className="text-slate-100 ">
           <p className="main-heading-primary mb-2 font-sans text-xs font-light opacity-80">
             Hello,
           </p>
-          <p className="color-text main-heading-secondary font-sans text-2xl font-semibold">
-            {userName}
-          </p>
+          {/*username classes : color-text main-heading-secondary */}
+          <p className=" font-sans text-2xl  font-semibold">{userName}</p>
         </h1>
       </div>
-      <div className="flex  items-center justify-between pt-5">
-        <span className="mx-6">
-          <Icon color="white" size={20}>
+      <div className="flex items-center justify-between pt-5">
+        <span className="mx-8 mt-[1.7px] ">
+          <Icon color="white" size={30}>
             <MdNotificationsOutline />
           </Icon>
         </span>
 
-        <span className="mr-3">
+        <span className="mr-5">
           <Icon color="white" size={20}>
             <DropdownMenu />
           </Icon>
