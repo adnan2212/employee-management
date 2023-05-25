@@ -1,12 +1,12 @@
-import DatePicker from "react-horizontal-datepicker";
-// Import react-circular-progressbar module and styles
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+//react-circular-progressbar
 import {
   CircularProgressbar,
   CircularProgressbarWithChildren,
-  buildStyles
+  buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { Link } from "react-router-dom";
 
 /* ICONS */
 import { ArrowForwardOutlined } from "@ricons/material";
@@ -18,32 +18,20 @@ import Calender from "../assets/img/Calender.svg";
 import Box from "../components/Box";
 import Header from "../Components/header";
 import HourSheet from "../Components/HourSheet";
+import PopUp from "../Components/PopUp";
 
 const firstPage = () => {
   const percentage = 90;
   const percentage2 = 66;
   const sum = percentage + percentage2 / 200;
+  const [isOpen, setIsOpen] = useState(false);
 
-  const selectedDay = (val) => {
-    console.log(val);
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
   };
-
   return (
     <>
       <Header userName={"Rajesh Mehta"} />
-      {/* DATE PICKER */}
-      <h1 className="ml-4 pt-4 text-lg font-bold text-[#0D1829]">
-        Select date
-      </h1>
-      <div className="m-5">
-        <DatePicker
-          getSelectedDay={selectedDay}
-          endDate={5}
-          selectDate={new Date("2020-04-30")}
-          labelFormat={"MMMM"}
-          color={"#2051E5"}
-        />
-      </div>
 
       <div className="shrink-0">
         <Link to="/projects">
@@ -118,7 +106,7 @@ const firstPage = () => {
                   styles={buildStyles({
                     pathColor: "#F77307",
                     trailColor: "#eee",
-                    strokeLinecap: "butt"
+                    strokeLinecap: "butt",
                   })}
                 >
                   {/* Foreground path */}
@@ -127,7 +115,7 @@ const firstPage = () => {
                     text={`${sum}%`}
                     styles={buildStyles({
                       trailColor: "transparent",
-                      strokeLinecap: "butt"
+                      strokeLinecap: "butt",
                     })}
                   />
                 </CircularProgressbarWithChildren>
@@ -142,6 +130,15 @@ const firstPage = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        <button
+          className="ml-5 cursor-pointer bg-pink-200 text-3xl"
+          onClick={togglePopup}
+        >
+          Click Here
+        </button>
+        <PopUp isOpen={isOpen} onClose={togglePopup} />
       </div>
       <HourSheet />
     </>

@@ -2,19 +2,20 @@ import FirstPage from "./pages/firstPage";
 import SecondPage from "./pages/secondPage";
 import Footer from "./components/Footer";
 import MyForm from "./components/MyForm";
-import ProgressBar from "./components/ProgressBar";
+import Calender from "./components/Calender";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <FirstPage />
+    element: <FirstPage />,
   },
   {
     path: "/projects",
-    element: <SecondPage />
+    element: <SecondPage />,
   },
-  { path: "/form", element: <MyForm /> }
+  { path: "/form", element: <MyForm /> },
+  { path: "/calender", element: <Calender /> },
 ]);
 
 const App = () => {
