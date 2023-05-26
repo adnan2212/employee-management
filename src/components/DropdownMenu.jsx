@@ -35,7 +35,7 @@ const DropdownMenu = () => {
       {/* Dropdown toggle button */}
       <button
         onClick={toggleDropdown}
-        className="reBurgerComponent:outline-none z-10 block focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:bg-[#2051E5] dark:text-white dark:focus:ring-blue-400 dark:focus:ring-opacity-40"
+        className="reBurgerComponent:outline-none z-10 mt-0 block h-0  focus:ring-blue-300 focus:ring-opacity-40 dark:bg-[#2051E5] dark:text-white dark:focus:ring-blue-400 dark:focus:ring-opacity-40"
       >
         <Icon color="white" size={30}>
           <MdMenu />
@@ -46,7 +46,7 @@ const DropdownMenu = () => {
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
-          className="absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-2 shadow-xl dark:bg-gray-800"
+          className="absolute right-0 z-20 mr-8 mt-8 w-48 origin-top-right rounded-md bg-white py-2 shadow-xl dark:bg-gray-800"
         >
           <a
             href="#"
