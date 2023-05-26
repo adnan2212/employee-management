@@ -19,14 +19,10 @@ import Calendars from "../components/Calenders";
 
 import ProjectContainer from "../components/ProjectContainer";
 
-const firstPage = () => {
+const FirstPage = () => {
   const percentage = 90;
   const percentage2 = 66;
   const sum = percentage + percentage2 / 200;
-
-  const onSelectedDay = (d) => {
-    console.log(d);
-  };
 
   return (
     <>
@@ -124,4 +120,4 @@ const firstPage = () => {
   );
 };
 
-export default firstPage;
+export default FirstPage;

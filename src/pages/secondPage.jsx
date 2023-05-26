@@ -3,7 +3,7 @@ import Logo from "../components/Logo";
 import Card from "../components/Card";
 import Header_2 from "../components/Header_2";
 
-const secondPage = () => {
+const SecondPage = () => {
   return (
     <>
       <Logo />
@@ -24,4 +24,4 @@ const secondPage = () => {
   );
 };
 
-export default secondPage;
+export default SecondPage;
