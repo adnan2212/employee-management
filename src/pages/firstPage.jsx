@@ -3,7 +3,7 @@ import Logo from "../components/Logo";
 import {
   CircularProgressbar,
   CircularProgressbarWithChildren,
-  buildStyles
+  buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
@@ -12,14 +12,13 @@ import { CheckboxIndeterminate16Regular } from "@ricons/fluent";
 import { Icon } from "@ricons/utils";
 import { CalendarMonthOutlined } from "@ricons/material";
 
-import Calender from "../assets/img/Calender.svg";
 import Header from "../Components/header";
 import HourSheet from "../Components/HourSheet";
 import Footer from "../components/Footer";
 import Calendars from "../components/Calenders";
 
-import ReactHorizontalDatePicker from "react-horizontal-strip-datepicker";
-import "react-horizontal-strip-datepicker/dist/ReactHorizontalDatePicker.css";
+// import ReactHorizontalDatePicker from "react-horizontal-strip-datepicker";
+// import "react-horizontal-strip-datepicker/dist/ReactHorizontalDatePicker.css";
 import ProjectContainer from "../components/ProjectContainer";
 
 const firstPage = () => {
@@ -88,7 +87,7 @@ const firstPage = () => {
                       styles={buildStyles({
                         pathColor: "#F77307",
                         trailColor: "#eee",
-                        strokeLinecap: "butt"
+                        strokeLinecap: "butt",
                       })}
                     >
                       {/* Foreground path */}
@@ -97,7 +96,7 @@ const firstPage = () => {
                         text={`${88}%`} // render `${sum}%`
                         styles={buildStyles({
                           trailColor: "transparent",
-                          strokeLinecap: "butt"
+                          strokeLinecap: "butt",
                         })}
                       />
                     </CircularProgressbarWithChildren>
