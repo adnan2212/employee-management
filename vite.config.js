@@ -4,7 +4,11 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: "dist", // Specify the output directory for the build
-    publicDir: "public" // Specify the public directory containing static assets
+    outDir: "dist",
+    rollupOptions: {
+      input: {
+        main: "./src/main.jsx"
+      }
+    }
   }
 });
