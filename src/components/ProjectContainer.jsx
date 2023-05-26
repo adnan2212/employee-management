@@ -4,11 +4,11 @@ import Box from "../components/Box";
 
 const ProjectContainer = () => {
   return (
-    <div className=" shrink-0  rounded-3xl bg-[#65FBD2]  pb-20">
+    <div className=" project-container flex shrink-0 flex-col items-center justify-center  pb-[68px]">
       <Link to="/projects">
-        <h1 className="ml-4 p-10 text-lg font-bold text-[#0D1829] md:text-center">
+        <button className="txt-btn ml-4 mt-10 p-2 text-lg font-bold text-white md:text-center">
           Projects
-        </h1>
+        </button>
       </Link>
       <div className="mt-3 flex flex-row flex-wrap justify-center lg:flex-wrap-reverse">
         <Box title={"Annual"} content={30} />
@@ -27,7 +27,8 @@ const ProjectContainer = () => {
         />
         <Box
           title={"KPI Acheived"}
-          content={"7.3/7.50"}
+          content={7.3}
+          content2={7.5}
           className="flex justify-end"
         />
       </div>

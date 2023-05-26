@@ -3,16 +3,21 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import FirstPage from "./pages/firstPage";
 import SecondPage from "./pages/secondPage";
+import MyForm from "./components/MyForm";
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <FirstPage />,
+    element: <FirstPage />
   },
   {
     path: "/projects",
-    element: <SecondPage />,
+    element: <SecondPage />
   },
+  {
+    path: "/form",
+    element: <MyForm />
+  }
 ]);
 
 const App = () => {
