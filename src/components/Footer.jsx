@@ -5,7 +5,11 @@ import { MessageOutlined, CalendarMonthOutlined } from "@ricons/material";
 import { UserAvatarFilledAlt } from "@ricons/carbon";
 
 import { Icon } from "@ricons/utils";
-
+import Home from "../assets/img/Home.svg";
+import calender from "../assets/img/calender.svg";
+import message from "../assets/img/message.svg";
+import profile from "../assets/img/profile.svg";
+import team from "../assets/img/team.svg";
 import Popup from "./PopUp";
 
 const Footer = () => {
@@ -20,19 +24,17 @@ const Footer = () => {
           <Popup isOpen={isOpen} onClose={togglePopup} />
         </button> */}
       </div>
-      <div className=" red-bg  mb-1 flex h-24 items-center justify-around rounded-t-3xl p-14 pt-20">
+      <div className=" mb-1  flex h-24 items-center justify-around rounded-t-3xl bg-slate-100 p-14 pt-20">
         <Link to="/" className="flex w-8  flex-col items-center">
-          <div className="f-button footer flex scale-100 flex-col items-center transition-transform duration-[250ms] hover:scale-[1.15] hover:transition-all hover:duration-[250ms] focus:scale-[1.15] focus:transition-all focus:duration-[250ms]">
-            <Icon color="red" size="30">
-              <Home32Filled />
-            </Icon>
-            <p className=" ">Home</p>
-          </div>
+          <img src={Home} className="" />
+          <p className="scale-100 transition-transform duration-[250ms] hover:scale-[1.15] hover:transition-all hover:duration-[250ms]  focus:scale-[1.15] focus:transition-all focus:duration-[250ms] ">
+            Home
+          </p>
         </Link>
         <span className="flex w-8 flex-col items-center">
           <Link to="/" className="  flex w-8  flex-col items-center">
-            <div className="f-button footer flex scale-100 flex-col items-center transition-transform duration-[250ms] hover:scale-[1.15] hover:transition-all hover:duration-[250ms] focus:scale-[1.15] focus:transition-all focus:duration-[250ms]">
-              <Icon color="white" size="30">
+            <div className="f-button flex scale-100 flex-col items-center transition-transform duration-[250ms] hover:scale-[1.15] hover:transition-all hover:duration-[250ms] focus:scale-[1.15] focus:transition-all focus:duration-[250ms]">
+              <Icon color="#333" size="30">
                 <PeopleTeam32Regular />
               </Icon>
               <p className="text-white ">Team</p>

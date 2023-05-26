@@ -183,7 +183,7 @@ export const SigninForm = () => {
               </div>
 
               <div className="m-4 mr-5 flex cursor-pointer justify-end text-blue-400 underline">
-                <Link to="/">
+                <Link to="/home">
                   <p>skip</p>
                 </Link>
               </div>
