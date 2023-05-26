@@ -6,11 +6,10 @@ import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
 import {
   CircularProgressbar,
   CircularProgressbarWithChildren,
-  buildStyles
+  buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-// import Calender from "../assests/img/Calender.svg";
 import Calender from "../assets/img/calender.svg";
 import IMG5 from "../assets/img/p7.jpeg";
 
@@ -62,7 +61,7 @@ const Card = ({ percentage1, percentage2, className }) => {
                 styles={buildStyles({
                   pathColor: "#F77307",
                   trailColor: "#eee",
-                  strokeLinecap: "butt"
+                  strokeLinecap: "butt",
                 })}
               >
                 {/* Foreground path */}
@@ -71,7 +70,7 @@ const Card = ({ percentage1, percentage2, className }) => {
                   text={`${overall}%`}
                   styles={buildStyles({
                     trailColor: "transparent",
-                    strokeLinecap: "butt"
+                    strokeLinecap: "butt",
                   })}
                 />
               </CircularProgressbarWithChildren>
