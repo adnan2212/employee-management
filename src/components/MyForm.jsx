@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { useState, useEffect } from "react";
+import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import Header_2 from "./Header_2";
-import Footer from "./Footer";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 const task_type = ["Production", "Non-Production"];
@@ -21,7 +19,7 @@ const validationSchema = Yup.object({
     .required("Hours Spent is required"),
 });
 
-const MyForm = ({ onClose }) => {
+const MyForm = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
@@ -44,8 +42,8 @@ const MyForm = ({ onClose }) => {
 
   return (
     <>
-      <Header_2 title={"Tasks"} />
-      <div className="flex min-h-screen items-center justify-center ">
+      {/* <Header_2 title={"Tasks"} /> */}
+      <div className="flex items-center justify-center ">
         <Formik
           initialValues={{
             taskType: "",

@@ -1,20 +1,12 @@
-import Vector from "../assets/img/Vector.png";
-import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-
-// import {
-//   CircularProgressbar,
-//   CircularProgressbarWithChildren,
-//   buildStyles
-// } from "react-circular-progressbar";
-// import "react-circular-progressbar/dist/styles.css";
-
+import Logo from "../components/Logo";
 import Card from "../components/Card";
 import Header_2 from "../components/Header_2";
 
 const secondPage = () => {
   return (
     <>
+      <Logo />
       <Header_2 title={"Projects"} />
 
       {/* 1 */}

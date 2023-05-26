@@ -1,22 +1,28 @@
 import { Link } from "react-router-dom";
+
 import Home from "../assets/img/Home.svg";
 import calender from "../assets/img/calender.svg";
 import message from "../assets/img/message.svg";
 import profile from "../assets/img/profile.svg";
 import team from "../assets/img/team.svg";
+import Popup from "./PopUp";
 
 const Footer = () => {
   return (
     <div>
       <div className="content-container rounded-full  ">
-        <Link to="/form">
-          <div className="plus-button"></div>
-        </Link>
+        <Popup />
+        {/* <button className="plus-button" onClick={togglePopup}>
+          <Icon color="white" size="30">
+            <AddFilled />
+          </Icon>
+          <Popup isOpen={isOpen} onClose={togglePopup} />
+        </button> */}
       </div>
       <div className=" mb-1  flex h-24 items-center justify-around rounded-t-3xl bg-slate-100 p-14 pt-20">
         <Link to="/" className="flex w-8  flex-col items-center">
           <img src={Home} className="" />
-          <p className="scale-100 transition-transform duration-[250ms] hover:scale-[1.15] hover:transition-all hover:duration-[250ms] focus:scale-[1.15] focus:transition-all focus:duration-[250ms] ">
+          <p className="scale-100 transition-transform duration-[250ms] hover:scale-[1.15] hover:transition-all hover:duration-[250ms]  focus:scale-[1.15] focus:transition-all focus:duration-[250ms] ">
             Home
           </p>
         </Link>

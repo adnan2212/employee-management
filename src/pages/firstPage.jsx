@@ -1,5 +1,5 @@
-// import DatePicker from "react-horizontal-datepicker";
-// Import react-circular-progressbar module and styles
+import Logo from "../components/Logo";
+
 import {
   CircularProgressbar,
   CircularProgressbarWithChildren,
@@ -11,7 +11,6 @@ import "react-circular-progressbar/dist/styles.css";
 import { CheckboxIndeterminate16Regular } from "@ricons/fluent";
 import { Icon } from "@ricons/utils";
 
-// import Calender from "../assests/img/Calender.svg";
 import Calender from "../assets/img/Calender.svg";
 import Header from "../Components/header";
 import HourSheet from "../Components/HourSheet";
@@ -26,16 +25,15 @@ const firstPage = () => {
   const percentage2 = 66;
   const sum = percentage + percentage2 / 200;
 
-  // const selectedDay = (val) => {
-  //   console.log(val);
-  // };
   const onSelectedDay = (d) => {
     console.log(d);
   };
 
   return (
     <>
+      <Logo />
       <Header userName={"Rajesh Mehta"} />
+
       {/* DATE PICKER */}
       <div className="my-5 shrink-0 py-10 pb-20 md:flex md:justify-center md:text-center">
         <div>
