@@ -10,7 +10,8 @@
 .new-bg {
   background: radial-gradient(white 20%, #190d23 200%);
 }
-.project-container {
+.project-container,
+.red-bg {
   background: radial-gradient(#bd243f 10%, #190d23 200%);
 }
 .text-clr {
@@ -495,7 +496,7 @@ body.modal-active {
 }
 
 .f-button svg {
-  color: var(--primary-color);
+  color: #e8e8e8;
   transition: 0.2s;
   position: relative;
   width: 15px;
@@ -513,6 +514,10 @@ body.modal-active {
   .footer p {
     font-size: 1rem;
   }
+}
+.footer span,
+.footer p {
+  color: #e8e8e8;
 }
 
 @media screen and (max-width: 500px) {

@@ -6,11 +6,10 @@ import DropdownMenu from "./DropdownMenu";
 const Header = ({ userName }) => {
   return (
     <div
-      className="flex h-32
-    items-center justify-between rounded-b-2xl bg-[#2051E5] p-2 pb-0 "
+      className="red-bg flex
+    h-32 items-center justify-between rounded-b-2xl p-2 pb-0 "
     >
-      <div className="main ml-3 pt-6 text-white">
-        <img className="absolute left-0 top-0" src={Vector} />
+      <div className="main mt-3 p-5 pt-6 text-white">
         <h1 className="text-slate-100 ">
           <p className="main-heading-primary mb-2 font-sans text-xs font-light opacity-80">
             Hello,

@@ -12,14 +12,11 @@ import { CheckboxIndeterminate16Regular } from "@ricons/fluent";
 import { Icon } from "@ricons/utils";
 import { CalendarMonthOutlined } from "@ricons/material";
 
-import Calender from "../assets/img/Calender.svg";
 import Header from "../Components/header";
 import HourSheet from "../Components/HourSheet";
 import Footer from "../components/Footer";
 import Calendars from "../components/Calenders";
 
-import ReactHorizontalDatePicker from "react-horizontal-strip-datepicker";
-import "react-horizontal-strip-datepicker/dist/ReactHorizontalDatePicker.css";
 import ProjectContainer from "../components/ProjectContainer";
 
 const firstPage = () => {
@@ -42,7 +39,7 @@ const firstPage = () => {
       <ProjectContainer />
       {/* ------- */}
 
-      <div className="mb-[-6rem]  shrink-0   p-10 pb-16 md:flex md:justify-evenly md:pt-12">
+      <div className="mb-[-6rem]  shrink-0   p-10 pb-32 md:flex md:justify-evenly md:pt-12">
         {/* EFFICIENCY */}
         <div className=" ">
           <h1 className="  ml-4 pt-4 text-lg font-bold text-[#0D1829] md:text-center">
