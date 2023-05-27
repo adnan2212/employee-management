@@ -39,45 +39,45 @@ const FirstPage = () => {
       <ProjectContainer />
       {/* ------- */}
 
-      <div className="mb-[-6rem]  shrink-0   p-10 pb-32 md:flex md:justify-evenly md:pt-12">
+      <div className="mb-[-8rem]  shrink-0   px-10 pb-32 md:flex md:justify-evenly md:pt-2">
         {/* EFFICIENCY */}
         <div className=" ">
-          <h1 className="  ml-4 pt-4 text-lg font-bold text-[#0D1829] md:text-center">
+          <h1 className="     text-lg font-bold text-[#0D1829] md:text-center">
             Efficiency
           </h1>
 
-          <div className=" flex justify-center px-10  ">
-            <div className=" m-4  flex h-44 min-w-[350px] scale-100 gap-2 rounded-xl bg-[#EEF2FF] shadow-lg  hover:scale-110 hover:shadow-2xl ">
+          <div className="  flex justify-center  px-12 ">
+            <div className=" m-4 flex h-[160px] min-w-[374px] scale-100 justify-around gap-2 rounded-xl bg-[#EEF2FF]   ">
               <div className=" ">
-                <div className="m-2 flex items-center justify-center p-2 text-lg font-semibold ">
+                <div className="ml-1 mt-[5px]  p-2 text-sm font-medium ">
                   Candidate Efficiency
                 </div>
 
                 {/* <div className="w-34 h-32"> */}
-                <div className="">
-                  <span className="flex items-center gap-3 pb-1 pl-4">
+                <div className=" pt-[9px]">
+                  <span className="flex items-center gap-5 pb-2 pl-6">
                     <Icon color="#2051E5">
                       <CheckboxIndeterminate16Regular />
                     </Icon>
                     <p className="opacity-60">Production</p>
                   </span>
-                  <span className="flex items-center gap-3 pl-4">
+                  <span className="flex items-center gap-5 pl-6">
                     <Icon color="#F77307">
                       <CheckboxIndeterminate16Regular />
                     </Icon>
                     <p className="opacity-60">Non-Production</p>
                   </span>
                 </div>
-                <p className="ml-4 pt-4 text-sm font-medium text-[#0D1829]">
+                <p className="ml-4 pt-6 text-sm font-medium text-[#0D1829]">
                   Overall: 88%
                 </p>
               </div>
-              <div className="mt-11 flex flex-col items-center">
+              <div className="mt-[34px] flex flex-col items-center">
                 <p className="text-xs">in Hrs</p>
-                <p className="pb-3 opacity-60">5</p>
+                <p className="pb-2 opacity-60">5</p>
                 <p className="opacity-60">3</p>
               </div>
-              <div className="mr-5 mt-8 ">
+              <div className="mr-7 mt-6 ">
                 <div className="w-16">
                   <div className="ml-4">
                     <CircularProgressbarWithChildren
@@ -99,8 +99,10 @@ const FirstPage = () => {
                       />
                     </CircularProgressbarWithChildren>
                   </div>
-                  <div className="mr-3 mt-10 flex flex-col items-center ">
-                    <p className=" mb-1 text-xs opacity-60">Due Date</p>
+                  <div className="mr-3 mt-7 flex flex-col items-center  ">
+                    <p className="  whitespace-nowrap text-xs font-normal opacity-60">
+                      Due Date
+                    </p>
                     <div className="flex items-center gap-2 whitespace-nowrap font-medium">
                       <Icon color="#333" size="30">
                         <CalendarMonthOutlined />
