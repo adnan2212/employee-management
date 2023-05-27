@@ -12,8 +12,7 @@
 }
 .project-container,
 .red-bg {
-  background: red;
-  /* background: radial-gradient(red 10%, #190d23 200%); */
+  background: radial-gradient(#bd243f 10%, #190d23 200%);
 }
 .text-clr {
   color: #bd243f;

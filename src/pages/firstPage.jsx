@@ -8,12 +8,14 @@ import "react-circular-progressbar/dist/styles.css";
 import { CheckboxIndeterminate16Regular } from "@ricons/fluent";
 import { Icon } from "@ricons/utils";
 import { CalendarMonthOutlined } from "@ricons/material";
+import { CalendarMonthOutlined } from "@ricons/material";
 
 import Header from "../Components/header";
 import HourSheet from "../Components/HourSheet";
 import Footer from "../components/Footer";
-import CalenderComponent from "../components/Calender";
-import Logo from "../components/Logo";
+
+import ReactHorizontalDatePicker from "react-horizontal-strip-datepicker";
+import "react-horizontal-strip-datepicker/dist/ReactHorizontalDatePicker.css";
 import ProjectContainer from "../components/ProjectContainer";
 
 const FirstPage = () => {
@@ -27,19 +29,19 @@ const FirstPage = () => {
       <Header userName={"Rajesh Mehta"} />
 
       {/* DATE PICKER */}
-      <CalenderComponent />
+      <Calendars />
 
       <ProjectContainer />
 
-      <div className="mb-[-6rem] shrink-0 p-10 pb-32 md:flex md:justify-evenly md:pt-12">
+      <div className="mb-[-6rem]  shrink-0   p-10 pb-32 md:flex md:justify-evenly md:pt-12">
         {/* EFFICIENCY */}
         <div className=" ">
-          <h1 className="ml-4 pt-4 text-lg font-bold text-[#0D1829] md:text-center">
+          <h1 className="  ml-4 pt-4 text-lg font-bold text-[#0D1829] md:text-center">
             Efficiency
           </h1>
 
-          <div className="flex justify-center px-10  ">
-            <div className=" m-4 flex h-48 min-w-[350px] scale-100 gap-2 rounded-xl bg-[#EEF2FF] shadow-lg  hover:scale-110 hover:shadow-2xl ">
+          <div className=" flex justify-center px-10  ">
+            <div className=" m-4  flex h-44 min-w-[350px] scale-100 gap-2 rounded-xl bg-[#EEF2FF] shadow-lg  hover:scale-110 hover:shadow-2xl ">
               <div className=" ">
                 <div className="m-2 flex items-center justify-center p-2 text-lg font-semibold ">
                   Candidate Efficiency
@@ -115,4 +117,5 @@ const FirstPage = () => {
   );
 };
 
+export default FirstPage;
 export default FirstPage;
