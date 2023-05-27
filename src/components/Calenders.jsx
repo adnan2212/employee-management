@@ -190,7 +190,7 @@ const Calendar = () => {
     };
 
     return (
-      <div className="mx-auto min-w-[378px] flex-col rounded p-2  shadow md:max-w-[400px]">
+      <div className="mx-auto min-w-[378px] flex-col rounded p-1  shadow md:max-w-[420px]">
         <div className="mb-2 flex  items-center justify-between">
           <button
             className="rounded p-2 text-gray-800 hover:bg-[#bd243f]"
