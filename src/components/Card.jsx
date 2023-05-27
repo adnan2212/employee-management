@@ -1,6 +1,6 @@
 import IMG from "../assets/img/p2.jpeg";
 import IMG2 from "../assets/img/p4.jpeg";
-import IMG3 from "../assets/img/p5.jpeg";
+import IMG3 from "../assets/img/p7.jpeg";
 import IMG4 from "../assets/img/p6.jpeg";
 import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
 import {

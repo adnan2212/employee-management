@@ -27,7 +27,7 @@ export const LoginForm = () => {
   return (
     <>
       <Logo />
-      <div className="mx-auto flex h-[100vh] flex-col  items-center justify-center pb-56">
+      <div className="mx-auto flex h-[100vh] flex-col items-center justify-center pb-56">
         <h2 className="mb-4 text-2xl font-bold">Login</h2>
         <Formik
           initialValues={initialValues}
@@ -107,7 +107,7 @@ export const SigninForm = () => {
     <>
       <Logo />
       {/* <div className="mx-auto max-w-md"> */}
-      <div className="mx-auto mt-24 flex h-[100vh] w-full min-w-full flex-col items-center justify-center pb-56 sm:mt-24 md:mt-24 lg:mt-24">
+      <div className="mx-auto flex h-[100vh] w-full min-w-full flex-col items-center justify-center bg-white">
         <h2 className="mb-4 flex flex-col items-center text-5xl  font-extralight lg:flex-row lg:gap-1">
           <span>Sign In to </span>
           <spans>Morningstar</spans>
@@ -118,7 +118,7 @@ export const SigninForm = () => {
           validationSchema={signupValidationSchema}
         >
           {({ isSubmitting }) => (
-            <form className="mb-4 w-96 px-8 pb-8 pt-6 lg:w-6/12">
+            <form className="mb-60 w-96 px-8 pt-6 lg:w-6/12">
               <div className="mb-4 ">
                 <ErrorMessage
                   name="name"

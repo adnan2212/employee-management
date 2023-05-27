@@ -7,16 +7,16 @@ import SecondPage from "./pages/secondPage";
 
 const appRouter = createBrowserRouter([
   {
-    path: "/signin",
-    element: <SigninForm />,
-  },
-  {
     path: "/",
     element: <FirstPage />,
   },
   {
     path: "/projects",
     element: <SecondPage />,
+  },
+  {
+    path: "/signin",
+    element: <SigninForm />,
   },
 ]);
 
