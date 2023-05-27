@@ -6,13 +6,13 @@ import Logo from "./Logo";
 
 const loginValidationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required")
+  password: Yup.string().required("Password is required"),
 });
 
 const signupValidationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required")
+  password: Yup.string().required("Password is required"),
 });
 
 export const LoginForm = () => {
@@ -108,10 +108,10 @@ export const SigninForm = () => {
       <Logo />
       {/* <div className="mx-auto max-w-md"> */}
       <div
-        className="wflex 
-      mx-auto h-[100vh] w-full min-w-full flex-col items-center justify-center bg-white pb-56 "
+        className="top-0 mx-auto flex
+      h-[90vh] w-full min-w-full flex-col items-center pt-16"
       >
-        <h2 className="mb-4 flex flex-col items-center text-5xl  font-extralight lg:flex-row lg:gap-1">
+        <h2 className="mb-4 flex flex-col items-center text-5xl font-extralight lg:flex-row lg:gap-1">
           <span>Sign In to </span>
           <spans>Morningstar</spans>
         </h2>
