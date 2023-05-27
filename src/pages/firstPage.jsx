@@ -3,7 +3,7 @@ import Logo from "../components/Logo";
 import {
   CircularProgressbar,
   CircularProgressbarWithChildren,
-  buildStyles
+  buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
@@ -16,7 +16,6 @@ import Header from "../Components/header";
 import HourSheet from "../Components/HourSheet";
 import Footer from "../components/Footer";
 import Calendars from "../components/Calenders";
-
 import ProjectContainer from "../components/ProjectContainer";
 
 const FirstPage = () => {
@@ -39,10 +38,10 @@ const FirstPage = () => {
       <ProjectContainer />
       {/* ------- */}
 
-      <div className="mb-[-8rem]  shrink-0   px-10 pb-32 md:flex md:justify-evenly md:pt-2">
+      <div className="mb-10 mt-2 shrink-0 md:flex md:justify-evenly md:pt-2">
         {/* EFFICIENCY */}
         <div className=" ">
-          <h1 className="     text-lg font-bold text-[#0D1829] md:text-center">
+          <h1 className="ml-6 text-lg font-bold text-[#0D1829] md:text-center">
             Efficiency
           </h1>
 
@@ -85,7 +84,7 @@ const FirstPage = () => {
                       styles={buildStyles({
                         pathColor: "#F77307",
                         trailColor: "#eee",
-                        strokeLinecap: "butt"
+                        strokeLinecap: "butt",
                       })}
                     >
                       {/* Foreground path */}
@@ -94,7 +93,7 @@ const FirstPage = () => {
                         text={`${88}%`} // render `${sum}%`
                         styles={buildStyles({
                           trailColor: "transparent",
-                          strokeLinecap: "butt"
+                          strokeLinecap: "butt",
                         })}
                       />
                     </CircularProgressbarWithChildren>

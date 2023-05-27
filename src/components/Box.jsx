@@ -16,12 +16,12 @@ const Box = ({ title, content, content2, iconSize, iconName }) => {
       ) : (
         <div className="number-div flex flex-col items-end justify-between">
           {typeof content2 === "number" ? (
-            <div className="right-5 top-2 flex p-4 pt-5 text-sm font-medium text-red-600">
+            <div className="right-5 top-2 flex p-4 pt-5 text-sm font-medium">
               <p className="">{content} </p>
               <p className="">/{content2}</p>
             </div>
           ) : (
-            <p className="p-3 text-3xl font-bold text-red-600 ">{content}</p>
+            <p className="p-3 text-3xl font-bold">{content}</p>
           )}
 
           <div className="text-div">
