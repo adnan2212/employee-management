@@ -1,7 +1,6 @@
 import MyForm from "./MyForm";
 import React from "react";
-import { AddFilled } from "@ricons/material";
-import { Icon } from "@ricons/utils";
+import plus from "../assets/img/plus-btn.svg";
 
 import {
   Modal,
@@ -11,33 +10,27 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 
 const PopUp = () => {
-  const OverlayOne = () => (
-    <ModalOverlay
-      bg="blackAlpha.900"
-      backdropFilter="blur(10px) hue-rotate(90deg)"
-    />
-  );
+  const OverlayOne = () => <ModalOverlay backdropFilter="blur(10px) " />;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
 
   return (
     <>
-      <div className="">
+      <div className=" mb-2 flex flex-col items-center   ">
         <Button
-          colorScheme="blue"
+          className="px-0"
+          colorScheme=""
           onClick={() => {
             setOverlay(<OverlayOne />);
             onOpen();
           }}
         >
-          <Icon color="white" size="30">
-            <AddFilled />
-          </Icon>
+          <img className="mb-2" src={plus} alt="" />
         </Button>
       </div>
 

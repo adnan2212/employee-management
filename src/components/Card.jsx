@@ -1,8 +1,3 @@
-import IMG from "../assets/img/p2.jpeg";
-import IMG2 from "../assets/img/p4.jpeg";
-import IMG3 from "../assets/img/p7.jpeg";
-import IMG4 from "../assets/img/p6.jpeg";
-import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
 import {
   CircularProgressbar,
   CircularProgressbarWithChildren,
@@ -11,13 +6,12 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 
 import Calender from "../assets/img/calender.svg";
-import IMG5 from "../assets/img/p7.jpeg";
 
 const Card = ({ percentage1, percentage2, className }) => {
   const overall = percentage1 + percentage2 / 200;
   return (
     <>
-      <div className={`${className} m-4 flex h-48 gap-2 rounded-xl shadow-lg `}>
+      <div className={`${className} mx-2 my-2 flex h-48 gap-2 rounded-xl  `}>
         <div className=" flex items-center justify-center">
           <div className="">
             <div className="left m-2 p-2">
@@ -29,13 +23,7 @@ const Card = ({ percentage1, percentage2, className }) => {
                 <p className="">Team</p>
                 <div className="absolute  top-4 py-2">
                   <div>
-                    <AvatarGroup size="sm" max={3}>
-                      <Avatar name="Ryan Florence" src={IMG} />
-                      <Avatar name="Segun Adebayo" src={IMG2} />
-                      <Avatar name="Kent Dodds" src={IMG3} />
-                      <Avatar name="Prosper Otemuyiwa" src={IMG4} />
-                      <Avatar name="Christian Nwamba" src={IMG5} />
-                    </AvatarGroup>
+                    <span className=" text-xs">Team Name</span>
                   </div>
                 </div>
               </div>

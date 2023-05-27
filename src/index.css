@@ -8,11 +8,14 @@
 
 #root,
 .new-bg {
-  background: radial-gradient(white 20%, #190d23 200%);
+  background: white;
+  font-family: "Inter", sans-serif;
 }
+
 .project-container,
 .red-bg {
-  background: radial-gradient(#bd243f 10%, #190d23 200%);
+  background: #fc0404;
+  opacity: 85%;
 }
 .text-clr {
   color: #bd243f;
@@ -35,7 +38,7 @@
   outline: none;
   border-radius: 50%;
   transition: 0.5s ease-in-out;
-  background-color: #2051e5;
+  background-color: red;
   box-shadow: 0px 0px 3px #f3f3f3;
   padding-right: 40px;
   color: #fff;
@@ -362,7 +365,7 @@ body.modal-active {
   border-radius: 15px;
   color: #e8e8e8;
   z-index: 1;
-  background: #bd243f;
+  background: red;
   position: relative;
   font-weight: 1000;
   font-size: 17px;
@@ -540,6 +543,6 @@ body.modal-active {
   }
   .footer span,
   .footer p {
-    font-size: 0.5rem;
+    font-size: 0.55rem;
   }
 }

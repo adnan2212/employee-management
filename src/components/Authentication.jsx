@@ -107,7 +107,10 @@ export const SigninForm = () => {
     <>
       <Logo />
       {/* <div className="mx-auto max-w-md"> */}
-      <div className="mx-auto flex h-[100vh] w-full min-w-full flex-col items-center justify-center bg-white">
+      <div
+        className="wflex 
+      mx-auto h-[100vh] w-full min-w-full flex-col items-center justify-center bg-white pb-56 "
+      >
         <h2 className="mb-4 flex flex-col items-center text-5xl  font-extralight lg:flex-row lg:gap-1">
           <span>Sign In to </span>
           <spans>Morningstar</spans>

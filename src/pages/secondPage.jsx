@@ -7,7 +7,7 @@ const SecondPage = () => {
   return (
     <>
       <Logo />
-      <Header_2 title={"Projects"} />
+      <Header_2 title={"Team"} />
 
       {/* 1 */}
       <div className="mt-10  flex min-w-min flex-col items-center md:flex-row md:flex-wrap md:justify-center">
