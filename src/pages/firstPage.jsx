@@ -1,27 +1,32 @@
+import Logo from "../components/Logo";
+
 import {
   CircularProgressbar,
   CircularProgressbarWithChildren,
-  buildStyles,
+  buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
+/* ICONS */
 import { CheckboxIndeterminate16Regular } from "@ricons/fluent";
 import { Icon } from "@ricons/utils";
-import { CalendarMonthOutlined } from "@ricons/material";
 import { CalendarMonthOutlined } from "@ricons/material";
 
 import Header from "../Components/header";
 import HourSheet from "../Components/HourSheet";
 import Footer from "../components/Footer";
+import Calendars from "../components/Calenders";
 
-import ReactHorizontalDatePicker from "react-horizontal-strip-datepicker";
-import "react-horizontal-strip-datepicker/dist/ReactHorizontalDatePicker.css";
 import ProjectContainer from "../components/ProjectContainer";
 
 const FirstPage = () => {
   const percentage = 90;
   const percentage2 = 66;
   const sum = percentage + percentage2 / 200;
+
+  const onSelectedDay = (d) => {
+    console.log(d);
+  };
 
   return (
     <>
@@ -32,6 +37,7 @@ const FirstPage = () => {
       <Calendars />
 
       <ProjectContainer />
+      {/* ------- */}
 
       <div className="mb-[-8rem]  shrink-0   px-10 pb-32 md:flex md:justify-evenly md:pt-2">
         {/* EFFICIENCY */}
@@ -79,7 +85,7 @@ const FirstPage = () => {
                       styles={buildStyles({
                         pathColor: "#F77307",
                         trailColor: "#eee",
-                        strokeLinecap: "butt",
+                        strokeLinecap: "butt"
                       })}
                     >
                       {/* Foreground path */}
@@ -88,7 +94,7 @@ const FirstPage = () => {
                         text={`${88}%`} // render `${sum}%`
                         styles={buildStyles({
                           trailColor: "transparent",
-                          strokeLinecap: "butt",
+                          strokeLinecap: "butt"
                         })}
                       />
                     </CircularProgressbarWithChildren>
@@ -112,6 +118,7 @@ const FirstPage = () => {
           </div>
         </div>
 
+        {/* ------ */}
         <HourSheet />
       </div>
       <Footer />
@@ -119,5 +126,4 @@ const FirstPage = () => {
   );
 };
 
-export default FirstPage;
 export default FirstPage;

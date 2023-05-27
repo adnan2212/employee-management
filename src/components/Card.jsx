@@ -1,7 +1,7 @@
 import {
   CircularProgressbar,
   CircularProgressbarWithChildren,
-  buildStyles,
+  buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
@@ -49,7 +49,7 @@ const Card = ({ percentage1, percentage2, className }) => {
                 styles={buildStyles({
                   pathColor: "#F77307",
                   trailColor: "#eee",
-                  strokeLinecap: "butt",
+                  strokeLinecap: "butt"
                 })}
               >
                 {/* Foreground path */}
@@ -58,7 +58,7 @@ const Card = ({ percentage1, percentage2, className }) => {
                   text={`${overall}%`}
                   styles={buildStyles({
                     trailColor: "transparent",
-                    strokeLinecap: "butt",
+                    strokeLinecap: "butt"
                   })}
                 />
               </CircularProgressbarWithChildren>

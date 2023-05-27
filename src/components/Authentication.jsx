@@ -6,13 +6,13 @@ import Logo from "./Logo";
 
 const loginValidationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required"),
+  password: Yup.string().required("Password is required")
 });
 
 const signupValidationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required"),
+  password: Yup.string().required("Password is required")
 });
 
 export const LoginForm = () => {
@@ -27,7 +27,7 @@ export const LoginForm = () => {
   return (
     <>
       <Logo />
-      <div className="mx-auto flex h-[100vh] flex-col items-center justify-center pb-56">
+      <div className="mx-auto flex h-[100vh] flex-col  items-center justify-center pb-56">
         <h2 className="mb-4 text-2xl font-bold">Login</h2>
         <Formik
           initialValues={initialValues}
@@ -121,7 +121,7 @@ export const SigninForm = () => {
           validationSchema={signupValidationSchema}
         >
           {({ isSubmitting }) => (
-            <form className="mb-60 w-96 px-8 pt-6 lg:w-6/12">
+            <form className="mb-4 w-96 px-8 pb-8 pt-6 lg:w-6/12">
               <div className="mb-4 ">
                 <ErrorMessage
                   name="name"
@@ -186,7 +186,7 @@ export const SigninForm = () => {
               </div>
 
               <div className="m-4 mr-5 flex cursor-pointer justify-end text-blue-400 underline">
-                <Link to="/home">
+                <Link to="/">
                   <p>skip</p>
                 </Link>
               </div>

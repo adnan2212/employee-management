@@ -1,6 +1,6 @@
 import { Logo } from "../../config";
 
-const LogoImg = () => {
+const Login = () => {
   return (
     <div className="bg-white">
       <img className="mx-auto flex justify-center" src={Logo} />
@@ -9,4 +9,4 @@ const LogoImg = () => {
   );
 };
 
-export default LogoImg;
+export default Login;

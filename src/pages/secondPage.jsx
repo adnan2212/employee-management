@@ -1,7 +1,7 @@
-import Logo from "../components/Logo";
-import Header_2 from "../components/Header_2";
-import Card from "../components/Card";
 import Footer from "../components/Footer";
+import Logo from "../components/Logo";
+import Card from "../components/Card";
+import Header_2 from "../components/Header_2";
 
 const SecondPage = () => {
   return (

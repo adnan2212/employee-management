@@ -5,11 +5,7 @@ import { CalendarMonthOutlined } from "@ricons/material";
 import { UserAvatarFilledAlt } from "@ricons/carbon";
 
 import { Icon } from "@ricons/utils";
-import Home from "../assets/img/Home.svg";
-import calender from "../assets/img/calender.svg";
-import message from "../assets/img/message.svg";
-import profile from "../assets/img/profile.svg";
-import team from "../assets/img/team.svg";
+
 import Popup from "./PopUp";
 
 const Footer = () => {

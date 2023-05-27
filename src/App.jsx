@@ -9,20 +9,20 @@ import MyForm from "./components/MyForm";
 const appRouter = createBrowserRouter([
   {
     path: "/signin",
-    element: <SigninForm />,
+    element: <SigninForm />
   },
   {
     path: "/",
-    element: <FirstPage />,
+    element: <FirstPage />
   },
   {
     path: "/projects",
-    element: <SecondPage />,
+    element: <SecondPage />
   },
   {
-    path: "/signin",
-    element: <SigninForm />,
-  },
+    path: "/form",
+    element: <MyForm />
+  }
 ]);
 
 const App = () => {
