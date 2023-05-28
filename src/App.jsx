@@ -13,12 +13,16 @@ const appRouter = createBrowserRouter([
   },
   {
     path: "/",
-    element: <FirstPage />,
+    element: <FirstPage />
   },
   {
     path: "/projects",
-    element: <SecondPage />,
+    element: <SecondPage />
   },
+  {
+    path: "/form",
+    element: <MyForm />
+  }
 ]);
 
 const App = () => {

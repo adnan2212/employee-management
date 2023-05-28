@@ -6,9 +6,7 @@ const Date = () => {
   };
   return (
     <>
-      <h1 className="ml-4 pt-4 text-lg font-bold text-[#0D1829]">
-        Select date
-      </h1>
+      <h1 className="ml-4 pt-4 text-lg font-bold text-[#0D1829]">Pick date</h1>
       <div className="m-5">
         <DatePicker
           getSelectedDay={selectedDay}

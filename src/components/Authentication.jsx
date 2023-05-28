@@ -107,8 +107,11 @@ export const SigninForm = () => {
     <>
       <Logo />
       {/* <div className="mx-auto max-w-md"> */}
-      <div className="mx-auto mt-24 flex h-[100vh] w-full min-w-full flex-col items-center justify-center pb-56 sm:mt-24 md:mt-24 lg:mt-24">
-        <h2 className="mb-4 flex flex-col items-center text-5xl  font-extralight lg:flex-row lg:gap-1">
+      <div
+        className="top-0 mx-auto flex
+      h-[90vh] w-full min-w-full flex-col items-center pt-16"
+      >
+        <h2 className="mb-4 flex flex-col items-center text-5xl font-extralight lg:flex-row lg:gap-1">
           <span>Sign In to </span>
           <spans>Morningstar</spans>
         </h2>
@@ -183,7 +186,7 @@ export const SigninForm = () => {
               </div>
 
               <div className="m-4 mr-5 flex cursor-pointer justify-end text-blue-400 underline">
-                <Link to="/home">
+                <Link to="/">
                   <p>skip</p>
                 </Link>
               </div>

@@ -6,7 +6,7 @@ import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 const task_type = ["Production", "Non-Production"];
 const sub_task_type = {
   Production: ["Audit", "Junking", "Coding"],
-  "Non-Production": ["Meeting", "Client Handling", "Networking"],
+  "Non-Production": ["Meeting", "Client Handling", "Networking"]
 };
 
 const validationSchema = Yup.object({
@@ -16,7 +16,7 @@ const validationSchema = Yup.object({
   ),
   hoursSpent: Yup.number()
     .positive("Hours Spent must be a positive number")
-    .required("Hours Spent is required"),
+    .required("Hours Spent is required")
 });
 
 const MyForm = () => {
@@ -43,12 +43,12 @@ const MyForm = () => {
   return (
     <>
       {/* <Header_2 title={"Tasks"} /> */}
-      <div className="flex items-center justify-center ">
+      <div className="flex  items-center justify-center ">
         <Formik
           initialValues={{
             taskType: "",
             subTaskType: "",
-            hoursSpent: "",
+            hoursSpent: ""
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
@@ -201,11 +201,11 @@ const MyForm = () => {
               <div className="flex items-center justify-between">
                 <button
                   type="submit"
-                  className={`w-full rounded bg-blue-500 px-4 py-2 text-white ${
+                  className={`w-full rounded bg-red-500 px-4 py-2 text-white ${
                     Object.keys(errors).length > 0 || !values.taskType
                       ? "cursor-not-allowed opacity-50"
                       : ""
-                  } hover:bg-blue-600`}
+                  } hover:bg-red-600`}
                   disabled={Object.keys(errors).length > 0 || !values.taskType}
                 >
                   Submit
