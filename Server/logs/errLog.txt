@@ -1,0 +1,8 @@
+20230529	06:21:50	7f0d7dbe-11bc-4650-a7bb-8fac0c3e1390	ReferenceError: origin is not defined
+20230529	06:32:50	659514b6-0ae4-4aec-ad17-2fef31f132f5	Error: ENOENT: no such file or directory, stat 'C:\Users\adnan\OneDrive\Desktop\employee-management\server\views\404.html'
+20230529	06:35:48	f2f47941-37e9-4c65-9806-f9801dcaca8d	Error: ENOENT: no such file or directory, stat 'C:\Users\adnan\OneDrive\Desktop\employee-management\server\views\404.html'
+20230529	06:44:40	262c322a-a5b5-45df-bec2-5ff40e2e2d80	Error: ENOENT: no such file or directory, stat 'C:\Users\adnan\OneDrive\Desktop\employee-management\server\views\test.html'
+20230529	11:15:43	fd056718-6482-4506-b4c5-eb15da37df79	SyntaxError: Unexpected token } in JSON at position 44
+20230529	11:17:06	9f0dc4b7-7cfb-428c-9c90-e7fb0701ce2f	SyntaxError: Unexpected token } in JSON at position 17
+20230530	15:58:21	cf7b0c69-3ec3-4134-8a09-3497e69cfc66	ReferenceError: jwy is not defined
+20230530	15:59:05	516691b2-d675-4094-b8a5-72e38dce3257	ReferenceError: decoded is not defined
