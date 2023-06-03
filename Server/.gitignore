@@ -1,3 +1,5 @@
 node_modules
 .env
 Notes.md
+logs
+files
