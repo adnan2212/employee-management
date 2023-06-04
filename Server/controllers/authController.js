@@ -52,7 +52,7 @@ const handleLogin = async (req, res) => {
     // secure: true,
     
     // include user ID
-    res.json({ accessToken, userId: userId});
+    res.json({ accessToken });
     // res.status(200).json({ success: `Welcome ${user}!` });
   } else {
     res.status(401).json({ error: "Unauthorized line 29" });

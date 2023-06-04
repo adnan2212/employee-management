@@ -13,8 +13,10 @@ const createNewTask = async (req, res) => {
   }
 
   try {
+    const userId = req.body;
+
     const newTask = await Task.create({
-      user: req.user._id,
+      employeeId: userId,
       taskType: req.body.taskType,
       subTaskType: req.body.subTaskType,
       hoursSpent: req.body.hoursSpent,
