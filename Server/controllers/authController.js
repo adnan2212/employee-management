@@ -8,24 +8,26 @@ const handleLogin = async (req, res) => {
     return res.status(400).json({ error: "Missing user or password" });
 
   const foundUser = await User.findOne({ username: user }).exec();
-  // if (!foundUser) return res.sendStatus(401);
   if (!foundUser) {
     return res.status(401).json({ error: "Unauthorized line 16" });
   }
   //evalute the password
+  console.log("FOUND USER🟢", foundUser._id);
   const match = await bcrypt.compare(password, foundUser.password);
   if (match) {
     const roles = Object.values(foundUser.roles);
+    const userId = foundUser._id;
     //create JWTs
     const accessToken = jwt.sign(
       {
+        _id: userId,
         UserInfo: {
           username: foundUser.username,
           roles: roles,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "30s" }
+      { expiresIn: "1h" }
     );
     const refreshToken = jwt.sign(
       {
@@ -35,12 +37,12 @@ const handleLogin = async (req, res) => {
         },
       },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "12h" }
     );
     //saving the refresh token with current user
     foundUser.refreshToken = refreshToken;
     const result = await foundUser.save();
-    console.log(result);
+    console.log("From authCon line 46", result);
 
     res.cookie("jwt", refreshToken, {
       httpOnly: true,

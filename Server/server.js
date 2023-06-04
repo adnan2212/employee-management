@@ -17,6 +17,7 @@ const refresh = require("./routes/refresh");
 const logout = require("./routes/logout");
 const employees = require("./routes/api/employees");
 const users = require("./routes/api/manageUser");
+const tasks = require("./routes/api/task");
 const connectDB = require("./config/dbConn");
 const PORT = process.env.PORT || 3000;
 
@@ -57,6 +58,7 @@ app.use("/logout", logout);
 app.use(verifyJWT);
 app.use("/employees", employees);
 app.use("/users", users);
+app.use("/tasks", tasks);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
