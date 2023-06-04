@@ -50,8 +50,9 @@ const handleLogin = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000, //1 day
     });
     // secure: true,
-
-    res.json({ accessToken });
+    
+    // include user ID
+    res.json({ accessToken, userId: userId});
     // res.status(200).json({ success: `Welcome ${user}!` });
   } else {
     res.status(401).json({ error: "Unauthorized line 29" });
