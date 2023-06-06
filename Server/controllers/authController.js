@@ -17,11 +17,13 @@ const handleLogin = async (req, res) => {
   if (match) {
     const roles = Object.values(foundUser.roles);
     const userId = foundUser._id;
+    console.log("LINE 20: ", userId);
     //create JWTs
     const accessToken = jwt.sign(
       {
         _id: userId,
         UserInfo: {
+          userId: userId,
           username: foundUser.username,
           roles: roles,
         },
@@ -42,6 +44,7 @@ const handleLogin = async (req, res) => {
     //saving the refresh token with current user
     foundUser.refreshToken = refreshToken;
     const result = await foundUser.save();
+    // userId = req.user._id;
     console.log("From authCon line 46", result);
 
     res.cookie("jwt", refreshToken, {
@@ -49,8 +52,14 @@ const handleLogin = async (req, res) => {
       sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000, //1 day
     });
+
+    res.cookie("userId", userId, {
+      httpOnly: true,
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000, //1 day
+    });
     // secure: true,
-    
+
     // include user ID
     res.json({ accessToken });
     // res.status(200).json({ success: `Welcome ${user}!` });

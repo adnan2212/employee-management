@@ -1,10 +1,9 @@
 const Task = require("../model/Task");
 
 const createNewTask = async (req, res) => {
-  console.log("+++++++++++++++++++++++");
-  console.log("⏩⏩⏩⏩", req);
-  console.log("+++++++++++++++++++++++");
+  console.log("LINE 8: ", req.cookies);
   if (
+    !req?.cookies?.userId ||
     !req?.body?.taskType ||
     !req?.body?.subTaskType ||
     !req?.body?.hoursSpent
@@ -13,10 +12,8 @@ const createNewTask = async (req, res) => {
   }
 
   try {
-    const userId = req.body;
-
     const newTask = await Task.create({
-      employeeId: userId,
+      userId: req.cookies.userId,
       taskType: req.body.taskType,
       subTaskType: req.body.subTaskType,
       hoursSpent: req.body.hoursSpent,

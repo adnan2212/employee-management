@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -19,6 +19,10 @@ const taskSchema = new Schema({
     type: Number,
     required: true,
     min: 0,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
   },
 });
 
