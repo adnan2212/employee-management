@@ -1,8 +1,11 @@
 import { Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
+import axios from "../api/axios";
 
 import Logo from "./Logo";
+
+const LOGIN_URL = "/auth";
 
 const loginValidationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -18,10 +21,15 @@ const signupValidationSchema = Yup.object().shape({
 export const LoginForm = () => {
   const initialValues = { email: "", password: "" };
 
-  const onSubmit = (values, { setSubmitting }) => {
-    // Handle login logic here
-    console.log(values);
-    setSubmitting(false);
+  const onSubmit = async (values, { setSubmitting }) => {
+    try {
+      const response = await axios.post(LOGIN_URL, values);
+      console.log(response.data);
+      setSubmitting(false);
+    } catch (error) {
+      console.error(error);
+      setSubmitting(false);
+    }
   };
 
   return (

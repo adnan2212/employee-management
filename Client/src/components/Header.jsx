@@ -1,8 +1,12 @@
 import { MdNotificationsOutline } from "@ricons/ionicons4";
 import { Icon } from "@ricons/utils";
 import DropdownMenu from "./DropdownMenu";
+import useContent from "../hooks/useContent";
 
 const Header = ({ userName }) => {
+  const { auth } = useContent();
+  const user = auth.user; //auth.user = adnan
+  userName = user.charAt(0).toUpperCase() + user.slice(1);
   return (
     <div
       className="red-bg flex
