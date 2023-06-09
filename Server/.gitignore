@@ -3,3 +3,5 @@ node_modules
 Notes.md
 logs
 files
+*.txt
+*.csv

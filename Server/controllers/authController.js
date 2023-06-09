@@ -17,15 +17,14 @@ const handleLogin = async (req, res) => {
   if (match) {
     const roles = Object.values(foundUser.roles);
     const userId = foundUser._id;
-    console.log("LINE 20: ", userId);
+    console.log("LINE 20 USER ID: ", userId);
     //create JWTs
     const accessToken = jwt.sign(
       {
-        _id: userId,
         UserInfo: {
-          userId: userId,
           username: foundUser.username,
           roles: roles,
+          id: foundUser._id,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
@@ -50,15 +49,16 @@ const handleLogin = async (req, res) => {
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       sameSite: "None",
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000, //1 day
     });
 
     res.cookie("userId", userId, {
       httpOnly: true,
       sameSite: "None",
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000, //1 day
     });
-    // secure: true,
 
     // include user ID
     res.json({ accessToken });
