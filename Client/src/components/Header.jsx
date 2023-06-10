@@ -5,7 +5,7 @@ import useContent from "../hooks/useContent";
 
 const Header = ({ userName }) => {
   const { auth } = useContent();
-  const user = auth.user; //auth.user = adnan
+  const user = auth.user;
   userName = user.charAt(0).toUpperCase() + user.slice(1);
   return (
     <div

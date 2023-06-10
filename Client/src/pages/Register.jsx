@@ -44,7 +44,6 @@ const Register = () => {
       );
       const accessToken = response?.data?.accessToken;
 
-      console.log(accessToken);
       setAuth({ user, accessToken });
       resetUser();
       setPassword("");

@@ -19,7 +19,7 @@ const validationSchema = Yup.object({
     .required("Hours Spent is required"),
 });
 
-const MyForm = () => {
+const MyForm = (props) => {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
@@ -35,14 +35,14 @@ const MyForm = () => {
   }, [successMessage]);
 
   const handleSubmit = (values, { resetForm }) => {
-    console.log(values);
+    console.log("Line 38:", values);
     resetForm();
     setSuccessMessage("Form submitted successfully!");
+    props.taskData(values);
   };
 
   return (
     <>
-      {/* <Header_2 title={"Tasks"} /> */}
       <div className="flex  items-center justify-center ">
         <Formik
           initialValues={{

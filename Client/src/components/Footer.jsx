@@ -28,6 +28,7 @@ const Footer = () => {
             </div>
           </Link>
         </span>
+
         <Popup />
 
         <span className="flex w-8 flex-col items-center">

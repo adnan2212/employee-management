@@ -1,6 +1,8 @@
 import MyForm from "./MyForm";
 import React from "react";
 import plus from "../assets/img/plus-btn.svg";
+import axios from "../api/axios";
+import useContent from "../hooks/useContent";
 
 import {
   Modal,
@@ -10,14 +12,52 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 
+const TASK_URL = "/tasks";
+
 const PopUp = () => {
+  const { auth } = useContent();
+  const token = auth?.accessToken;
+  console.log("💚 POPUP", auth);
   const OverlayOne = () => <ModalOverlay backdropFilter="blur(10px) " />;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
+
+  const taskData = async (values) => {
+    console.log("Adding taskData.");
+    // const data = { taskType, subTaskType, hoursSpent };
+    try {
+      const response = await axios.post(TASK_URL, JSON.stringify(values), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+      console.log(response);
+      // const accessToken = response?.data?.accessToken;
+      // console.log(user, accessToken);
+      // setAuth({ user, accessToken });
+      // resetUser();
+      // setPassword("");
+      // navigate("/", { replace: true });
+    } catch (err) {
+      console.log(err);
+      // if (!err?.response) {
+      //   setErrMsg("No Server Response");
+      // } else if (err.response?.status === 400) {
+      //   setErrMsg("Missing Username or Password");
+      // } else if (err.response?.status === 401) {
+      //   setErrMsg("Unauthorized");
+      // } else {
+      //   setErrMsg("Login Failed");
+      // }
+      // errRef.current.focus();
+    }
+  };
 
   return (
     <>
@@ -40,7 +80,7 @@ const PopUp = () => {
           <ModalHeader>Modal Title</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <MyForm />
+            <MyForm taskData={taskData} />
           </ModalBody>
           {/* <ModalFooter>
             <Button onClick={onClose}>Close</Button>
@@ -50,39 +90,5 @@ const PopUp = () => {
     </>
   );
 };
-
-// import { CloseSharp } from "@ricons/material";
-// import { Icon } from "@ricons/utils";
-
-// const Popup = ({ isOpen, onClose }) => {
-//   return (
-//     <div
-//       className={`fixed inset-0 flex items-center justify-center ${
-//         isOpen ? "block" : "hidden"
-//       }`}
-//     >
-//       <div className="fixed inset-0 bg-gray-900 opacity-75"></div>
-//       <div className="z-10 rounded-md bg-white p-8">
-//         <button
-//           className="absolute right-0 top-64 m-4 text-red-500 hover:text-gray-800"
-//           onClick={onClose}
-//         >
-//           <Icon size="30">
-//             <CloseSharp />
-//           </Icon>
-//         </button>
-//         <div className="z-10 rounded-md bg-white p-8">
-//           <MyForm />
-//           <button
-//             className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-white"
-//             onClick={onClose}
-//           >
-//             Close
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
 
 export default PopUp;
