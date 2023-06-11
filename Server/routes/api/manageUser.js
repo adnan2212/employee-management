@@ -8,7 +8,7 @@ router
   .route("/")
   .get(verifyRoles(ROLES_LIST.Admin), registerController.getAllUsers)
   .delete(verifyRoles(ROLES_LIST.Admin), registerController.deleteUser);
-
+router.get("/:id", registerController.getUser);
 router
   .route("/:id")
   .get(verifyRoles(ROLES_LIST.Admin), registerController.getUser);
