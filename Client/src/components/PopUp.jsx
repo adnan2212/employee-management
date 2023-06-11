@@ -12,7 +12,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 
 const TASK_URL = "/tasks";
@@ -33,9 +33,9 @@ const PopUp = () => {
       const response = await axios.post(TASK_URL, JSON.stringify(values), {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
-        withCredentials: true,
+        withCredentials: true
       });
       console.log(response);
       // const accessToken = response?.data?.accessToken;

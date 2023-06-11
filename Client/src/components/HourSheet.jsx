@@ -1,4 +1,32 @@
+import { useState, useEffect } from "react";
+import axios from "../api/axios";
+import useContent from "../hooks/useContent";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import jwtDecode from "jwt-decode";
+
 const HourSheet = () => {
+  const { auth } = useContent();
+  const axiosPrivate = useAxiosPrivate();
+
+  const TASK_URL = "/tasks";
+  const [userInfo, setUserInfo] = useState([]);
+
+  useEffect(() => {
+    const decoded = auth?.accessToken ? jwtDecode(auth.accessToken) : undefined;
+    const userId = decoded?.UserInfo?.id || "";
+    console.log(userId);
+    const handleClick = async () => {
+      try {
+        const response = await axiosPrivate.get(`${TASK_URL}`);
+        setUserInfo(response.data);
+        console.log(auth?.accessToken);
+        console.log(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    handleClick();
+  }, []);
   return (
     <div className="mt-2 shrink-0 rounded-3xl md:mb-[-3rem] md:mt-0">
       <p className="ml-6 text-lg font-bold text-[#0D1829] md:text-center ">
@@ -12,7 +40,7 @@ const HourSheet = () => {
           >
             Production
           </p>
-          <p>5 hrs</p>
+          {/* <p>{userInfo.hoursSpent}</p> */}
         </div>
       </div>
       <div className="m-5 flex justify-center md:mt-6">
