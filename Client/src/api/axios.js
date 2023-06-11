@@ -1,14 +1,15 @@
 import axios from "axios";
-const BASE_URL = "https://crowded-slip-crow.cyclic.app";
+// const BASE_URL = "https://crowded-slip-crow.cyclic.app";
+const BASE_URL = "http://localhost:3000";
 
 export default axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL
 });
 
 export const axiosPrivate = axios.create({
   baseURL: BASE_URL,
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "application/json"
   },
-  withCredentials: true,
+  withCredentials: true
 });
