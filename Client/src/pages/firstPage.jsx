@@ -3,7 +3,7 @@ import Logo from "../components/Logo";
 import {
   CircularProgressbar,
   CircularProgressbarWithChildren,
-  buildStyles,
+  buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
@@ -84,7 +84,7 @@ const FirstPage = () => {
                       styles={buildStyles({
                         pathColor: "#F77307",
                         trailColor: "#eee",
-                        strokeLinecap: "butt",
+                        strokeLinecap: "butt"
                       })}
                     >
                       {/* Foreground path */}
@@ -93,7 +93,7 @@ const FirstPage = () => {
                         text={`${88}%`} // render `${sum}%`
                         styles={buildStyles({
                           trailColor: "transparent",
-                          strokeLinecap: "butt",
+                          strokeLinecap: "butt"
                         })}
                       />
                     </CircularProgressbarWithChildren>
