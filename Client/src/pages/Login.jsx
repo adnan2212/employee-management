@@ -36,11 +36,13 @@ const Login = () => {
         JSON.stringify({ user, password }),
         {
           headers: { "Content-Type": "application/json" },
-          withCredentials: true,
+          withCredentials: true
         }
       );
       const accessToken = response?.data?.accessToken;
-      console.log(user, accessToken);
+      const userId = accessToken?.UserInfo?.id;
+      console.log(userId);
+      console.log(user, response);
       setAuth({ user, accessToken });
       resetUser();
       setPassword("");
