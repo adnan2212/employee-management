@@ -32,7 +32,7 @@ app.use(logger);
 app.use(credentials);
 
 //cross origin resource sharing
-app.use(cors());
+app.use(cors(corsOptions));
 
 //built-in middleware to handle urlencoded data
 //in other words, form data:
