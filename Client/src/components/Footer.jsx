@@ -44,10 +44,10 @@ const Footer = () => {
         <span className="items-centerpl-4 flex w-8 flex-col pl-3">
           <Link to="/" className="  flex w-8  flex-col items-center">
             <div className="  flex scale-100 flex-col items-center transition-transform duration-[250ms] ">
-              <Icon color="grey" size="30">
-                <UserAvatarFilledAlt />
-              </Icon>
-              <Link to="/signin">
+              <Link to="/profile">
+                <Icon color="grey" size="30">
+                  <UserAvatarFilledAlt />
+                </Icon>
                 <p className="text-slate-500">Profile</p>
               </Link>
             </div>

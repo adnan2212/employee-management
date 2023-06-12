@@ -1,4 +1,3 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 
 import { SigninForm, LoginForm } from "./components/Authentication";
@@ -12,6 +11,7 @@ import MyForm from "./components/MyForm";
 import Unauthorized from "./pages/Unauthorized";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
+import Profile from "./pages/Profile";
 
 const ROLES = {
   User: 1000,
@@ -28,6 +28,7 @@ function App() {
           <Route path="/" element={<FirstPage />} />
           {/* <Route path="unauthorized" element={<Unauthorized />} /> */}
           <Route path="projects" element={<SecondPage />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="form" element={<MyForm />} />
         </Route>
       </Route>
