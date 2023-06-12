@@ -1,16 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "../api/axios";
-import {
-  CircularProgressbar,
-  CircularProgressbarWithChildren,
-  buildStyles
-} from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-
-/* ICONS */
-import { CheckboxIndeterminate16Regular } from "@ricons/fluent";
-import { Icon } from "@ricons/utils";
-import { CalendarMonthOutlined } from "@ricons/material";
 
 import Logo from "../components/Logo";
 import Header from "../Components/header";
@@ -23,6 +11,8 @@ const FirstPage = () => {
   const percentage = 90;
   const percentage2 = 66;
   const sum = percentage + percentage2 / 200;
+  const [dailyAllKPI, setDailyAllKPI] = useState(null);
+
   const [selectedDate, setSelectedDate] = useState(null); // Add selectedDate state
   const handleDateSelect = (date) => {
     setSelectedDate(date); // Update selectedDate state when a date is selected
@@ -35,9 +25,9 @@ const FirstPage = () => {
       <Logo />
       <Header userName={"Rajesh Mehta"} />
       <Calendars onDateSelect={handleDateSelect} />
-      <ProjectContainer />
+      <ProjectContainer dailyAllKPI={dailyAllKPI} />
 
-      <HourSheet selectedDate={selectedDate} />
+      <HourSheet selectedDate={selectedDate} setDailyAllKPI={setDailyAllKPI} />
       <Footer />
     </>
   );
