@@ -360,7 +360,7 @@ body.modal-active {
 /* Media Queries */
 /* Calender Components */
 .pick-btn {
-  padding: 15px 25px;
+  padding: 10px 15px;
   border: unset;
   border-radius: 15px;
   color: #e8e8e8;

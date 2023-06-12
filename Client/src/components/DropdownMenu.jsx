@@ -1,111 +1,156 @@
-import { useState, useRef, useEffect } from "react";
-import { MdMenu } from "@ricons/ionicons4";
+import { useState } from "react";
+import { MdMenu, MdClose } from "react-icons/md";
 import { Icon } from "@ricons/utils";
+import {
+  Box,
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  Collapse,
+  Center
+} from "@chakra-ui/react";
+import {
+  AiOutlineUser,
+  AiOutlineSetting,
+  AiOutlineLogout
+} from "react-icons/ai";
+import { FaQuestion } from "react-icons/fa";
+import { RiProjectorFill } from "react-icons/ri";
 
 const DropdownMenu = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const dropdownRef = useRef(null);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleOutsideClick = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, []);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
-    setIsOpen(false);
+    onClose();
   };
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
-      {/* Dropdown toggle button */}
-      <button
-        onClick={toggleDropdown}
-        className="reBurgerComponent:outline-none z-10 mt-0 block h-0  focus:ring-blue-300 focus:ring-opacity-40 dark:bg-[#2051E5] dark:text-white dark:focus:ring-blue-400 dark:focus:ring-opacity-40"
+    <Box className="relative inline-block ">
+      {/* Drawer toggle button */}
+      <Button
+        onClick={onOpen}
+        bg="transparent"
+        color="white"
+        _hover={{
+          bg: "transparent"
+        }}
+        _focus={{
+          bg: "transparent"
+        }}
+        _active={{
+          bg: "transparent"
+        }}
       >
-        <Icon color="white" size={30}>
-          <MdMenu />
-        </Icon>
-      </button>
+        {isOpen ? (
+          <Icon color="white" size={30}>
+            <MdClose />
+          </Icon>
+        ) : (
+          <Icon color="white" size={30}>
+            <MdMenu />
+          </Icon>
+        )}
+      </Button>
 
-      {/* Dropdown menu */}
-      {isOpen && (
-        <div
-          onClick={() => setIsOpen(false)}
-          className="absolute right-0 z-20 mr-8 mt-8 w-48 origin-top-right rounded-md bg-white py-2 shadow-xl dark:bg-gray-800"
-        >
-          <a
-            href="#"
-            className={`block transform px-4 py-3 text-sm capitalize text-gray-600 transition-colors duration-300 ${
-              selectedItem === "profile"
-                ? "bg-blue-100 dark:bg-gray-700 dark:text-white"
-                : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-            }`}
-            onClick={() => handleItemClick("profile")}
-          >
-            Your Profile
-          </a>
-          <a
-            href="#"
-            className={`block transform px-4 py-3 text-sm capitalize text-gray-600 transition-colors duration-300 ${
-              selectedItem === "projects"
-                ? "bg-blue-100 dark:bg-gray-700 dark:text-white"
-                : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-            }`}
-            onClick={() => handleItemClick("projects")}
-          >
-            Your Projects
-          </a>
-          <a
-            href="#"
-            className={`block transform px-4 py-3 text-sm capitalize text-gray-600 transition-colors duration-300 ${
-              selectedItem === "help"
-                ? "bg-blue-100 dark:bg-gray-700 dark:text-white"
-                : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-            }`}
-            onClick={() => handleItemClick("help")}
-          >
-            Help
-          </a>
-          <a
-            href="#"
-            className={`block transform px-4 py-3 text-sm capitalize text-gray-600 transition-colors duration-300 ${
-              selectedItem === "settings"
-                ? "bg-blue-100 dark:bg-gray-700 dark:text-white"
-                : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-            }`}
-            onClick={() => handleItemClick("settings")}
-          >
-            Settings
-          </a>
-          <a
-            href="#"
-            className={`block transform px-4 py-3 text-sm capitalize text-gray-600 transition-colors duration-300 ${
-              selectedItem === "signout"
-                ? "bg-blue-100 dark:bg-gray-700 dark:text-white"
-                : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-            }`}
-            onClick={() => handleItemClick("signout")}
-          >
-            Sign Out
-          </a>
-        </div>
-      )}
-    </div>
+      {/* Drawer */}
+      <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay>
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>Menu</DrawerHeader>
+
+            <Collapse in={isOpen} animateOpacity>
+              <DrawerBody>
+                {/* Menu items */}
+                <Box display="flex" flexDirection="column" align="center">
+                  <Button
+                    onClick={() => handleItemClick("profile")}
+                    bg={selectedItem === "profile" ? "blue.100" : "transparent"}
+                    my={2}
+                    _hover={{
+                      bg: "blue.100"
+                    }}
+                    _focus={{
+                      bg: "blue.100"
+                    }}
+                    centerIcon={<Icon as={AiOutlineUser} />}
+                  >
+                    Your Profile
+                  </Button>
+                  <Button
+                    onClick={() => handleItemClick("projects")}
+                    bg={
+                      selectedItem === "projects" ? "blue.100" : "transparent"
+                    }
+                    my={2}
+                    _hover={{
+                      bg: "blue.100"
+                    }}
+                    _focus={{
+                      bg: "blue.100"
+                    }}
+                    centerIcon={<Icon as={RiProjectorFill} />}
+                  >
+                    Your Team
+                  </Button>
+                  <Button
+                    onClick={() => handleItemClick("help")}
+                    bg={selectedItem === "help" ? "blue.100" : "transparent"}
+                    my={2}
+                    _hover={{
+                      bg: "blue.100"
+                    }}
+                    _focus={{
+                      bg: "blue.100"
+                    }}
+                    centerIcon={<Icon as={FaQuestion} />}
+                  >
+                    Help
+                  </Button>
+                  <Button
+                    onClick={() => handleItemClick("settings")}
+                    bg={
+                      selectedItem === "settings" ? "blue.100" : "transparent"
+                    }
+                    my={2}
+                    _hover={{
+                      bg: "blue.100"
+                    }}
+                    _focus={{
+                      bg: "blue.100"
+                    }}
+                    centerIcon={<Icon as={AiOutlineSetting} />}
+                  >
+                    Settings
+                  </Button>
+                  <Button
+                    onClick={() => handleItemClick("signout")}
+                    bg={selectedItem === "signout" ? "blue.100" : "transparent"}
+                    my={2}
+                    _hover={{
+                      bg: "blue.100"
+                    }}
+                    _focus={{
+                      bg: "blue.100"
+                    }}
+                    centerIcon={<Icon as={AiOutlineLogout} />}
+                  >
+                    Sign Out
+                  </Button>
+                </Box>
+              </DrawerBody>
+            </Collapse>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
+    </Box>
   );
 };
 
