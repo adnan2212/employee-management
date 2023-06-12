@@ -8,7 +8,7 @@ import {
   FaRegCalendarAlt
 } from "react-icons/fa";
 
-const Calendar = () => {
+const Calendar = ({ onDateSelect }) => {
   const [showFullCalendar, setShowFullCalendar] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
@@ -66,6 +66,7 @@ const Calendar = () => {
     setSelectedDate(date);
     // Perform any additional logic or actions on date selection
     console.log("Selected Date:", date);
+    onDateSelect(date);
   };
 
   const swipeHandlers = useSwipeable({
@@ -163,7 +164,7 @@ const Calendar = () => {
       const isSelected =
         selectedDate && day.toDateString() === selectedDate.toDateString();
       const isDisabled = day > today; // Check if the date is after the current day
-      const dayClassName = `cursor-pointer py-2 rounded ${
+      const dayClassName = `cursor-pointer py-4 px-1 rounded-2xl ${
         isCurrentDay ? "bg-[red]" : ""
       } ${isSelected ? "bg-[#ff553c] text-white" : ""} ${
         isDisabled ? "text-gray-400 cursor-not-allowed" : ""
@@ -244,8 +245,8 @@ const Calendar = () => {
             <FaAngleDoubleRight />
           </button>
         </div>
-        <div className="grid grid-cols-7 gap-2">
-          <div className="text-center text-xs text-gray-500">Mon</div>
+        <div className="grid grid-cols-7 gap-2 ">
+          <div className="text-center text-xs text-gray-500 ">Mon</div>
           <div className="text-center text-xs text-gray-500">Tue</div>
           <div className="text-center text-xs text-gray-500">Wed</div>
           <div className="text-center text-xs text-gray-500">Thu</div>
@@ -263,14 +264,14 @@ const Calendar = () => {
   };
 
   return (
-    <div className="mb-[-2rem] p-10 md:text-center">
+    <section className="mb-[-2rem] p-10 md:text-center">
       <div className="mb-4">
         <button
-          className=" pick-btn mb-5 bg-[#bd243f]"
+          className="pick-btn mb-5 ml-[-20px] bg-[#bd243f]"
           onClick={handleToggleCalendar}
         >
           <div className="flex items-center gap-2">
-            <p className="">Pick Date</p>
+            <p>Pick Date</p>
             <FaRegCalendarAlt />
           </div>
         </button>
@@ -278,7 +279,7 @@ const Calendar = () => {
       <div ref={calendarRef}>
         {showFullCalendar ? renderFullCalendar() : renderWeeklyCalendar()}
       </div>
-    </div>
+    </section>
   );
 };
 
