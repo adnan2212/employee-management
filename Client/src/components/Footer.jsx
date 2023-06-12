@@ -9,7 +9,7 @@ import Popup from "./PopUp";
 const Footer = () => {
   return (
     <div className="">
-      <div className="mt-6 flex h-24 items-center justify-around border-t-2 px-5  ">
+      <div className="mt-20 flex h-24 items-center justify-around border-t-2 px-5  ">
         <Link to="/" className="flex w-8  flex-col items-center">
           <div className="  flex scale-100 flex-col items-center transition-transform duration-[250ms] ">
             <Icon color="red" size="30">
