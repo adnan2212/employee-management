@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useContent from "../hooks/useContent";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import jwtDecode from "jwt-decode";
+import Rectangle from "./Rectangle";
 
 import {
   CircularProgressbar,
@@ -15,7 +16,7 @@ import { CheckboxIndeterminate16Regular } from "@ricons/fluent";
 import { Icon } from "@ricons/utils";
 import { CalendarMonthOutlined } from "@ricons/material";
 
-const HourSheet = ({ selectedDate }) => {
+const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
   const [userInfo, setUserInfo] = useState([]);
   const [taskData, setTaskData] = useState([]);
 
@@ -66,6 +67,14 @@ const HourSheet = ({ selectedDate }) => {
         });
         setTaskData(taskTypes);
         console.log(taskTypes);
+
+        // Calculate the KPI dynamically based on taskData
+        const productionKPI = taskTypes.Production * 0.9375 || 0;
+        const nonProductionKPI = taskTypes["Non-Production"] * 0.64375 || 0;
+        const sumKPI = productionKPI + nonProductionKPI;
+        const dailyAllKPI = parseFloat(sumKPI.toFixed(1));
+        setDailyAllKPI(dailyAllKPI);
+        console.log("dailyAllKPI Data:", dailyAllKPI);
       } catch (err) {
         console.error(err);
       }
@@ -85,130 +94,133 @@ const HourSheet = ({ selectedDate }) => {
     return () => {
       controller.abort();
     };
-  }, [selectedDate, axiosPrivate, auth]);
+  }, [selectedDate, axiosPrivate, auth, setDailyAllKPI]);
 
   console.log("Selected Date in HourSheet:", selectedDate);
   console.log("Task Data:", taskData);
 
-  // Calculate the KPI dynamically based on taskData
-  const productionKPI = taskData.Production || 0;
-  const nonProductionKPI = taskData["Non-Production"] || 0;
-
   // Calculate the percentage for the CircularProgressbar
-  const productionPercentage = (productionKPI / 7.5) * 100;
-  const nonProductionPercentage = (nonProductionKPI / 5.5) * 100;
+  const productionPercentage = (taskData.Production / 7.5) * 100 || 0;
+  const nonProductionPercentage = (taskData["Non-Production"] / 5.5) * 100 || 0;
   const sum = productionPercentage + nonProductionPercentage;
   const sumText = parseFloat(sum.toFixed(2));
 
   console.log("Selected Date in HourSheet:", selectedDate);
   console.log("Task Data:", taskData);
-  console.log("productionPercentage Data:", productionPercentage);
-  console.log("nonProductionPercentage Data:", nonProductionPercentage);
+  console.log("productionKPI Data:", taskData.Production);
+  console.log("nonProductionKPI Data:", taskData["Non-Production"]);
 
   return (
     <div className="mb-10 mt-2 shrink-0 px-10 pt-5 md:flex md:justify-evenly ">
       {/* EFFICIENCY */}
-      <div className=" ">
-        <h1 className="ml-6 text-lg font-bold text-[#0D1829] md:text-center">
-          Efficiency
-        </h1>
+      {/* Do not Render Efficiency here if taskData is empty object */}
+      {Object.keys(taskData).length > 0 && (
+        <div className=" ">
+          <h1 className="ml-6 text-lg font-bold text-[#0D1829] md:text-center">
+            Efficiency
+          </h1>
 
-        <div className="  flex justify-center  px-12 ">
-          <div className=" m-4 flex h-auto min-w-[374px] scale-100 justify-around gap-2 rounded-xl bg-[#EEF2FF] py-2   ">
-            <div className=" ">
-              <div className="ml-1 py-2  text-sm font-medium">
-                Candidate Efficiency
-              </div>
-              <p className="ml-40 pb-2 text-xs font-normal">in hrs</p>
-              {/* Map taskType and hours in efficiency */}
-              {Object.entries(taskData)
-                .sort(([taskTypeA], [taskTypeB]) => {
-                  if (
-                    taskTypeA === "Production" &&
-                    taskTypeB === "Non-Production"
-                  ) {
-                    return -1; // "Production" should come before "Non-Production"
-                  } else if (
-                    taskTypeA === "Non-Production" &&
-                    taskTypeB === "Production"
-                  ) {
-                    return 1; // "Non-Production" should come after "Production"
-                  } else {
-                    return 0; // Preserve the original order
-                  }
-                })
-                .map(([taskType, hours]) => (
-                  <div
-                    key={taskType}
-                    className="flex items-center justify-between gap-2  "
-                  >
-                    <span className="flex items-center gap-3">
-                      <Icon
-                        color={
-                          taskType === "Non-Production" ? "#F77307" : "#2051E5"
-                        }
-                      >
-                        <CheckboxIndeterminate16Regular />
-                      </Icon>
-                      <p className="opacity-60">{taskType}</p>
-                    </span>
+          <div className="  flex justify-center  px-12 ">
+            <div className=" m-4 flex h-auto min-w-[374px] scale-100 justify-around gap-2 rounded-xl bg-[#EEF2FF] py-2   ">
+              <div className=" ">
+                <div className="ml-1 py-2  text-sm font-medium">
+                  Candidate Efficiency
+                </div>
+                <p className="ml-40 pb-2 text-xs font-normal">in hrs</p>
+                {/* Map taskType and hours in efficiency */}
+                {Object.entries(taskData)
+                  .sort(([taskTypeA], [taskTypeB]) => {
+                    if (
+                      taskTypeA === "Production" &&
+                      taskTypeB === "Non-Production"
+                    ) {
+                      return -1; // "Production" should come before "Non-Production"
+                    } else if (
+                      taskTypeA === "Non-Production" &&
+                      taskTypeB === "Production"
+                    ) {
+                      return 1; // "Non-Production" should come after "Production"
+                    } else {
+                      return 0; // Preserve the original order
+                    }
+                  })
+                  .map(([taskType, hours]) => (
+                    <div
+                      key={taskType}
+                      className="flex items-center justify-between gap-2  "
+                    >
+                      <span className="flex items-center gap-3">
+                        <Icon
+                          color={
+                            taskType === "Non-Production"
+                              ? "#F77307"
+                              : "#2051E5"
+                          }
+                        >
+                          <CheckboxIndeterminate16Regular />
+                        </Icon>
+                        <p className="opacity-60">{taskType}</p>
+                      </span>
 
-                    <div className=" flex flex-col items-center  ">
-                      <p className=" ml-[-30px] opacity-60">{hours}</p>
+                      <div className=" flex flex-col items-center  ">
+                        <p className=" ml-[-30px] opacity-60">{hours}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              <p className="ml-4 pb-2 pt-6 text-sm font-medium text-[#0D1829]">
-                Overall: {`${sumText}%`}
-              </p>
-            </div>
-            <div className="mr-7 mt-6 ">
-              <div className="w-16">
-                <div className="ml-4 text-2xl">
-                  <CircularProgressbarWithChildren
-                    value={sum}
-                    text={`${sumText}%`}
-                    styles={buildStyles({
-                      pathColor: "#2051E5",
-                      trailColor: "#eee",
-                      strokeLinecap: "butt",
-                      textSize: "20px"
-                    })}
-                  >
-                    <CircularProgressbar
-                      value={nonProductionPercentage}
+                  ))}
+                <p className="ml-4 pb-2 pt-6 text-sm font-medium text-[#0D1829]">
+                  Overall: {`${sumText}%`}
+                </p>
+              </div>
+              <div className="mr-7 mt-6 ">
+                <div className="w-16">
+                  <div className="ml-4 text-2xl">
+                    <CircularProgressbarWithChildren
+                      value={sum}
+                      text={`${sumText}%`}
                       styles={buildStyles({
-                        pathColor: "#F77307",
-                        trailColor: "transparent",
+                        pathColor: "#2051E5",
+                        trailColor: "#eee",
                         strokeLinecap: "butt",
                         textSize: "20px"
                       })}
-                    />
-                  </CircularProgressbarWithChildren>
-                </div>
-                <div className="mr-3 mt-7 flex flex-col items-center">
-                  <p className="whitespace-nowrap text-xs font-normal opacity-60">
-                    Due Date
-                  </p>
-                  <div className="flex items-center gap-2 whitespace-nowrap font-medium">
-                    <Icon color="#333" size="30">
-                      <CalendarMonthOutlined />
-                    </Icon>
-                    <p className="text-xs font-medium opacity-90">
-                      June 6, 2022
+                    >
+                      <CircularProgressbar
+                        value={nonProductionPercentage}
+                        styles={buildStyles({
+                          pathColor: "#F77307",
+                          trailColor: "transparent",
+                          strokeLinecap: "butt",
+                          textSize: "20px"
+                        })}
+                      />
+                    </CircularProgressbarWithChildren>
+                  </div>
+                  <div className="mr-3 mt-7 flex flex-col items-center">
+                    <p className="whitespace-nowrap text-xs font-normal opacity-60">
+                      Due Date
                     </p>
+                    <div className="flex items-center gap-2 whitespace-nowrap font-medium">
+                      <Icon color="#333" size="30">
+                        <CalendarMonthOutlined />
+                      </Icon>
+                      <p className="text-xs font-medium opacity-90">
+                        June 6, 2022
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+      {/* Do not Render Efficiency here if taskData is empty object */}
 
       <div className="mt-2 shrink-0 rounded-3xl md:mb-[-3rem] md:mt-0">
-        <p className="ml-6 text-lg font-bold text-[#0D1829] md:text-center">
+        <p className="mx-auto  text-lg font-bold text-[#0D1829] md:text-center">
           Hour-Sheet
         </p>
+
         {Object.entries(taskData)
           .sort(([taskTypeA], [taskTypeB]) => {
             if (taskTypeA === "Production" && taskTypeB === "Non-Production") {
@@ -236,6 +248,8 @@ const HourSheet = ({ selectedDate }) => {
               </div>
             </div>
           ))}
+
+        {Object.keys(taskData).length === 0 && <Rectangle />}
       </div>
     </div>
   );
