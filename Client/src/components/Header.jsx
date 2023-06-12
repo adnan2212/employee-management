@@ -28,7 +28,7 @@ const Header = ({ userName }) => {
           </Icon>
         </span>
 
-        <span className="mr-5">
+        <span className="z-10 mb-[12.5px] mr-10">
           <Icon color="white" size={20}>
             <DropdownMenu />
           </Icon>

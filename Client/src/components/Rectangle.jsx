@@ -1,20 +1,11 @@
+import PopUp from "./PopUp";
 const Rectangle = () => {
   return (
-    <div>
-      <p className="ml-4 flex justify-center pt-4 text-lg font-bold text-[#0D1829]">
-        Hour-Sheet
+    <button className="mx-auto mt-4 flex items-center justify-center md:mt-6">
+      <p className="flex h-16 w-80 scale-100 items-center justify-center  rounded-xl bg-[#2051E5] px-8 text-3xl font-extrabold leading-[3rem]  text-white">
+        +
       </p>
-      <div className="flex justify-center">
-        <div className=" flex h-16 w-80 justify-center bg-[#2051E5]    text-4xl font-semibold">
-          <p
-            className="leading-[3rem] text-white 
-"
-          >
-            +
-          </p>
-        </div>
-      </div>
-    </div>
+    </button>
   );
 };
 
