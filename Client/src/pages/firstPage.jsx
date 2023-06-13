@@ -25,7 +25,7 @@ const FirstPage = () => {
       <Logo />
       <Header userName={"Rajesh Mehta"} />
       <Calendars onDateSelect={handleDateSelect} />
-      <ProjectContainer dailyAllKPI={dailyAllKPI} />
+      <ProjectContainer selectedDate={selectedDate} dailyAllKPI={dailyAllKPI} />
 
       <HourSheet selectedDate={selectedDate} setDailyAllKPI={setDailyAllKPI} />
       <Footer />

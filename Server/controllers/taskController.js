@@ -56,35 +56,23 @@ const getAllTasks = async (req, res) => {
   res.json(tasks);
 };
 
-const updateTask = async (req, res) => {
-  try {
-    const { taskId } = req.params;
-    const updatedTaskData = req.body; // Updated task data from the request body
 
-    // Update the task in the database using the taskId and updatedTaskData
-    const updatedTask = await Task.findByIdAndUpdate(taskId, updatedTaskData, {
-      new: true,
-    });
-
-    // Return the updated task as the response
-    res.json(updatedTask);
-  } catch (error) {
-    console.error("Error editing task:", error);
-    res.status(500).json({ error: "Failed to edit task" });
-  }
-};
 
 /* const updateTask = async (req, res) => {
+
   if (!req?.cookies?.userId) {
     return res.status(400).json({ message: "userId parameter is required." });
   }
 
   const task = await Task.findOne({
+
     userId: req.cookies.userId,
+
   }).exec();
   if (!task) {
     return res
       .status(204)
+
       .json({ message: `No mosque matches userId ${req.cookies.userId}.` });
   }
 
@@ -178,11 +166,14 @@ const deleteTask = async (req, res) => {
 
   // Return a 204 No Content status
   res.status(204).json();
+
 };
 
 module.exports = {
   createNewTask,
   getAllTasks,
+
   updateTask,
   deleteTask,
+
 };

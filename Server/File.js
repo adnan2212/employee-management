@@ -15,7 +15,8 @@ fs.readFile(path.join(__dirname, "files", "name.txt"), "utf-8", (err, data) => {
   );
 });
 
-console.log("Hello...");
+// console.log("Hello...");
+
 
 /* fs.writeFile(
   path.join(__dirname, "files", "reply.txt"),
@@ -35,6 +36,7 @@ fs.writeFile(
   }
 );
  */
+
 //exit on uncaught error
 process.on("uncaughtExecption", (err) => {
   console.error(`There was an uncaught error: ${err}`);

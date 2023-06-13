@@ -6,7 +6,7 @@ import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 const task_type = ["Production", "Non-Production"];
 const sub_task_type = {
   Production: ["Audit", "Junking", "Coding"],
-  "Non-Production": ["Meeting", "Client Handling", "Networking"],
+  "Non-Production": ["Meeting", "Client Handling", "Networking"]
 };
 
 const validationSchema = Yup.object({
@@ -16,7 +16,7 @@ const validationSchema = Yup.object({
   ),
   hoursSpent: Yup.number()
     .positive("Hours Spent must be a positive number")
-    .required("Hours Spent is required"),
+    .required("Hours Spent is required")
 });
 
 const MyForm = (props) => {
@@ -48,7 +48,7 @@ const MyForm = (props) => {
           initialValues={{
             taskType: "",
             subTaskType: "",
-            hoursSpent: "",
+            hoursSpent: ""
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}

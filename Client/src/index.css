@@ -546,3 +546,51 @@ body.modal-active {
     font-size: 0.55rem;
   }
 }
+
+.scroll-container {
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  padding: 0.5rem 0;
+  margin: 0 -0.5rem;
+  scroll-padding: 0 50%; /* Add padding to the left and right sides */
+}
+
+.scroll-item {
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 14%; /* Adjust the width as needed for each item */
+  margin: 0 0.5rem;
+  scroll-snap-align: center; /* Ensure each item aligns in the center */
+}
+
+.scroll-item .day {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: #f2f2f2;
+  transition: background-color 0.3s ease;
+}
+
+.scroll-item .day:hover {
+  background-color: #e0e0e0;
+}
+
+.scroll-item .day.current {
+  background-color: #ff553c;
+  color: white;
+}
+
+.scroll-item .day.selected {
+  background-color: #bd243f;
+  color: white;
+}
+
+.scroll-item .day.disabled {
+  color: #cccccc;
+  cursor: not-allowed;
+}

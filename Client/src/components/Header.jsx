@@ -9,8 +9,10 @@ const Header = ({ userName }) => {
   userName = user.charAt(0).toUpperCase() + user.slice(1);
   return (
     <div
-      className="red-bg flex
-    h-32 items-center justify-between rounded-b-2xl p-2 pb-0 "
+      // red-bg
+      className="flex h-32 items-center justify-between
+    rounded-b-2xl bg-gradient-to-b from-red-600 to-red-500 p-2 pb-0 "
+      red-bg
     >
       <div className="main mt-3 p-5 pt-6 text-white">
         <h1 className="text-slate-100 ">
