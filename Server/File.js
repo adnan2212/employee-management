@@ -15,25 +15,25 @@ fs.readFile(path.join(__dirname, "files", "name.txt"), "utf-8", (err, data) => {
   );
 });
 
-console.log("Hello...");
+// console.log("Hello...");
 
-fs.writeFile(
-  path.join(__dirname, "files", "reply.txt"),
-  "Created file by fs module.",
-  (err) => {
-    if (err) throw err;
-    console.log("Write complete!");
-  }
-);
+// fs.writeFile(
+//   path.join(__dirname, "files", "reply.txt"),
+//   "Created file by fs module.",
+//   (err) => {
+//     if (err) throw err;
+//     console.log("Write complete!");
+//   }
+// );
 
-fs.writeFile(
-  path.join(__dirname, "files", "data.csv"),
-  "Created file by fs module.",
-  (err) => {
-    if (err) throw err;
-    console.log("Write complete!");
-  }
-);
+// fs.writeFile(
+//   path.join(__dirname, "files", "data.csv"),
+//   "Created file by fs module.",
+//   (err) => {
+//     if (err) throw err;
+//     console.log("Write complete!");
+//   }
+// );
 
 //exit on uncaught error
 process.on("uncaughtExecption", (err) => {

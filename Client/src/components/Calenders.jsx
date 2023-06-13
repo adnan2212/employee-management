@@ -67,6 +67,9 @@ const Calendar = ({ onDateSelect }) => {
     // Perform any additional logic or actions on date selection
     console.log("Selected Date:", date);
     onDateSelect(date);
+    if (showFullCalendar) {
+      handleToggleCalendar(); // Toggle the calendar visibility
+    }
   };
 
   const swipeHandlers = useSwipeable({
@@ -164,8 +167,8 @@ const Calendar = ({ onDateSelect }) => {
       const isSelected =
         selectedDate && day.toDateString() === selectedDate.toDateString();
       const isDisabled = day > today; // Check if the date is after the current day
-      const dayClassName = `cursor-pointer py-4 px-1 rounded-2xl ${
-        isCurrentDay ? "bg-[red]" : ""
+      const dayClassName = `cursor-pointer py-3 px-1 rounded-2xl ${
+        isCurrentDay ? "bg-[red] text-white" : ""
       } ${isSelected ? "bg-[#ff553c] text-white" : ""} ${
         isDisabled ? "text-gray-400 cursor-not-allowed" : ""
       }`;
@@ -207,17 +210,17 @@ const Calendar = ({ onDateSelect }) => {
     };
 
     return (
-      <div className="flex-col  rounded p-1 shadow  md:mx-auto md:max-w-[420px]">
+      <div className="flex-col  rounded-3xl p-5 shadow  md:mx-auto md:max-w-[420px]">
         <div className="mb-2 flex  items-center justify-between">
           <button
-            className="rounded p-2 text-gray-800 hover:bg-[red]"
+            className="rounded-lg p-2 text-gray-800 hover:bg-[red] hover:text-stone-100"
             onClick={handlePreviousYear}
             title="Previous Year"
           >
             <FaAngleDoubleLeft />
           </button>
           <button
-            className="rounded p-2 text-gray-800 hover:bg-[red]"
+            className="rounded-lg p-2 text-gray-800 hover:bg-[red] hover:text-stone-100"
             onClick={handlePreviousMonth}
             title="Previous Month"
           >
@@ -231,14 +234,14 @@ const Calendar = ({ onDateSelect }) => {
             })}
           </div>
           <button
-            className="rounded p-2 text-gray-800 hover:bg-[red]"
+            className="rounded-lg p-2 text-gray-800 hover:bg-[red] hover:text-stone-100"
             onClick={handleNextMonth}
             title="Next Month"
           >
             <FaAngleRight />
           </button>
           <button
-            className="rounded p-2 text-gray-800 hover:bg-[red]"
+            className="rounded-lg p-2 text-gray-800 hover:bg-[red] hover:text-stone-100"
             onClick={handleNextYear}
             title="Next Year"
           >

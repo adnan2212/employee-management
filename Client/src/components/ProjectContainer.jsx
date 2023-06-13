@@ -5,7 +5,7 @@ import useContent from "../hooks/useContent";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import axios from "axios";
 
-const ProjectContainer = ({ dailyAllKPI }) => {
+const ProjectContainer = ({ selectedDate, dailyAllKPI }) => {
   const { auth } = useContent();
   const axiosPrivate = useAxiosPrivate();
 
@@ -127,8 +127,16 @@ const ProjectContainer = ({ dailyAllKPI }) => {
         console.error(err);
       }
     };
-    fetchData();
-  }, []);
+    if (selectedDate) {
+      // If a selectedDate prop is provided, fetch data for the selected date
+      fetchData(selectedDate);
+    } else {
+      // If no selectedDate prop is provided, fetch data for today's date
+      fetchData(selectedDate);
+
+      console.log(selectedDate);
+    }
+  }, [selectedDate]);
 
   const isWithinQuarter = (date) => {
     const currentDate = new Date(); // Get the current date
@@ -171,18 +179,19 @@ const ProjectContainer = ({ dailyAllKPI }) => {
         {annualKPI !== null && (
           <Box className="" title={"Annual"} content={Math.floor(annualKPI)} />
         )}
+
+        {halfYearlyKPI !== null && (
+          <Box
+            className="flex justify-between "
+            title={"Half Yearly"}
+            content={Math.floor(halfYearlyKPI)} // Display only the integer part of halfYearlyKPI
+          />
+        )}
         {quarterKPI !== null && (
           <Box
             className=""
             title={"Quarter"}
             content={Math.floor(quarterKPI)}
-          />
-        )}
-        {halfYearlyKPI !== null && (
-          <Box
-            className="flex justify-between"
-            title={"Half Yearly"}
-            content={Math.floor(halfYearlyKPI)} // Display only the integer part of halfYearlyKPI
           />
         )}
         <Box

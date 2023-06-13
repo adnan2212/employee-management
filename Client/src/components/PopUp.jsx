@@ -77,7 +77,7 @@ const PopUp = () => {
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         {overlay}
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Hour-Sheet</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <MyForm taskData={taskData} />

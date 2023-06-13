@@ -56,7 +56,32 @@ const getAllTasks = async (req, res) => {
   res.json(tasks);
 };
 
+const updateTask = async (req, res) => {
+  if (!req?.cookies?.userId) {
+    return res.status(400).json({ message: "userId parameter is required." });
+  }
+
+  const task = await Task.findOne({
+    userId: req.body.userId
+  }).exec();
+  if (!task) {
+    return res
+      .status(204)
+      .json({ message: `No task matches userId ${req.body.userId}.` });
+  }
+
+  if (req.body?.taskType) mosque.taskType = req.body.taskType;
+
+  if (req.body?.subTaskType) mosque.subTaskType = req.body.subTaskType;
+
+  if (req.body?.hoursSpent) mosque.hoursSpent = req.body.hoursSpent;
+
+  const result = await task.save();
+  res.json(result);
+};
+
 module.exports = {
   createNewTask,
-  getAllTasks
+  getAllTasks,
+  updateTask
 };

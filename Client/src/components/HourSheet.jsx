@@ -121,7 +121,7 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
           </h1>
 
           <div className="  flex justify-center  px-12 ">
-            <div className=" m-4 flex h-auto min-w-[374px] scale-100 justify-around gap-2 rounded-xl bg-[#EEF2FF] py-2   ">
+            <div className=" m-4 flex h-auto  min-w-[374px] scale-100 justify-around gap-2 rounded-xl bg-gradient-to-r from-[#FFFAF3] to-[#ECEFFF]  py-2   ">
               <div className=" ">
                 <div className="ml-1 py-2  text-sm font-medium">
                   Candidate Efficiency
@@ -239,8 +239,8 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
               <div
                 className={`flex h-16 w-80 scale-100 items-center justify-between rounded-xl ${
                   taskType === "Non-Production"
-                    ? "bg-[#F77307]"
-                    : "bg-[#2051E5]"
+                    ? "bg-gradient-to-r from-red-500 to-orange-500"
+                    : "bg-gradient-to-r from-blue-800 to-indigo-900"
                 } px-8 text-lg font-semibold text-white`}
               >
                 <p className="leading-[3rem]">{taskType}</p>
