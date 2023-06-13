@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Home32Filled, PeopleTeam32Regular } from "@ricons/fluent";
-import { CalendarMonthOutlined } from "@ricons/material";
+import { CalendarMonthOutlined, DataObjectRound } from "@ricons/material";
 import { UserAvatarFilledAlt } from "@ricons/carbon";
 import { Icon } from "@ricons/utils";
 
@@ -42,14 +42,15 @@ const Footer = () => {
           </Link>
         </span>
         <span className="items-centerpl-4 flex w-8 flex-col pl-3">
-          <Link to="/" className="  flex w-8  flex-col items-center">
+          <Link
+            to="/yourTaskData"
+            className="  flex w-8  flex-col items-center"
+          >
             <div className="  flex scale-100 flex-col items-center transition-transform duration-[250ms] ">
-              <Link to="/profile">
-                <Icon color="grey" size="30">
-                  <UserAvatarFilledAlt />
-                </Icon>
-                <p className="text-slate-500">Profile</p>
-              </Link>
+              <Icon color="grey" size="30">
+                <DataObjectRound />
+              </Icon>
+              <p className="text-slate-500">Data</p>
             </div>
           </Link>
         </span>
