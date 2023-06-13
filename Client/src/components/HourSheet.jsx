@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useContent from "../hooks/useContent";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import axios from "../api/axios";
+
 import jwtDecode from "jwt-decode";
 import Rectangle from "./Rectangle";
 
@@ -21,7 +22,6 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
   const [taskData, setTaskData] = useState([]);
 
   const { auth } = useContent();
-  const axiosPrivate = useAxiosPrivate();
 
   const TASK_URL = "/tasks";
 
@@ -32,7 +32,7 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
       try {
         console.log("Fetching data for date:", date);
 
-        const response = await axiosPrivate.get(TASK_URL);
+        const response = await axios.get(TASK_URL);
         const filteredData = response.data.filter((task) => {
           // Compare the task's date with the selected date (ignoring the time)
           const taskDate = new Date(task.date).setHours(0, 0, 0, 0);
@@ -241,7 +241,7 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
                   taskType === "Non-Production"
                     ? "bg-gradient-to-r from-red-500 to-orange-500"
                     : "bg-gradient-to-r from-blue-800 to-indigo-900"
-                } px-8 text-lg font-semibold text-white`}
+                } px-8 text-lg font-semibold text-white `}
               >
                 <p className="leading-[3rem]">{taskType}</p>
                 <p>{hours} hrs</p>

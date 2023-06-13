@@ -16,7 +16,7 @@ import UserTaskData from "./components/UserTaskData";
 
 const ROLES = {
   User: 1000,
-  Admin: 5150,
+  Admin: 5150
 };
 
 function App() {

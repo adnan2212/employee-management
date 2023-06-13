@@ -9,6 +9,6 @@ router
   .get(taskController.getAllTasks);
 
 router.put("/:taskId", taskController.updateTask);
-
+router.delete("/:taskId", taskController.deleteTask);
 
 module.exports = router;

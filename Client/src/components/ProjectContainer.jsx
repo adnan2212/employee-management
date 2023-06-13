@@ -169,7 +169,7 @@ const ProjectContainer = ({ selectedDate, dailyAllKPI }) => {
   };
 
   return (
-    <div className="mt-1 flex shrink-0 flex-col px-10 py-5 md:items-center">
+    <div className="mt-1 flex shrink-0 flex-col py-5 sm:px-10 md:items-center">
       <Link to="/projects">
         <button className="ml-6 mt-4 text-lg font-bold text-black md:text-center">
           Projects
