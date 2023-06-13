@@ -25,7 +25,7 @@ const UserTaskData = () => {
     };
 
     fetchPostData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -37,9 +37,16 @@ const UserTaskData = () => {
     console.log("Edit Task ID:", taskId);
   };
 
-  const handleDelete = (taskId) => {
-    // Handle delete functionality
-    console.log("Delete Task ID:", taskId);
+  const handleDelete = async (task) => {
+    try {
+      await axios.delete(`${TASK_URL}/${task._id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      });
+      setGetUserTaskData(true);
+    } catch (error) {
+      console.log("Delete task error:", error);
+    }
   };
 
   return (
