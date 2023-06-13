@@ -17,7 +17,7 @@ fs.readFile(path.join(__dirname, "files", "name.txt"), "utf-8", (err, data) => {
 
 console.log("Hello...");
 
-fs.writeFile(
+/* fs.writeFile(
   path.join(__dirname, "files", "reply.txt"),
   "Created file by fs module.",
   (err) => {
@@ -34,7 +34,7 @@ fs.writeFile(
     console.log("Write complete!");
   }
 );
-
+ */
 //exit on uncaught error
 process.on("uncaughtExecption", (err) => {
   console.error(`There was an uncaught error: ${err}`);
