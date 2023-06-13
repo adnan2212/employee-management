@@ -19,7 +19,7 @@ const createNewTask = async (req, res) => {
       userName: req.user,
       taskType: req.body.taskType,
       subTaskType: req.body.subTaskType,
-      hoursSpent: req.body.hoursSpent
+      hoursSpent: req.body.hoursSpent,
     });
     console.log("LINE 24: ", newTask);
 
@@ -56,32 +56,124 @@ const getAllTasks = async (req, res) => {
   res.json(tasks);
 };
 
-const updateTask = async (req, res) => {
+
+
+/* const updateTask = async (req, res) => {
+
   if (!req?.cookies?.userId) {
     return res.status(400).json({ message: "userId parameter is required." });
   }
 
   const task = await Task.findOne({
-    userId: req.body.userId
+
+    userId: req.cookies.userId,
+
   }).exec();
   if (!task) {
     return res
       .status(204)
-      .json({ message: `No task matches userId ${req.body.userId}.` });
+
+      .json({ message: `No mosque matches userId ${req.cookies.userId}.` });
   }
 
-  if (req.body?.taskType) mosque.taskType = req.body.taskType;
-
-  if (req.body?.subTaskType) mosque.subTaskType = req.body.subTaskType;
-
-  if (req.body?.hoursSpent) mosque.hoursSpent = req.body.hoursSpent;
+  if (req.body?.taskType) task.taskType = req.body.taskType;
+  if (req.body?.subTaskType) task.subTaskType = req.body.subTaskType;
+  if (req.body?.hoursSpent) task.hoursSpent = req.body.hoursSpent;
 
   const result = await task.save();
   res.json(result);
+}; */
+
+const updateTaskOld = async (req, res) => {
+  // Extract the taskId from the request parameters
+  const taskId = req.params._id;
+
+  // Extract the userId from the request query
+  const userId = req?.cookies?.userId;
+
+  // Extract the updated task from the request body
+  const updatedTask = req.body;
+
+  // Check if the updated task is empty
+  if (!updatedTask) {
+    // Return a 400 Bad Request status if the updated task is empty
+    return res.status(400).json({ message: "Task details are required" });
+  }
+
+  // Check if the taskId is provided
+  if (!taskId) {
+    // Return a 400 Bad Request status if the taskId is not provided
+    return res.status(400).json({ message: "Task ID is required" });
+  }
+
+  // Check if the userId is provided
+  if (!userId) {
+    // Return a 400 Bad Request status if the userId is not provided
+    return res.status(400).json({ message: "User ID is required" });
+  }
+
+  // Retrieve the task associated with the provided taskId and userId
+  const task = await Task.findOne({ _id: taskId, userId: userId }).exec();
+
+  // Check if the task is found
+  if (!task) {
+    // Return a 404 Not Found status if the task is not found
+    return res.status(404).json({ message: "Task not found" });
+  }
+
+  // Update the task
+  task.taskType = updatedTask.taskType;
+  task.subTaskType = updatedTask.subTaskType;
+  task.hoursSpent = updatedTask.hoursSpent;
+
+  // Save the updated task
+  await task.save();
+
+  // Return the updated task
+  res.json(task);
+};
+
+const deleteTask = async (req, res) => {
+  // Extract the taskId from the request parameters
+  const taskId = req.params.taskId;
+
+  // Extract the userId from the request query
+  const userId = req?.cookies?.userId;
+
+  // Check if the taskId is provided
+  if (!taskId) {
+    // Return a 400 Bad Request status if the taskId is not provided
+    return res.status(400).json({ message: "Task ID is required" });
+  }
+
+  // Check if the userId is provided
+  if (!userId) {
+    // Return a 400 Bad Request status if the userId is not provided
+    return res.status(400).json({ message: "User ID is required" });
+  }
+
+  // Retrieve the task associated with the provided taskId and userId
+  const task = await Task.findOne({ _id: taskId, userId: userId }).exec();
+
+  // Check if the task is found
+  if (!task) {
+    // Return a 404 Not Found status if the task is not found
+    return res.status(404).json({ message: "Task not found" });
+  }
+
+  // Delete the task
+  await task.delete();
+
+  // Return a 204 No Content status
+  res.status(204).json();
+
 };
 
 module.exports = {
   createNewTask,
   getAllTasks,
-  updateTask
+
+  updateTask,
+  deleteTask,
+
 };

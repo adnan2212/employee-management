@@ -36,7 +36,7 @@ const Login = () => {
         JSON.stringify({ user, password }),
         {
           headers: { "Content-Type": "application/json" },
-          withCredentials: true
+          withCredentials: true,
         }
       );
       const accessToken = response?.data?.accessToken;
