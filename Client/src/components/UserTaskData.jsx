@@ -148,6 +148,7 @@ const UserTaskData = () => {
         }
       );
       console.log("Updated Task:", response.data);
+
       formikBag.resetForm();
       setSuccessMessage("Form Updated successfully!");
       const updatedTaskData = getUserTaskData.map((task) => {
@@ -162,6 +163,10 @@ const UserTaskData = () => {
         return task;
       });
       setGetUserTaskData(updatedTaskData);
+      setTimeout(() => {
+        onCloseModal(); // Close the modal after 1 second
+        setSuccessMessage("");
+      }, 400);
     } catch (err) {
       console.log(err);
       // Handle error here
@@ -463,6 +468,7 @@ const UserTaskData = () => {
         isOpen={isConfirmationOpen}
         leastDestructiveRef={cancelRef}
         onClose={handleConfirmationClose}
+        isCentered
       >
         <AlertDialogOverlay>
           <AlertDialogContent>

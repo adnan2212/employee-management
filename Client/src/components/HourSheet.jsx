@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import useContent from "../hooks/useContent";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+
 import axios from "../api/axios";
 
 import jwtDecode from "jwt-decode";
@@ -22,7 +24,7 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
   const [taskData, setTaskData] = useState([]);
 
   const { auth } = useContent();
-
+  const axiosPrivate = useAxiosPrivate();
   const TASK_URL = "/tasks";
 
   useEffect(() => {
@@ -32,7 +34,7 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
       try {
         console.log("Fetching data for date:", date);
 
-        const response = await axios.get(TASK_URL);
+        const response = await axiosPrivate.get(TASK_URL);
         const filteredData = response.data.filter((task) => {
           // Compare the task's date with the selected date (ignoring the time)
           const taskDate = new Date(task.date).setHours(0, 0, 0, 0);
