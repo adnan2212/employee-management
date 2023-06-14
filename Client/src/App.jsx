@@ -7,7 +7,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import FirstPage from "./pages/firstPage";
 import SecondPage from "./pages/secondPage";
-import MyForm from "./components/MyForm";
 import Unauthorized from "./pages/Unauthorized";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
@@ -32,7 +31,6 @@ function App() {
           <Route path="yourTaskData" element={<UserTaskData />} />
           <Route path="projects" element={<SecondPage />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="form" element={<MyForm />} />
         </Route>
       </Route>
     </Routes>

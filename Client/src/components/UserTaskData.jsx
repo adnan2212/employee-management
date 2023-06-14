@@ -3,6 +3,7 @@ import axios from "../api/axios";
 import useContent from "../hooks/useContent";
 import { Delete28Regular, Edit24Filled } from "@ricons/fluent";
 import { Icon } from "@ricons/utils";
+import ExcelJS from "exceljs";
 import {
   Box,
   AlertDialog,
@@ -79,7 +80,11 @@ const UserTaskData = () => {
           withCredentials: true
         });
         console.log("UserTaskData ->>>", response.data);
-        setGetUserTaskData(response.data);
+        const sortedTaskData = response.data.sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        );
+
+        setGetUserTaskData(sortedTaskData);
       } catch (err) {
         console.log(err);
       }
@@ -178,18 +183,7 @@ const UserTaskData = () => {
     subTaskType: "",
     hoursSpent: ""
   });
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [resultsPerPage, setResultsPerPage] = useState(10);
-  const indexOfLastTask = currentPage * resultsPerPage;
-  const indexOfFirstTask = indexOfLastTask - resultsPerPage;
-  const tasksForCurrentPage = getUserTaskData.slice(
-    indexOfFirstTask,
-    indexOfLastTask
-  );
   const [sortColumn, setSortColumn] = useState(""); // Column to sort
   const [sortDirection, setSortDirection] = useState("asc"); // Sort direction: "asc" or "desc"
   const handleSort = (column) => {
@@ -202,21 +196,82 @@ const UserTaskData = () => {
       }
     }
   };
+  function exportToExcel() {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Table Data");
+
+    // Get the table element using a ref
+    const table = document.getElementById("tableId");
+
+    // Check if the table exists
+    if (!table) {
+      return;
+    }
+
+    const headerStyle = {
+      font: { bold: true },
+      alignment: { horizontal: "center" },
+      fill: { type: "pattern", pattern: "solid", fgColor: { argb: "FFFF00" } },
+      border: { bottom: { style: "thin" } }
+    };
+
+    const cellStyle = {
+      alignment: { horizontal: "center" },
+      border: { bottom: { style: "thin" } }
+    };
+
+    const rows = table.getElementsByTagName("tr");
+    Array.from(rows).forEach((row, rowIndex) => {
+      const cells = row.getElementsByTagName("td");
+      Array.from(cells).forEach((cell, cellIndex) => {
+        const value = cell.innerText;
+        const excelCell = worksheet.getCell(
+          `${String.fromCharCode(65 + cellIndex)}${rowIndex + 1}`
+        );
+        excelCell.value = value;
+
+        if (rowIndex === 0) {
+          excelCell.style = headerStyle;
+        } else {
+          excelCell.style = cellStyle;
+        }
+      });
+    });
+
+    worksheet.columns.forEach((column) => {
+      column.width = column.header.length < 12 ? 12 : column.header.length;
+    });
+
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "table_data.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
 
   return (
     <>
       <div className="overflow-x-auto">
-        <h2 className="mb-4 text-2xl font-bold">User Task Data</h2>
-        <div className="p-10 sm:overflow-hidden sm:rounded-lg sm:border-b sm:border-gray-400 sm:shadow">
+        <h2 className="m-8 mb-4 text-center text-2xl font-bold">
+          User Task Data
+        </h2>
+        <div className="mx-4 my-10 sm:mx-60  sm:overflow-hidden sm:rounded-lg sm:border-b sm:border-gray-400 sm:shadow">
           <TableContainer className="min-w-full sm:rounded-lg">
-            <Table className="min-w-full">
+            <Table className="min-w-full" id="tableId">
               <TableHeader>
-                <TableRow className="text-center">
+                <TableRow className="text-center font-bold sm:text-base">
                   <TableCell
-                    className="cursor-pointer sm:px-4"
+                    className="cursor-pointer py-5 sm:px-4"
                     onClick={() => handleSort("date")}
                   >
-                    Date{" "}
+                    Date{""}
                     {sortColumn === "date" && (
                       <Icon
                         size={14}
@@ -228,7 +283,7 @@ const UserTaskData = () => {
                     )}
                   </TableCell>
                   <TableCell
-                    className="cursor-pointer sm:px-4"
+                    className="cursor-pointer  sm:px-4"
                     onClick={() => handleSort("taskType")}
                   >
                     Task Type{" "}
@@ -248,8 +303,8 @@ const UserTaskData = () => {
                 </TableRow>
               </TableHeader>
 
-              <TableBody className="text-center">
-                {tasksForCurrentPage
+              <TableBody className=" text-center">
+                {getUserTaskData
                   .sort((a, b) => {
                     if (sortColumn === "date") {
                       const dateA = new Date(a.date);
@@ -268,7 +323,7 @@ const UserTaskData = () => {
                   })
                   .map(({ date, _id, taskType, subTaskType, hoursSpent }) => (
                     <TableRow key={_id}>
-                      <TableCell className="sm:px-4">
+                      <TableCell className=" sm:px-4">
                         {formatDate(date)}
                       </TableCell>
                       <TableCell className="sm:px-4">{taskType}</TableCell>
@@ -296,17 +351,8 @@ const UserTaskData = () => {
                   ))}
               </TableBody>
             </Table>
-            <TableFooter>
-              <Pagination
-                totalResults={getUserTaskData.length}
-                resultsPerPage={resultsPerPage}
-                onChange={handlePageChange}
-                label="Table navigation"
-                className="mt-4 flex justify-center"
-                containerClassName="flex"
-              />
-            </TableFooter>
           </TableContainer>
+          <button onClick={exportToExcel}>Export to Excel</button>
         </div>
 
         <Modal isOpen={isOpen} onClose={onCloseModal} size="lg">
