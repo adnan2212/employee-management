@@ -12,19 +12,31 @@ import {
   DrawerCloseButton,
   useDisclosure,
   Collapse,
-  Center
+  Center,
 } from "@chakra-ui/react";
 import {
   AiOutlineUser,
   AiOutlineSetting,
-  AiOutlineLogout
+  AiOutlineLogout,
 } from "react-icons/ai";
+import useLogout from "../hooks/useLogout";
+import { useNavigate } from "react-router-dom";
+
 import { FaQuestion } from "react-icons/fa";
 import { RiProjectorFill } from "react-icons/ri";
 
 const DropdownMenu = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const navigate = useNavigate();
+  const logout = useLogout();
+
+  const signout = async () => {
+    await logout();
+    navigate("/");
+    console.log("❌ Logged Out Successfully ❌");
+  };
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
@@ -39,13 +51,13 @@ const DropdownMenu = () => {
         bg="transparent"
         color="white"
         _hover={{
-          bg: "transparent"
+          bg: "transparent",
         }}
         _focus={{
-          bg: "transparent"
+          bg: "transparent",
         }}
         _active={{
-          bg: "transparent"
+          bg: "transparent",
         }}
       >
         {isOpen ? (
@@ -75,10 +87,10 @@ const DropdownMenu = () => {
                     bg={selectedItem === "profile" ? "blue.100" : "transparent"}
                     my={2}
                     _hover={{
-                      bg: "blue.100"
+                      bg: "blue.100",
                     }}
                     _focus={{
-                      bg: "blue.100"
+                      bg: "blue.100",
                     }}
                     centerIcon={<Icon as={AiOutlineUser} />}
                   >
@@ -91,10 +103,10 @@ const DropdownMenu = () => {
                     }
                     my={2}
                     _hover={{
-                      bg: "blue.100"
+                      bg: "blue.100",
                     }}
                     _focus={{
-                      bg: "blue.100"
+                      bg: "blue.100",
                     }}
                     centerIcon={<Icon as={RiProjectorFill} />}
                   >
@@ -105,10 +117,10 @@ const DropdownMenu = () => {
                     bg={selectedItem === "help" ? "blue.100" : "transparent"}
                     my={2}
                     _hover={{
-                      bg: "blue.100"
+                      bg: "blue.100",
                     }}
                     _focus={{
-                      bg: "blue.100"
+                      bg: "blue.100",
                     }}
                     centerIcon={<Icon as={FaQuestion} />}
                   >
@@ -121,24 +133,24 @@ const DropdownMenu = () => {
                     }
                     my={2}
                     _hover={{
-                      bg: "blue.100"
+                      bg: "blue.100",
                     }}
                     _focus={{
-                      bg: "blue.100"
+                      bg: "blue.100",
                     }}
                     centerIcon={<Icon as={AiOutlineSetting} />}
                   >
                     Settings
                   </Button>
                   <Button
-                    onClick={() => handleItemClick("signout")}
+                    onClick={signout}
                     bg={selectedItem === "signout" ? "blue.100" : "transparent"}
                     my={2}
                     _hover={{
-                      bg: "blue.100"
+                      bg: "blue.100",
                     }}
                     _focus={{
-                      bg: "blue.100"
+                      bg: "blue.100",
                     }}
                     centerIcon={<Icon as={AiOutlineLogout} />}
                   >

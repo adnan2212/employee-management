@@ -91,7 +91,7 @@ const UserTaskData = () => {
     };
 
     fetchPostData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -112,6 +112,7 @@ const UserTaskData = () => {
   };
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [deleteTaskId, setDeleteTaskId] = useState(null);
+
 
   const handleDelete = (taskId) => {
     setDeleteTaskId(taskId);
@@ -137,6 +138,7 @@ const UserTaskData = () => {
       setGetUserTaskData(updatedTaskData);
     } catch (error) {
       console.log("Error deleting task:", error);
+
     }
   };
 
