@@ -2,7 +2,7 @@ import { Icon } from "@ricons/utils";
 
 const Box = ({ title, content, content2, iconSize, iconName }) => {
   return (
-    <div className="m-3 flex h-28 w-40 scale-100 flex-col justify-between rounded-xl bg-gradient-to-b from-blue-50 to-indigo-50 ">
+    <div className="m-2 flex h-28 min-w-[160px] scale-100 flex-col justify-between rounded-xl bg-gradient-to-b from-blue-50 to-indigo-50 sm:m-3 ">
       <h1 className="m-2 p-2 text-sm font-semibold text-black">{title}</h1>
 
       <div className="number-div flex flex-col items-end justify-between">
