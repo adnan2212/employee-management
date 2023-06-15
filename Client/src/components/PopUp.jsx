@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
@@ -24,7 +24,6 @@ const TASK_URL = "/tasks";
 const PopUp = () => {
   const { auth } = useContent();
   const token = auth?.accessToken;
-  console.log("💚 POPUP", auth);
   const OverlayOne = () => <ModalOverlay backdropFilter="blur(10px) " />;
   const { setGetUserTaskData } = useContext(StateContext);
 

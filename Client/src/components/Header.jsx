@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useNavigate, Link } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
+import useContent from "../hooks/useContent";
 
 const user = {
   name: "Tom Cook",
@@ -10,6 +11,7 @@ const user = {
   imageUrl:
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
 };
+
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
   { name: "Team", href: "projects", current: false },
@@ -47,6 +49,9 @@ const Header = () => {
       // Handle other navigation logic
     }
   };
+
+  const { auth } = useContent();
+  const isAdmin = auth.roles.includes(5150); // Check if the user has the admin role
 
   return (
     <>
@@ -197,7 +202,7 @@ const Header = () => {
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
                   </div>
-                  <div className="mt-3 space-y-1 px-2">
+                  <div className="mt-3 space-y-1">
                     {userNavigation.map((item) => (
                       <Link
                         key={item.name}
@@ -214,6 +219,13 @@ const Header = () => {
             </>
           )}
         </Disclosure>
+
+        {/* Page content */}
+        <main>
+          {/* Your content here */}
+          {isAdmin && <h1>Welcome, Admin!</h1>}
+          {/* ... */}
+        </main>
       </div>
     </>
   );

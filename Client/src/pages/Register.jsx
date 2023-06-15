@@ -5,7 +5,6 @@ import axios from "../api/axios";
 import useContent from "../hooks/useContent";
 import useInput from "../hooks/useInput";
 import Logo from "../components/Logo";
-import useToggle from "../hooks/useToggle";
 
 const REGISTER_URL = "/register";
 const Register = () => {
@@ -19,8 +18,6 @@ const Register = () => {
   const [user, resetUser, userAttributes] = useInput("user", "");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
-
-  const [check, toggleCheck] = useToggle("persist", false);
 
   useEffect(() => {
     userRef.current.focus();
@@ -125,19 +122,6 @@ const Register = () => {
               <button className="focus:shadow-outline w-52 rounded bg-blue-500 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none">
                 Sign Up
               </button>
-            </div>
-
-            <div className="mb-6">
-              <input
-                type="checkbox"
-                id="persist"
-                onChange={toggleCheck}
-                checked={check}
-                className="ml-2 leading-tight"
-              />
-              <label htmlFor="persist" className="mb-2 ml-2 text-sm font-bold">
-                Trust This Device
-              </label>
             </div>
 
             <p>

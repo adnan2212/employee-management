@@ -8,10 +8,41 @@ import Loading from "./Loading";
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
-  const { auth } = useContent();
-  const [persist] = useLocalStorage("persist", false);
+  const { auth, persist } = useContent();
+  // const [persist] = useLocalStorage("persist", false);
 
   useEffect(() => {
+    const verifyRefreshToken = async () => {
+      try {
+        await refresh();
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    console.log(`isLoading: ${isLoading}`);
+    console.log(`aT: ${JSON.stringify(auth?.accessToken)}`);
+  }, [isLoading]);
+
+  return (
+    <>
+      {isLoading ? (
+        <div className="grid h-screen place-items-center">
+          <Loading />
+        </div>
+      ) : (
+        <Outlet />
+      )}
+    </>
+  );
+
+  /*   useEffect(() => {
     let isMounted = true;
     const verifyRefreshToken = async () => {
       try {
@@ -28,21 +59,21 @@ const PersistLogin = () => {
     !auth?.accessToken && persist ? verifyRefreshToken() : setIsLoading(false);
 
     return () => (isMounted = false);
-  }, [auth, refresh, persist]);
+  }, [auth, refresh, persist]); */
 
-  return (
-    <>
-      {!persist ? (
-        <Outlet />
-      ) : isLoading ? (
-        <div className="grid h-screen place-items-center">
-          <Loading />
-        </div>
-      ) : (
-        <Outlet />
-      )}
-    </>
-  );
+  // return (
+  //   <>
+  //     {!persist ? (
+  //       <Outlet />
+  //     ) : isLoading ? (
+  //       <div className="grid h-screen place-items-center">
+  //         <Loading />
+  //       </div>
+  //     ) : (
+  //       <Outlet />
+  //     )}
+  //   </>
+  // );
 };
 
 export default PersistLogin;
