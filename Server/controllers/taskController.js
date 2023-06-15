@@ -19,7 +19,7 @@ const createNewTask = async (req, res) => {
       userName: req.user,
       taskType: req.body.taskType,
       subTaskType: req.body.subTaskType,
-      hoursSpent: req.body.hoursSpent
+      hoursSpent: req.body.hoursSpent,
     });
     console.log("LINE 24: ", newTask);
 
@@ -63,7 +63,7 @@ const updateTask = async (req, res) => {
 
     // Update the task in the database using the taskId and updatedTaskData
     const updatedTask = await Task.findByIdAndUpdate(taskId, updatedTaskData, {
-      new: true
+      new: true,
     });
     if (!updatedTask) {
       return res.status(404).json({ message: "Task not found" });
@@ -99,10 +99,19 @@ const deleteTask = async (req, res) => {
   }
 };
 
+const getAllTaskData = async (req, res) => {
+  try {
+    const tasks = await Task.find();
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   createNewTask,
   getAllTasks,
-
   updateTask,
-  deleteTask
+  deleteTask,
+  getAllTaskData,
 };

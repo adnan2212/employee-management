@@ -4,11 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import useContent from "../hooks/useContent";
 import useInput from "../hooks/useInput";
+import useToggle from "../hooks/useToggle";
 import Logo from "../components/Logo";
 
 const LOGIN_URL = "/auth";
 const Login = () => {
-  const { setAuth } = useContent();
+  const { setAuth, persist, setPersist } = useContent();
 
   const navigate = useNavigate();
 
@@ -18,6 +19,7 @@ const Login = () => {
   const [user, resetUser, userAttributes] = useInput("user", "");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  // const [check, toggleCheck] = useToggle("persist", false);
 
   useEffect(() => {
     userRef.current.focus();
@@ -36,7 +38,7 @@ const Login = () => {
         JSON.stringify({ user, password }),
         {
           headers: { "Content-Type": "application/json" },
-          withCredentials: true
+          withCredentials: true,
         }
       );
       const accessToken = response?.data?.accessToken;
@@ -60,6 +62,14 @@ const Login = () => {
       errRef.current.focus();
     }
   };
+
+  const togglePersist = () => {
+    setPersist((prev) => !prev);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  }, [persist]);
 
   return (
     <>
@@ -124,6 +134,33 @@ const Login = () => {
               <button className="focus:shadow-outline w-52 rounded bg-blue-500 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none">
                 Sign In
               </button>
+            </div>
+
+            {/* 
+            <div className="mb-6">
+              <input
+                type="checkbox"
+                id="persist"
+                onChange={toggleCheck}
+                checked={check}
+                className="ml-2 leading-tight"
+              />
+              <label htmlFor="persist" className="mb-2 ml-2 text-sm font-bold">
+                Trust This Device
+              </label>
+            </div> */}
+
+            <div className="mb-6">
+              <input
+                type="checkbox"
+                id="persist"
+                onChange={togglePersist}
+                checked={persist}
+                className="ml-2 leading-tight"
+              />
+              <label htmlFor="persist" className="mb-2 ml-2 text-sm font-bold">
+                Trust This Device
+              </label>
             </div>
 
             <p>
