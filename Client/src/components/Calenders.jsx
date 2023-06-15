@@ -1,5 +1,12 @@
-import { useState, useRef } from "react";
-import { useSwipeable } from "react-swipeable";
+import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper.min.css";
+import "swiper/swiper-bundle.min.css";
+import SwiperCore, { Navigation } from "swiper/core";
+SwiperCore.use([Navigation]);
+
 import {
   FaAngleLeft,
   FaAngleDoubleLeft,
@@ -14,6 +21,21 @@ const Calendar = ({ onDateSelect }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const calendarRef = useRef(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const swiperRef = useRef(null);
+
+  useEffect(() => {
+    if (swiperRef.current) {
+      swiperRef.current.on("slideChange", handleSlideChange);
+    }
+  }, []);
+
+  const handleSlideChange = () => {
+    const activeIndex = swiperRef.current.activeIndex;
+    const diff = activeIndex - 3; // 3 is the center slide index
+    const newDate = new Date(currentDate);
+    newDate.setDate(currentDate.getDate() + diff);
+    setCurrentDate(newDate);
+  };
 
   const handleToggleCalendar = () => {
     setShowFullCalendar(!showFullCalendar);
@@ -29,7 +51,7 @@ const Calendar = ({ onDateSelect }) => {
 
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 500);
+    }, 2000);
   };
 
   const handleNextWeek = () => {
@@ -42,7 +64,7 @@ const Calendar = ({ onDateSelect }) => {
 
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 500);
+    }, 2000);
   };
 
   const handlePreviousMonth = () => {
@@ -72,13 +94,6 @@ const Calendar = ({ onDateSelect }) => {
     }
   };
 
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => handleNextWeek(),
-    onSwipedRight: () => handlePreviousWeek(),
-    preventDefaultTouchmoveEvent: true,
-    trackMouse: true
-  });
-
   const renderWeeklyCalendar = () => {
     const today = new Date();
     const days = [];
@@ -93,7 +108,7 @@ const Calendar = ({ onDateSelect }) => {
       (today - startOfWeek) / (1000 * 60 * 60 * 24)
     );
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = -5; i < 6; i++) {
       const day = new Date(startOfWeek);
       day.setDate(startOfWeek.getDate() + i);
       const isCurrentDay = day.toDateString() === today.toDateString();
@@ -101,44 +116,51 @@ const Calendar = ({ onDateSelect }) => {
         selectedDate && day.toDateString() === selectedDate.toDateString();
       const isDisabled = day > today; // Check if the date is after the current day
 
-      const dayClassName = `cursor-pointer p-2 rounded bg-red-100 ${
-        isCurrentDay ? "bg-red-600 text-white" : ""
-      }  ${isSelected ? "bg-red-500 text-white" : ""} ${
-        isDisabled ? "text-gray-400 cursor-not-allowed" : ""
+      const dayClassName = `cursor-pointer w-[65px] p-2 rounded bg-gray-100 ${
+        isCurrentDay
+          ? "bg-gradient-to-b from-blue-200 to-indigo-200 text-black font-semibold"
+          : ""
+      }  ${isSelected ? "bg-gray-400 text-white" : ""} ${
+        isDisabled ? "text-gray-300 cursor-not-allowed" : ""
       }`;
 
-      const dayContainerClassName = `flex-shrink-0 flex-grow-0 w-1/7 text-center ${
+      const dayContainerClassName = `flex justify-center w-1/7   text-center  ${
         daysFromStartOfWeek === i ? "" : ""
       }`;
 
       days.push(
-        <div
+        <SwiperSlide
           key={i}
-          className={`${dayContainerClassName}`}
-          onClick={() => {
-            if (isDisabled) return; // Return early if the date is disabled
-            handleDateClick(day);
-          }}
+          className={`${dayContainerClassName} ${
+            isCurrentDay ? "swiper-slide-active" : ""
+          }`}
         >
-          <div className={`${dayClassName} rounded-2xl px-4 py-[15px]`}>
-            <div className="text-xs">
+          <div
+            className={`${dayClassName} rounded-2xl px-4 py-[15px]`}
+            onClick={() => {
+              if (isDisabled) return;
+              handleDateClick(day);
+            }}
+          >
+            <div className="text-xs ">
               {day.toLocaleDateString("en-US", { weekday: "short" })}
             </div>
             <div className="text-center">{day.getDate()}</div>
           </div>
-        </div>
+        </SwiperSlide>
       );
     }
 
     return (
-      <div
-        className={`flex justify-center gap-2 overflow-x-auto transition-all ${
-          isTransitioning ? "pointer-events-none" : ""
-        }`}
-        {...swipeHandlers}
+      <Swiper
+        className=" px-5 sm:w-[50%]  "
+        spaceBetween={10}
+        slidesPerView={5}
+        onSwiper={(swiper) => (swiperRef.current = swiper)}
+        initialSlide={daysFromStartOfWeek + 5} // Centered slide index
       >
         {days}
-      </div>
+      </Swiper>
     );
   };
 
@@ -167,10 +189,12 @@ const Calendar = ({ onDateSelect }) => {
       const isSelected =
         selectedDate && day.toDateString() === selectedDate.toDateString();
       const isDisabled = day > today; // Check if the date is after the current day
-      const dayClassName = `cursor-pointer py-3 px-1 rounded-2xl ${
-        isCurrentDay ? "bg-[red] text-white" : ""
-      } ${isSelected ? "bg-[#ff553c] text-white" : ""} ${
-        isDisabled ? "text-gray-400 cursor-not-allowed" : ""
+      const dayClassName = `cursor-pointer py-3 px-1 rounded-2xl bg-gray-100 ${
+        isCurrentDay
+          ? "bg-gradient-to-b from-blue-200 to-indigo-200 text-black font-semibold"
+          : ""
+      } ${isSelected ? "bg-gray-400 text-white" : ""} ${
+        isDisabled ? "text-gray-300 cursor-not-allowed" : ""
       }`;
 
       week.push(
@@ -213,14 +237,14 @@ const Calendar = ({ onDateSelect }) => {
       <div className="flex-col  rounded-3xl p-5 shadow  md:mx-auto md:max-w-[420px]">
         <div className="mb-2 flex  items-center justify-between">
           <button
-            className="rounded-lg p-2 text-gray-800 hover:bg-[red] hover:text-stone-100"
+            className="rounded-lg from-blue-200 to-indigo-200 p-2 text-gray-800 hover:bg-gradient-to-b hover:text-stone-100"
             onClick={handlePreviousYear}
             title="Previous Year"
           >
             <FaAngleDoubleLeft />
           </button>
           <button
-            className="rounded-lg p-2 text-gray-800 hover:bg-[red] hover:text-stone-100"
+            className="rounded-lg from-blue-200 to-indigo-200 p-2 text-gray-800 hover:bg-gradient-to-b hover:text-stone-100"
             onClick={handlePreviousMonth}
             title="Previous Month"
           >
@@ -234,14 +258,14 @@ const Calendar = ({ onDateSelect }) => {
             })}
           </div>
           <button
-            className="rounded-lg p-2 text-gray-800 hover:bg-[red] hover:text-stone-100"
+            className="rounded-lg from-blue-200 to-indigo-200 p-2 text-gray-800 hover:bg-gradient-to-b hover:text-stone-100"
             onClick={handleNextMonth}
             title="Next Month"
           >
             <FaAngleRight />
           </button>
           <button
-            className="rounded-lg p-2 text-gray-800 hover:bg-[red] hover:text-stone-100"
+            className="rounded-lg from-blue-200 to-indigo-200 p-2 text-gray-800 hover:bg-gradient-to-b hover:text-stone-100"
             onClick={handleNextYear}
             title="Next Year"
           >
@@ -267,16 +291,16 @@ const Calendar = ({ onDateSelect }) => {
   };
 
   return (
-    <section className="mb-[-2rem] p-10 md:text-center">
+    <section className=" mt-1 py-5 md:pt-10   md:text-center">
       <div className="mb-4">
         <button
-          className="pick-btn mb-5 ml-[-20px] bg-[#bd243f]"
+          className="mb-5 pl-3 text-lg font-bold text-black md:text-center"
           onClick={handleToggleCalendar}
         >
-          <div className="flex items-center gap-2">
+          <Link to="/#" className="flex items-center justify-center gap-3 px-6">
             <p>Pick Date</p>
             <FaRegCalendarAlt />
-          </div>
+          </Link>
         </button>
       </div>
       <div ref={calendarRef}>
