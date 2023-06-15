@@ -6,12 +6,13 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import axios from "axios";
 
 const ProjectContainer = ({ selectedDate, dailyAllKPI }) => {
-  const { auth } = useContent();
+  const { auth, getUserTaskData } = useContent();
   const axiosPrivate = useAxiosPrivate();
 
   const TASK_URL = "/tasks";
   const KPI_PRODUCTOIN_VAL = 0.9375;
   const KPI_NON_PRODUCTOIN_VAL = 0.64375;
+  console.log("getUserTaskData : ", getUserTaskData);
 
   const [annualKPI, setAnnualKPI] = useState(null); // State variable for annualKPI
   const [halfYearlyKPI, setHalfYearlyKPI] = useState(null); // State variable for halfYearlyKPI
@@ -136,7 +137,7 @@ const ProjectContainer = ({ selectedDate, dailyAllKPI }) => {
 
       console.log(selectedDate);
     }
-  }, [selectedDate]);
+  }, [selectedDate, getUserTaskData]);
 
   const isWithinQuarter = (date) => {
     const currentDate = new Date(); // Get the current date
@@ -169,9 +170,9 @@ const ProjectContainer = ({ selectedDate, dailyAllKPI }) => {
   };
 
   return (
-    <div className="mt-1 flex shrink-0 flex-col py-5 sm:px-10 md:items-center">
-      <Link to="/projects">
-        <button className="ml-6 mt-4 text-lg font-bold text-black md:text-center">
+    <div className="flex shrink-0 flex-col py-5 md:items-center">
+      <Link to="/projects ">
+        <button className="mb-5 px-10 text-lg font-bold text-[#0D1829] md:text-center">
           Projects
         </button>
       </Link>

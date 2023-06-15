@@ -8,9 +8,6 @@ import HourSheet from "../Components/HourSheet";
 import Calendars from "../components/Calenders";
 
 const FirstPage = () => {
-  const percentage = 90;
-  const percentage2 = 66;
-  const sum = percentage + percentage2 / 200;
   const [dailyAllKPI, setDailyAllKPI] = useState(null);
 
   const [selectedDate, setSelectedDate] = useState(null); // Add selectedDate state

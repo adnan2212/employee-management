@@ -1,29 +1,17 @@
 import { useState, useEffect } from "react";
 import useContent from "../hooks/useContent";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-
-import axios from "../api/axios";
-
-import jwtDecode from "jwt-decode";
-import Rectangle from "./Rectangle";
-
-import {
-  CircularProgressbar,
-  CircularProgressbarWithChildren,
-  buildStyles
-} from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-
-/* ICONS */
 import { CheckboxIndeterminate16Regular } from "@ricons/fluent";
 import { Icon } from "@ricons/utils";
 import { CalendarMonthOutlined } from "@ricons/material";
+import { PieChart, Pie, Cell } from "recharts";
+import Rectangle from "./Rectangle";
 
 const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
   const [userInfo, setUserInfo] = useState([]);
   const [taskData, setTaskData] = useState([]);
 
-  const { auth } = useContent();
+  const { auth, getUserTaskData } = useContent();
   const axiosPrivate = useAxiosPrivate();
   const TASK_URL = "/tasks";
 
@@ -36,29 +24,26 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
 
         const response = await axiosPrivate.get(TASK_URL);
         const filteredData = response.data.filter((task) => {
-          // Compare the task's date with the selected date (ignoring the time)
           const taskDate = new Date(task.date).setHours(0, 0, 0, 0);
           const selectedDateWithoutTime = new Date(date).setHours(0, 0, 0, 0);
           return taskDate === selectedDateWithoutTime;
         });
 
-        // Sort the filtered data by taskType (Production first, then Non-Production)
         filteredData.sort((a, b) => {
           if (a.taskType === "Production" && b.taskType === "Non-Production") {
-            return -1; // "Production" should come before "Non-Production"
+            return -1;
           } else if (
             a.taskType === "Non-Production" &&
             b.taskType === "Production"
           ) {
-            return 1; // "Non-Production" should come after "Production"
+            return 1;
           } else {
-            return 0; // Preserve the original order
+            return 0;
           }
         });
 
         setUserInfo(filteredData);
 
-        // Sum the hours spent on each task type for the selected date
         const taskTypes = {};
         filteredData.forEach((task) => {
           if (taskTypes.hasOwnProperty(task.taskType)) {
@@ -68,82 +53,65 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
           }
         });
         setTaskData(taskTypes);
-        console.log(taskTypes);
 
-        // Calculate the KPI dynamically based on taskData
         const productionKPI = taskTypes.Production * 0.9375 || 0;
         const nonProductionKPI = taskTypes["Non-Production"] * 0.64375 || 0;
         const sumKPI = productionKPI + nonProductionKPI;
         const dailyAllKPI = parseFloat(sumKPI.toFixed(1));
         setDailyAllKPI(dailyAllKPI);
-        console.log("dailyAllKPI Data:", dailyAllKPI);
       } catch (err) {
         console.error(err);
       }
     };
 
     if (selectedDate) {
-      // If a selectedDate prop is provided, fetch data for the selected date
       fetchTaskData(selectedDate);
     } else {
-      // If no selectedDate prop is provided, fetch data for today's date
       const today = new Date().toLocaleDateString().split("T")[0];
       fetchTaskData(today);
-      console.log(today);
     }
 
-    // Cleanup function to cancel the request if the component unmounts
     return () => {
       controller.abort();
     };
-  }, [selectedDate, axiosPrivate, auth, setDailyAllKPI]);
+  }, [selectedDate, axiosPrivate, auth, setDailyAllKPI, getUserTaskData]);
 
-  console.log("Selected Date in HourSheet:", selectedDate);
-  console.log("Task Data:", taskData);
-
-  // Calculate the percentage for the CircularProgressbar
-  const productionPercentage = (taskData.Production / 7.5) * 100 || 0;
-  const nonProductionPercentage = (taskData["Non-Production"] / 5.5) * 100 || 0;
+  const productionPercentage =
+    ((taskData.Production * 0.9375) / 7.5) * 100 || 0;
+  const nonProductionPercentage =
+    ((taskData["Non-Production"] * 0.64375) / 5.5) * 100 || 0;
   const sum = productionPercentage + nonProductionPercentage;
   const sumText = parseFloat(sum.toFixed(2));
 
-  console.log("Selected Date in HourSheet:", selectedDate);
-  console.log("Task Data:", taskData);
-  console.log("productionKPI Data:", taskData.Production);
-  console.log("nonProductionKPI Data:", taskData["Non-Production"]);
-
   return (
-    <div className="mb-10 mt-2 shrink-0 px-10 pt-5 md:flex md:justify-evenly ">
-      {/* EFFICIENCY */}
-      {/* Do not Render Efficiency here if taskData is empty object */}
+    <div className="mb-5  shrink-0 px-10 pt-5 md:flex md:justify-evenly ">
       {Object.keys(taskData).length > 0 && (
         <div className=" ">
-          <h1 className="ml-6 text-lg font-bold text-[#0D1829] md:text-center">
+          <h1 className=" text-lg font-bold text-[#0D1829] md:text-center">
             Efficiency
           </h1>
 
-          <div className="  flex justify-center  px-12 ">
-            <div className=" m-4 flex h-auto  min-w-[374px] scale-100 justify-around gap-2 rounded-xl bg-gradient-to-r from-[#FFFAF3] to-[#ECEFFF]  py-2   ">
+          <div className="  flex justify-center px-12  py-5 ">
+            <div className=" m-4 flex h-auto w-[374px]  min-w-[320px] scale-100 justify-around gap-2 rounded-xl bg-gradient-to-r from-[#FFFAF3] to-[#ECEFFF]  py-2   ">
               <div className=" ">
                 <div className="ml-1 py-2  text-sm font-medium">
                   Candidate Efficiency
                 </div>
                 <p className="ml-40 pb-2 text-xs font-normal">in hrs</p>
-                {/* Map taskType and hours in efficiency */}
                 {Object.entries(taskData)
                   .sort(([taskTypeA], [taskTypeB]) => {
                     if (
                       taskTypeA === "Production" &&
                       taskTypeB === "Non-Production"
                     ) {
-                      return -1; // "Production" should come before "Non-Production"
+                      return -1;
                     } else if (
                       taskTypeA === "Non-Production" &&
                       taskTypeB === "Production"
                     ) {
-                      return 1; // "Non-Production" should come after "Production"
+                      return 1;
                     } else {
-                      return 0; // Preserve the original order
+                      return 0;
                     }
                   })
                   .map(([taskType, hours]) => (
@@ -173,31 +141,38 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
                   Overall: {`${sumText}%`}
                 </p>
               </div>
-              <div className="mr-7 mt-6 ">
+              <div className="mr-7 mt-2 ">
                 <div className="w-16">
-                  <div className="ml-4 text-2xl">
-                    <CircularProgressbarWithChildren
-                      value={sum}
-                      text={`${sumText}%`}
-                      styles={buildStyles({
-                        pathColor: "#2051E5",
-                        trailColor: "#eee",
-                        strokeLinecap: "butt",
-                        textSize: "20px"
-                      })}
-                    >
-                      <CircularProgressbar
-                        value={nonProductionPercentage}
-                        styles={buildStyles({
-                          pathColor: "#F77307",
-                          trailColor: "transparent",
-                          strokeLinecap: "butt",
-                          textSize: "20px"
-                        })}
-                      />
-                    </CircularProgressbarWithChildren>
-                  </div>
-                  <div className="mr-3 mt-7 flex flex-col items-center">
+                  <div className="mr-2  flex flex-col items-center">
+                    <PieChart width={100} height={100}>
+                      <Pie
+                        data={[
+                          { name: "Production", value: productionPercentage },
+                          {
+                            name: "Non-Production",
+                            value: nonProductionPercentage
+                          }
+                        ]}
+                        dataKey="value"
+                        startAngle={0}
+                        endAngle={360}
+                        outerRadius={36}
+                        innerRadius={30}
+                        paddingAngle={1}
+                      >
+                        <Cell fill="#2051E5" />
+                        <Cell fill="#F77307" />
+                      </Pie>
+                      <text
+                        x={50}
+                        y={50}
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        style={{ fontSize: "12px", fontWeight: "bold" }}
+                      >
+                        {`${sumText}%`}
+                      </text>
+                    </PieChart>
                     <p className="whitespace-nowrap text-xs font-normal opacity-60">
                       Due Date
                     </p>
@@ -216,10 +191,8 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
           </div>
         </div>
       )}
-      {/* Do not Render Efficiency here if taskData is empty object */}
-
-      <div className="mt-2 shrink-0 rounded-3xl md:mb-[-3rem] md:mt-0">
-        <p className="mx-auto  text-lg font-bold text-[#0D1829] md:text-center">
+      <div className="mt-2 shrink-0  rounded-3xl md:mb-[-3rem] md:mt-0">
+        <p className="mx-auto  pb-5 text-lg font-bold text-[#0D1829] md:text-center">
           Hour-Sheet
         </p>
 
@@ -237,7 +210,7 @@ const HourSheet = ({ selectedDate, setDailyAllKPI }) => {
             }
           })
           .map(([taskType, hours]) => (
-            <div key={taskType} className="m-5 flex justify-center md:mt-6">
+            <div key={taskType} className="m-5  flex justify-center md:mt-6">
               <div
                 className={`flex h-16 w-80 scale-100 items-center justify-between rounded-xl ${
                   taskType === "Non-Production"

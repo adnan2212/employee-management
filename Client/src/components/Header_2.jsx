@@ -3,7 +3,7 @@ import SearchBar from "./SearchBar";
 
 const Header_2 = ({ title }) => {
   return (
-    <div className="header red-bg flex h-32 items-center justify-between rounded-b-2xl p-2 pb-0">
+    <div className=" flex items-center justify-between rounded-b-3xl bg-gray-800 px-10 py-6 ">
       <div>
         {/* <img className="absolute left-0 top-0" src={Vector} alt="Logo" /> */}
       </div>

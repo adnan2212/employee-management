@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import axios from "../api/axios";
 import useContent from "../hooks/useContent";
 import plus from "../assets/img/plus-btn.svg";
+import StateContext from "../context/ContextProvider"; //
+
 import {
   Modal,
   ModalOverlay,
@@ -14,6 +16,7 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 
 const TASK_URL = "/tasks";
@@ -22,10 +25,12 @@ const PopUp = () => {
   const { auth } = useContent();
   const token = auth?.accessToken;
   const OverlayOne = () => <ModalOverlay backdropFilter="blur(10px) " />;
+  const { setGetUserTaskData } = useContext(StateContext);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = useState(<OverlayOne />);
   const [successMessage, setSuccessMessage] = useState("");
+  const toast = useToast();
 
   useEffect(() => {
     let timer;
@@ -51,9 +56,17 @@ const PopUp = () => {
       });
       console.log(response);
       setSuccessMessage("Form submitted successfully!");
+      setGetUserTaskData((prevData) => [...prevData, values]); // Store the values in the context
       setTimeout(() => {
         onClose(); // Close the modal after 1 second
         setSuccessMessage("");
+        toast({
+          position: "top",
+          title: "Task submitted",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       }, 400);
     } catch (err) {
       console.log(err);
@@ -71,7 +84,7 @@ const PopUp = () => {
             onOpen();
           }}
         >
-          <img className="mb-2" src={plus} alt="" />
+          <img className="mb-2 " src={plus} alt="" />
         </Button>
       </div>
 
