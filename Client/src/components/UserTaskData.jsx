@@ -3,6 +3,7 @@ import axios from "../api/axios";
 import useContent from "../hooks/useContent";
 import { Delete28Regular, Edit24Filled } from "@ricons/fluent";
 import { Icon } from "@ricons/utils";
+import { FileUploadSharp } from "@ricons/material";
 import ExcelJS from "exceljs";
 import {
   Box,
@@ -20,7 +21,8 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
-  ModalFooter
+  ModalFooter,
+  useToast
 } from "@chakra-ui/react";
 import {
   TableContainer,
@@ -64,6 +66,7 @@ const UserTaskData = () => {
   const cancelRef = React.useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const taskData = {};
+  const toast = useToast();
 
   const onCloseModal = () => {
     setIsPopupOpen(false);
@@ -107,15 +110,19 @@ const UserTaskData = () => {
       subTaskType: task.subTaskType,
       hoursSpent: task.hoursSpent
     });
+
     onOpen();
+
     console.log("Edit Task ID:", taskId);
   };
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [deleteTaskId, setDeleteTaskId] = useState(null);
 
-
   const handleDelete = (taskId) => {
     setDeleteTaskId(taskId);
+    setIsConfirmationOpen(true);
+  };
+  const handleConfirmationOpen = () => {
     setIsConfirmationOpen(true);
   };
   const handleConfirmationClose = () => {
@@ -131,6 +138,14 @@ const UserTaskData = () => {
       });
       setIsConfirmationOpen(false);
       setSuccessMessage("Task deleted successfully");
+      toast({
+        title: "Task Deleted",
+        description: "The task has been deleted successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true
+      });
+
       // Remove the task from getUserTaskData
       const updatedTaskData = getUserTaskData.filter(
         (task) => task._id !== deleteTaskId
@@ -138,7 +153,6 @@ const UserTaskData = () => {
       setGetUserTaskData(updatedTaskData);
     } catch (error) {
       console.log("Error deleting task:", error);
-
     }
   };
 
@@ -173,6 +187,13 @@ const UserTaskData = () => {
       setTimeout(() => {
         onCloseModal(); // Close the modal after 1 second
         setSuccessMessage("");
+        toast({
+          position: "top",
+          title: "Task updated successfully",
+          status: "success",
+          duration: 3000,
+          isClosable: true
+        });
       }, 400);
     } catch (err) {
       console.log(err);
@@ -202,30 +223,49 @@ const UserTaskData = () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Table Data");
 
-    // Get the table element using a ref
     const table = document.getElementById("tableId");
 
-    // Check if the table exists
     if (!table) {
       return;
     }
 
     const headerStyle = {
-      font: { bold: true },
-      alignment: { horizontal: "center" },
-      fill: { type: "pattern", pattern: "solid", fgColor: { argb: "FFFF00" } },
-      border: { bottom: { style: "thin" } }
+      font: { bold: true, color: { argb: "FFFFFF" }, name: "Arial", size: 12 },
+      fill: {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "007BFF" },
+        name: "Calibri"
+      },
+      border: {
+        top: { style: "thin", color: { argb: "000000" } },
+        bottom: { style: "medium", color: { argb: "000000" } },
+        left: { style: "thin", color: { argb: "000000" } },
+        right: { style: "thin", color: { argb: "000000" } }
+      },
+      alignment: { vertical: "middle", horizontal: "center" }
     };
 
     const cellStyle = {
-      alignment: { horizontal: "center" },
-      border: { bottom: { style: "thin" } }
+      font: { color: { argb: "000000" }, size: 11 },
+      fill: { type: "pattern", pattern: "solid", fgColor: { argb: "FFFFFF" } },
+      border: {
+        top: { style: "thin", color: { argb: "D3D3D3" } },
+        bottom: { style: "thin", color: { argb: "D3D3D3" } },
+        left: { style: "thin", color: { argb: "D3D3D3" } },
+        right: { style: "thin", color: { argb: "D3D3D3" } }
+      },
+      alignment: { vertical: "middle", horizontal: "center", wrapText: true }
     };
 
-    const rows = table.getElementsByTagName("tr");
-    Array.from(rows).forEach((row, rowIndex) => {
+    const tableRows = table.getElementsByTagName("tr");
+    Array.from(tableRows).forEach((row, rowIndex) => {
       const cells = row.getElementsByTagName("td");
       Array.from(cells).forEach((cell, cellIndex) => {
+        if (cellIndex === cells.length) {
+          return;
+        }
+
         const value = cell.innerText;
         const excelCell = worksheet.getCell(
           `${String.fromCharCode(65 + cellIndex)}${rowIndex + 1}`
@@ -233,16 +273,39 @@ const UserTaskData = () => {
         excelCell.value = value;
 
         if (rowIndex === 0) {
-          excelCell.style = headerStyle;
+          excelCell.fill = headerStyle.fill;
+          excelCell.border = headerStyle.border;
+          excelCell.font = headerStyle.font;
+          excelCell.alignment = headerStyle.alignment;
         } else {
-          excelCell.style = cellStyle;
+          excelCell.fill = cellStyle.fill;
+          excelCell.border = cellStyle.border;
+          excelCell.font = cellStyle.font;
+          excelCell.alignment = cellStyle.alignment;
         }
+
+        // Calculate cell width based on content length
+        const cellWidth = value ? value.length : 0;
+        const column = worksheet.getColumn(cellIndex + 1);
+        const headerWidth = column.header ? column.header.length : 0;
+        const columnWidth = Math.max(cellWidth, headerWidth, 12) + 2;
+
+        // Convert column width to Excel's character width units (approximate conversion)
+        const excelColumnWidth = Math.ceil(columnWidth * 1.2);
+        column.width = excelColumnWidth;
       });
+
+      worksheet.getRow(rowIndex + 1).height = 30; // Set row height to 30 (adjust as needed)
+      worksheet
+        .getRow(rowIndex + 1)
+        .eachCell({ includeEmpty: true }, (cell) => {
+          cell.alignment = cellStyle.alignment;
+        });
     });
 
-    worksheet.columns.forEach((column) => {
-      column.width = column.header.length < 12 ? 12 : column.header.length;
-    });
+    // Remove the last column from the worksheet
+    const lastColumnIndex = worksheet.columns.length;
+    worksheet.spliceColumns(lastColumnIndex, 1);
 
     workbook.xlsx.writeBuffer().then((buffer) => {
       const blob = new Blob([buffer], {
@@ -256,6 +319,13 @@ const UserTaskData = () => {
       link.click();
       document.body.removeChild(link);
     });
+    toast({
+      title: "Download Successful",
+      description: "The task data has been downloaded.",
+      status: "success",
+      duration: 3000,
+      isClosable: true
+    });
   }
 
   return (
@@ -267,7 +337,7 @@ const UserTaskData = () => {
         <div className="mx-4 my-10 sm:mx-60  sm:overflow-hidden sm:rounded-lg sm:border-b sm:border-gray-400 sm:shadow">
           <TableContainer className="min-w-full sm:rounded-lg">
             <Table className="min-w-full" id="tableId">
-              <TableHeader>
+              <TableHeader className="bg-gray-500 text-gray-800">
                 <TableRow className="text-center font-bold sm:text-base">
                   <TableCell
                     className="cursor-pointer py-5 sm:px-4"
@@ -323,38 +393,79 @@ const UserTaskData = () => {
                     }
                     return 0;
                   })
-                  .map(({ date, _id, taskType, subTaskType, hoursSpent }) => (
-                    <TableRow key={_id}>
-                      <TableCell className=" sm:px-4">
-                        {formatDate(date)}
-                      </TableCell>
-                      <TableCell className="sm:px-4">{taskType}</TableCell>
-                      <TableCell className="sm:px-4">{subTaskType}</TableCell>
-                      <TableCell className="sm:px-4">{hoursSpent} Hr</TableCell>
-                      <TableCell className="flex items-center justify-center  sm:px-4">
-                        <button
-                          className="mr-2 text-indigo-600 hover:text-indigo-900 focus:outline-none md:mr-3"
-                          onClick={() => handleEdit(_id)}
+                  .map(
+                    (
+                      { date, _id, taskType, subTaskType, hoursSpent },
+                      index
+                    ) => (
+                      <TableRow key={_id}>
+                        <TableCell
+                          className={`sm:px-4 ${
+                            index % 2 === 0 ? " bg-gray-100" : ""
+                          }`}
                         >
-                          <Icon color="grey" size="20">
-                            <Edit24Filled />
-                          </Icon>
-                        </button>
-                        <button
-                          className="text-red-600 hover:text-red-900 focus:outline-none"
-                          onClick={() => handleDelete(_id)}
+                          {formatDate(date)}
+                        </TableCell>
+                        <TableCell
+                          className={`sm:px-4 ${
+                            index % 2 === 0 ? "bg-gray-100" : ""
+                          }`}
                         >
-                          <Icon color="grey" size="20">
-                            <Delete28Regular />
-                          </Icon>
-                        </button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                          {taskType}
+                        </TableCell>
+                        <TableCell
+                          className={`sm:px-4 ${
+                            index % 2 === 0 ? "bg-gray-100" : ""
+                          }`}
+                        >
+                          {subTaskType}
+                        </TableCell>
+                        <TableCell
+                          className={`sm:px-4 ${
+                            index % 2 === 0 ? "bg-gray-100" : ""
+                          }`}
+                        >
+                          {hoursSpent} Hr
+                        </TableCell>
+                        <TableCell
+                          className={`flex items-center justify-center ${
+                            index % 2 === 0 ? "bg-gray-100" : ""
+                          }  sm:px-4`}
+                        >
+                          <button
+                            className="mr-2 scale-100 text-indigo-600 transition-all hover:scale-105 hover:text-indigo-900 focus:outline-none md:mr-3"
+                            onClick={() => handleEdit(_id)}
+                          >
+                            <Icon color="grey" size="20">
+                              <Edit24Filled />
+                            </Icon>
+                          </button>
+                          <button
+                            className="scale-100 text-red-600 transition-all hover:scale-105 hover:text-red-900 focus:outline-none"
+                            onClick={() => handleDelete(_id)}
+                          >
+                            <Icon color="grey" size="20">
+                              <Delete28Regular />
+                            </Icon>
+                          </button>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  )}
               </TableBody>
             </Table>
+            <div className="  border-t bg-gray-500 px-4 py-3 text-center text-gray-800  ">
+              <button
+                onClick={exportToExcel}
+                className="flex  scale-100 items-center justify-center gap-2 transition-all hover:scale-105 "
+              >
+                <Icon color="#1F2937" size="30">
+                  <FileUploadSharp />
+                </Icon>
+                Export to Excel
+              </button>
+            </div>
           </TableContainer>
-          <button onClick={exportToExcel}>Export to Excel</button>
         </div>
 
         <Modal isOpen={isOpen} onClose={onCloseModal} size="lg">
@@ -513,6 +624,7 @@ const UserTaskData = () => {
         </Modal>
       </div>
       <AlertDialog
+        motionPreset="slideInRight"
         isOpen={isConfirmationOpen}
         leastDestructiveRef={cancelRef}
         onClose={handleConfirmationClose}
@@ -544,12 +656,6 @@ const UserTaskData = () => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-
-      {successMessage && (
-        <Box mt={4} p={2} bg="green.100" color="green.800" rounded="md">
-          {successMessage}
-        </Box>
-      )}
     </>
   );
 };
