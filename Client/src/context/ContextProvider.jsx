@@ -6,6 +6,7 @@ export const ContextProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [getUserTaskData, setGetUserTaskData] = useState([]);
+  const [allUsersData, setAllUsersData] = useState([]);
   const [persist, setPersist] = useState(
     JSON.parse(localStorage.getItem("persist")) || false
   );
@@ -19,6 +20,8 @@ export const ContextProvider = ({ children }) => {
     setGetUserTaskData,
     persist,
     setPersist,
+    allUsersData,
+    setAllUsersData,
   };
 
   return (

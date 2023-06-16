@@ -50,14 +50,16 @@ const handleLogin = async (req, res) => {
       httpOnly: true,
       sameSite: "None",
       secure: true,
-      maxAge: 24 * 60 * 60 * 1000 //1 day
+      maxAge: 24 * 60 * 60 * 1000, //1 day
+
     });
 
     res.cookie("userId", userId, {
       httpOnly: true,
       sameSite: "None",
       secure: true,
-      maxAge: 24 * 60 * 60 * 1000 //1 day
+      maxAge: 24 * 60 * 60 * 1000, //1 day
+
     });
 
     // include user ID
