@@ -34,7 +34,16 @@ import {
   TableFooter,
   Pagination
 } from "@windmill/react-ui";
-
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from "recharts";
 import { FaCheckCircle, FaTimesCircle, FaEdit } from "react-icons/fa";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
@@ -67,7 +76,6 @@ const UserTaskData = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const taskData = {};
   const toast = useToast();
-
   const onCloseModal = () => {
     setIsPopupOpen(false);
     onClose();
@@ -219,6 +227,7 @@ const UserTaskData = () => {
       }
     }
   };
+
   function exportToExcel() {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Table Data");
@@ -328,13 +337,62 @@ const UserTaskData = () => {
     });
   }
 
+  // Modify the chartData structure
+  const chartData = [];
+  getUserTaskData.forEach(({ date, taskType, hoursSpent }) => {
+    const existingData = chartData.find(
+      (data) => data.date === formatDate(date)
+    );
+
+    if (existingData) {
+      existingData.productionHours +=
+        taskType === "Production" ? hoursSpent : 0;
+      existingData.nonProductionHours +=
+        taskType !== "Production" ? hoursSpent : 0;
+    } else {
+      const newData = {
+        date: formatDate(date),
+        productionHours: taskType === "Production" ? hoursSpent : 0,
+        nonProductionHours: taskType !== "Production" ? hoursSpent : 0
+      };
+      chartData.push(newData);
+    }
+  });
+
+  // Customized tooltip content
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const totalHours =
+        payload[0].payload.productionHours +
+        payload[0].payload.nonProductionHours;
+
+      return (
+        <div className="custom-tooltip">
+          <p className="label">{`Date: ${label}`}</p>
+          <p className="label">{`Total Hours: ${totalHours}`}</p>
+          {payload.map((entry, index) => (
+            <p key={`tooltip-${index}`} style={{ color: entry.color }}>
+              {`${
+                entry.dataKey === "productionHours"
+                  ? "Production"
+                  : "Non-Production"
+              }: ${entry.value} Hr`}
+            </p>
+          ))}
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <>
       <div className="overflow-x-auto">
         <h2 className="m-8 mb-4 text-center text-2xl font-bold">
           User Task Data
         </h2>
-        <div className="mx-4 my-10 sm:mx-60  sm:overflow-hidden sm:rounded-lg sm:border-b sm:border-gray-400 sm:shadow">
+        <div className="mx-4 my-10 sm:overflow-hidden sm:rounded-lg sm:border-b sm:border-gray-400 sm:shadow lg:mx-40">
           <TableContainer className="min-w-full sm:rounded-lg">
             <Table className="min-w-full" id="tableId">
               <TableHeader className="bg-gray-500 text-gray-800">
@@ -358,7 +416,7 @@ const UserTaskData = () => {
                     className="cursor-pointer  sm:px-4"
                     onClick={() => handleSort("taskType")}
                   >
-                    Task Type{" "}
+                    Task{" "}
                     {sortColumn === "taskType" && (
                       <Icon
                         size={14}
@@ -369,7 +427,7 @@ const UserTaskData = () => {
                       />
                     )}
                   </TableCell>
-                  <TableCell className="sm:px-4">Sub Task Type</TableCell>
+                  <TableCell className="sm:px-4">Sub Task</TableCell>
                   <TableCell className="sm:px-4">Hours</TableCell>
                   <TableCell className="sm:px-4">Actions</TableCell>
                 </TableRow>
@@ -428,7 +486,7 @@ const UserTaskData = () => {
                           {hoursSpent} Hr
                         </TableCell>
                         <TableCell
-                          className={`flex items-center justify-center ${
+                          className={` flex-col items-center justify-center sm:flex sm:flex-row ${
                             index % 2 === 0 ? "bg-gray-100" : ""
                           }  sm:px-4`}
                         >
@@ -467,7 +525,6 @@ const UserTaskData = () => {
             </div>
           </TableContainer>
         </div>
-
         <Modal isOpen={isOpen} onClose={onCloseModal} size="lg">
           <ModalOverlay />
           <ModalContent>
@@ -622,6 +679,56 @@ const UserTaskData = () => {
             </ModalBody>
           </ModalContent>
         </Modal>
+        {/* Add the combined line chart */}
+        <div className="mx-4 my-10  sm:overflow-hidden sm:rounded-lg sm:border-b sm:border-gray-400 sm:shadow lg:mx-40 ">
+          <h3 className="mb-5 bg-gray-500 p-3 text-center text-lg font-semibold text-gray-800">
+            Production and Non-Production Hours
+          </h3>
+          <div className="pb-5 pr-5 pt-5">
+            <ResponsiveContainer width="100%" aspect={6 / 2}>
+              <LineChart
+                data={chartData}
+                margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  padding={{ left: 30, right: 30 }}
+                  dataKey="date"
+                  type="category"
+                  tickFormatter={(date) =>
+                    new Date(date).toLocaleDateString(undefined, {
+                      day: "numeric",
+                      month: "numeric"
+                    })
+                  }
+                />
+                <YAxis />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend
+                  formatter={(value, entry) =>
+                    entry.dataKey === "productionHours"
+                      ? "Production"
+                      : "Non-Production"
+                  }
+                />
+                <Line
+                  type="monotone"
+                  dataKey="productionHours"
+                  stroke="#8884d8"
+                  connectNulls
+                  activeDot={{ r: 8 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="nonProductionHours"
+                  stroke="#82ca9d"
+                  connectNulls
+                  activeDot={{ r: 8 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
       <AlertDialog
         motionPreset="slideInRight"
