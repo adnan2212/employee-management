@@ -1,9 +1,15 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  BellIcon,
+  XMarkIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 import { useNavigate, Link } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import useContent from "../hooks/useContent";
+import axios from "../api/axios";
 
 const user = {
   name: "Tom Cook",
@@ -30,8 +36,15 @@ function classNames(...classes) {
 }
 
 const Header = () => {
+  const { auth, allUsersData } = useContent();
+  console.log("Header -> allUsersData", allUsersData);
   const navigate = useNavigate();
   const logout = useLogout();
+
+  const usersTaskData = () => {
+    navigate("/data");
+    console.log("USERSTASKDATA..................................");
+  };
 
   const signout = async () => {
     await logout();
@@ -40,18 +53,15 @@ const Header = () => {
   };
 
   const handleNavigation = (href) => {
-    if (href === "/yourTaskData") {
-      navigate(href);
-    }
-    if (href === "/projects") {
+    if (href === "/yourTaskData" || href === "/projects") {
       navigate(href);
     } else {
       // Handle other navigation logic
     }
   };
 
-  const { auth } = useContent();
   const isAdmin = auth.roles.includes(5150); // Check if the user has the admin role
+  console.log(isAdmin);
 
   return (
     <>
@@ -79,6 +89,16 @@ const Header = () => {
                             {item.name}
                           </Link>
                         ))}
+                        {isAdmin && (
+                          <button
+                            className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                            onClick={() => {
+                              // Handle the action when the admin button is clicked
+                            }}
+                          >
+                            Admin
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -171,11 +191,20 @@ const Header = () => {
                           : "text-gray-300 hover:bg-gray-700 hover:text-white",
                         "block rounded-md px-3 py-2 text-base font-medium"
                       )}
-                      onClick={() => handleNavigation(item.href)}
+                      // onClick={}
                     >
                       {item.name}
                     </Link>
                   ))}
+                  {isAdmin && (
+                    <Link
+                      to="/data"
+                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                      // onClick={() => usersTaskData()}
+                    >
+                      Admin
+                    </Link>
+                  )}
                 </div>
                 <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex items-center px-5">
@@ -219,13 +248,6 @@ const Header = () => {
             </>
           )}
         </Disclosure>
-
-        {/* Page content */}
-        <main>
-          {/* Your content here */}
-          {isAdmin && <h1>Welcome, Admin!</h1>}
-          {/* ... */}
-        </main>
       </div>
     </>
   );

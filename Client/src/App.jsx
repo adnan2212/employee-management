@@ -13,6 +13,7 @@ import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
 import Profile from "./pages/Profile";
 import UserTaskData from "./components/UserTaskData";
+import AllUsersTaskData from "./components/AllUsersTaskData";
 
 const ROLES = {
   User: 1000,
@@ -33,6 +34,7 @@ function App() {
             <Route path="yourTaskData" element={<UserTaskData />} />
             <Route path="projects" element={<SecondPage />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="data" element={<AllUsersTaskData />} />
           </Route>
         </Route>
       </Route>
