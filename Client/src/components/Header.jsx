@@ -4,12 +4,13 @@ import {
   Bars3Icon,
   BellIcon,
   XMarkIcon,
-  UserCircleIcon,
+  UserCircleIcon
 } from "@heroicons/react/24/outline";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, NavLink } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import useContent from "../hooks/useContent";
 import axios from "../api/axios";
+import jwtDecode from "jwt-decode";
 
 const user = {
   name: "Tom Cook",
@@ -19,16 +20,54 @@ const user = {
 };
 
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "projects", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Reports", href: "yourTaskData", current: false },
+  {
+    name: "Dashboard",
+    link: "#",
+    current: true,
+    isProtected: false,
+    roles: [1000]
+  },
+  {
+    name: "Team",
+    link: "projects",
+    current: false,
+    isProtected: false,
+    roles: [1000]
+  },
+  {
+    name: "Projects",
+    link: "#",
+    current: false,
+    isProtected: false,
+    roles: [1000]
+  },
+  {
+    name: "Calendar",
+    link: "#",
+    current: false,
+    isProtected: false,
+    roles: [1000]
+  },
+  {
+    name: "Reports",
+    link: "yourTaskData",
+    current: false,
+    isProtected: false,
+    roles: [1000]
+  },
+  {
+    name: "Admin",
+    link: "data",
+    current: false,
+    isProtected: true,
+    roles: [5150]
+  }
 ];
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Your Profile", link: "#" },
+  { name: "Settings", link: "#" },
+  { name: "Sign out", link: "#" }
+
 ];
 
 function classNames(...classes) {
@@ -46,13 +85,37 @@ const Header = () => {
     console.log("❌ Logged Out Successfully ❌");
   };
 
-  const handleNavigation = (href) => {
-    if (href === "/yourTaskData" || href === "/projects") {
-      navigate(href);
+  const handleNavigation = (link) => {
+    if (link === "yourTaskData" || link === "projects") {
+      navigate(link);
     } else {
       // Handle other navigation logic
     }
   };
+
+
+  const filterNav = () => {
+    const decoded = auth?.accessToken ? jwtDecode(auth.accessToken) : undefined;
+    const roles = decoded?.UserInfo?.roles || [];
+
+    let nav = navigation.filter((ele) => {
+      if (auth?.accessToken) {
+        if (roles?.find((role) => ele.roles.includes(role))) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        if (!ele.isProtected) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+    return nav;
+  };
+
 
   return (
     <>
@@ -65,20 +128,20 @@ const Header = () => {
                   <div className="flex items-center">
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map((item) => (
-                          <Link
+                        {filterNav().map((item) => (
+                          <NavLink
+                            to={`/${item.link}`}
                             key={item.name}
-                            to={item.href}
                             className={classNames(
                               item.current
                                 ? "bg-gray-900 text-white"
                                 : "text-gray-300 hover:bg-gray-700 hover:text-white",
                               "rounded-md px-3 py-2 text-sm font-medium"
                             )}
-                            onClick={() => handleNavigation(item.href)}
+                            // onClick={() => handleNavigation(item.href)}
                           >
                             {item.name}
-                          </Link>
+                          </NavLink>
                         ))}
                       </div>
                     </div>
@@ -118,8 +181,8 @@ const Header = () => {
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
-                                  <a
-                                    href={item.href}
+                                  <Link
+                                    link={item.link}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
                                       "block px-4 py-2 text-sm text-gray-700"
@@ -131,7 +194,7 @@ const Header = () => {
                                     }
                                   >
                                     {item.name}
-                                  </a>
+                                  </Link>
                                 )}
                               </Menu.Item>
                             ))}
@@ -162,10 +225,10 @@ const Header = () => {
 
               <Disclosure.Panel className="md:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                  {navigation.map((item) => (
+                  {filterNav().map((item) => (
                     <Link
                       key={item.name}
-                      to={item.href}
+                      to={item.link}
                       className={classNames(
                         item.current
                           ? "bg-gray-900 text-white"
@@ -207,9 +270,15 @@ const Header = () => {
                     {userNavigation.map((item) => (
                       <Link
                         key={item.name}
-                        to={item.href}
+                        to={item.link}
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                        onClick={() => handleNavigation(item.href)}
+                        onClick={() => {
+                          if (item.name === "Sign out") {
+                            signout();
+                          } else {
+                            handleNavigation(item.href);
+                          }
+                        }}
                       >
                         {item.name}
                       </Link>
