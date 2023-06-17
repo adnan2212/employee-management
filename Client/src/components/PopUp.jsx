@@ -16,7 +16,7 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 const TASK_URL = "/tasks";
@@ -50,9 +50,9 @@ const PopUp = () => {
       const response = await axios.post(TASK_URL, JSON.stringify(values), {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true
+        withCredentials: true,
       });
       console.log(response);
       setSuccessMessage("Form submitted successfully!");
@@ -65,7 +65,7 @@ const PopUp = () => {
           title: "Task submitted",
           status: "success",
           duration: 3000,
-          isClosable: true
+          isClosable: true,
         });
       }, 400);
     } catch (err) {
@@ -99,7 +99,7 @@ const PopUp = () => {
                 initialValues={{
                   taskType: "",
                   subTaskType: "",
-                  hoursSpent: ""
+                  hoursSpent: "",
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { resetForm }) => {
@@ -289,7 +289,7 @@ export default PopUp;
 const task_type = ["Production", "Non-Production"];
 const sub_task_type = {
   Production: ["Audit", "Junking", "Coding"],
-  "Non-Production": ["Meeting", "Client Handling", "Networking"]
+  "Non-Production": ["Meeting", "Client Handling", "Networking"],
 };
 
 const validationSchema = Yup.object({
@@ -299,5 +299,5 @@ const validationSchema = Yup.object({
   ),
   hoursSpent: Yup.number()
     .positive("Hours Spent must be a positive number")
-    .required("Hours Spent is required")
+    .required("Hours Spent is required"),
 });

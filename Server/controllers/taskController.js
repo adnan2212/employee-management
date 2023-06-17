@@ -2,7 +2,9 @@ const Task = require("../model/Task");
 
 const createNewTask = async (req, res) => {
   console.log("LINE 4: ", req.cookies);
+  console.log("+++++++++++++++++++++++++++++++++++++");
   console.log("LINE 5: ", req.user);
+  console.log("+++++++++++++++++++++++++++++++++++++");
   if (
     !req?.user ||
     !req?.cookies?.userId ||
