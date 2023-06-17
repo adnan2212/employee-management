@@ -24,8 +24,8 @@ const handleLogin = async (req, res) => {
         UserInfo: {
           username: foundUser.username,
           roles: roles,
-          id: foundUser._id
-        }
+          id: foundUser._id,
+        },
       },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "1h" }
@@ -34,8 +34,8 @@ const handleLogin = async (req, res) => {
       {
         UserInfo: {
           username: foundUser.username,
-          roles: roles
-        }
+          roles: roles,
+        },
       },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "1d" }
@@ -51,7 +51,6 @@ const handleLogin = async (req, res) => {
       sameSite: "None",
       secure: true,
       maxAge: 24 * 60 * 60 * 1000, //1 day
-
     });
 
     res.cookie("userId", userId, {
@@ -59,7 +58,6 @@ const handleLogin = async (req, res) => {
       sameSite: "None",
       secure: true,
       maxAge: 24 * 60 * 60 * 1000, //1 day
-
     });
 
     // include user ID
