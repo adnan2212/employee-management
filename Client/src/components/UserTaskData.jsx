@@ -369,7 +369,6 @@ const UserTaskData = () => {
       return (
         <div className="custom-tooltip">
           <p className="label">{`Date: ${label}`}</p>
-          <p className="label">{`Total Hours: ${totalHours}`}</p>
           {payload.map((entry, index) => (
             <p key={`tooltip-${index}`} style={{ color: entry.color }}>
               {`${
@@ -379,6 +378,7 @@ const UserTaskData = () => {
               }: ${entry.value} Hr`}
             </p>
           ))}
+          <p className="label">{`Total Hours: ${totalHours}`}</p>
         </div>
       );
     }
