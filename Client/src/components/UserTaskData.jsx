@@ -5,6 +5,10 @@ import { Delete28Regular, Edit24Filled } from "@ricons/fluent";
 import { Icon } from "@ricons/utils";
 import { FileUploadSharp } from "@ricons/material";
 import ExcelJS from "exceljs";
+
+import { Link } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import {
   Box,
   AlertDialog,
@@ -44,7 +48,7 @@ import {
   Legend,
   ResponsiveContainer
 } from "recharts";
-import { FaCheckCircle, FaTimesCircle, FaEdit } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaEdit, FaRegCalendarAlt } from "react-icons/fa";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 
@@ -66,15 +70,26 @@ const validationSchema = Yup.object({
     .required("Hours Spent is required")
 });
 
-const UserTaskData = () => {
+const UserTaskData = () => {  
+  const [showFullCalendar, setShowFullCalendar] = useState(false);
+
   const { auth, getUserTaskData, setGetUserTaskData } = useContent();
+  const [data, setData] = useState([]);
+
   const token = auth?.accessToken;
   const [selectedTask, setSelectedTask] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const cancelRef = React.useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const taskData = {};
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  };
   const toast = useToast();
   const onCloseModal = () => {
     setIsPopupOpen(false);
@@ -103,7 +118,9 @@ const UserTaskData = () => {
 
     fetchPostData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
+  const handleToggleCalendar = () => {
+    setShowFullCalendar(!showFullCalendar);
+  };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
@@ -227,6 +244,35 @@ const UserTaskData = () => {
       }
     }
   };
+  const filteredData = React.useMemo(() => {
+    if (startDate && endDate) {
+      return getUserTaskData.filter((item) => {
+        const itemDate = new Date(item.date);
+        return itemDate >= startDate && itemDate <= endDate;
+      });
+    } else {
+      return getUserTaskData;
+    }
+  }, [getUserTaskData, startDate, endDate]);
+  const sortedData = React.useMemo(() => {
+    if (sortColumn === "date") {
+      return filteredData.slice().sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return sortDirection === "asc" ? dateA - dateB : dateB - dateA;
+      });
+    } else if (sortColumn === "taskType") {
+      return filteredData.slice().sort((a, b) => {
+        const taskTypeA = a.taskType.toLowerCase();
+        const taskTypeB = b.taskType.toLowerCase();
+        return sortDirection === "asc"
+          ? taskTypeA.localeCompare(taskTypeB)
+          : taskTypeB.localeCompare(taskTypeA);
+      });
+    } else {
+      return filteredData;
+    }
+  }, [filteredData, sortColumn, sortDirection]);
 
   function exportToExcel() {
     const workbook = new ExcelJS.Workbook();
@@ -339,7 +385,7 @@ const UserTaskData = () => {
 
   // Modify the chartData structure
   const chartData = [];
-  getUserTaskData.forEach(({ date, taskType, hoursSpent }) => {
+  filteredData.forEach(({ date, taskType, hoursSpent }) => {
     const existingData = chartData.find(
       (data) => data.date === formatDate(date)
     );
@@ -388,11 +434,44 @@ const UserTaskData = () => {
 
   return (
     <>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto flex flex-col ">
         <h2 className="m-8 mb-4 text-center text-2xl font-bold">
           User Task Data
         </h2>
-        <div className="mx-4 my-10 sm:overflow-hidden sm:rounded-lg sm:border-b sm:border-gray-400 sm:shadow lg:mx-40">
+         {/* Date Range Picker */}
+         <div className="inline-flex justify-center">
+          <button
+            className="my-5 text-lg font-bold flex justify-center text-black text-center"
+            onClick={handleToggleCalendar}
+          >
+            <Link className="flex items-center justify-center gap-3">
+              <p>Pick Date</p>
+              <FaRegCalendarAlt />
+            </Link>
+          </button>
+        </div>
+        {showFullCalendar ? <>
+          <div className="mb-4 flex justify-center">
+          <DatePicker
+            selected={startDate}
+            onChange={handleDateChange}
+            startDate={startDate}
+            endDate={endDate}
+            selectsRange
+            inline
+            className="rounded-lg shadow-md p-4 bg-white" 
+          />
+        </div>
+        </> : ""}
+        <div className="mb-4 flex justify-center">
+          {startDate && endDate && (
+            <p className="text-gray-600">
+              Selected Date Range: {startDate.toLocaleDateString()} -{" "}
+              {endDate.toLocaleDateString()}
+            </p>
+          )}
+        </div>
+        <div className="mx-4 my-5 sm:overflow-hidden sm:rounded-lg sm:border-b sm:border-gray-400 sm:shadow lg:mx-40">
           <TableContainer className="min-w-full sm:rounded-lg">
             <Table className="min-w-full" id="tableId">
               <TableHeader className="bg-gray-500 text-gray-800">
@@ -434,24 +513,7 @@ const UserTaskData = () => {
               </TableHeader>
 
               <TableBody className=" text-center">
-                {getUserTaskData
-                  .sort((a, b) => {
-                    if (sortColumn === "date") {
-                      const dateA = new Date(a.date);
-                      const dateB = new Date(b.date);
-                      return sortDirection === "asc"
-                        ? dateA - dateB
-                        : dateB - dateA;
-                    } else if (sortColumn === "taskType") {
-                      const taskTypeA = a.taskType.toLowerCase();
-                      const taskTypeB = b.taskType.toLowerCase();
-                      return sortDirection === "asc"
-                        ? taskTypeA.localeCompare(taskTypeB)
-                        : taskTypeB.localeCompare(taskTypeA);
-                    }
-                    return 0;
-                  })
-                  .map(
+                {sortedData.map(
                     (
                       { date, _id, taskType, subTaskType, hoursSpent },
                       index
