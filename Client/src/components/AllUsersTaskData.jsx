@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import useContent from "../hooks/useContent";
 import axios from "../api/axios";
-import { Delete28Regular, Edit24Filled } from "@ricons/fluent";
+import { Link } from "react-router-dom";
+import {
+  FaRegCalendarAlt
+} from "react-icons/fa";
 import { Icon } from "@ricons/utils";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Delete28Regular, Edit24Filled } from "@ricons/fluent";
 import { FileUploadSharp } from "@ricons/material";
 import ExcelJS from "exceljs";
 import {
@@ -33,13 +39,11 @@ import {
   TableCell,
   TableFooter,
   Pagination
-} from "@windmill/react-ui";
-
-import { FaCheckCircle, FaTimesCircle, FaEdit } from "react-icons/fa";
+} from "@windmill/react-ui";import { FaCheckCircle, FaTimesCircle, FaEdit } from "react-icons/fa";
 import { Formik, Field, Form } from "formik";
-import * as Yup from "yup";
-
+import * as Yup from "yup"; 
 const ALL_USERS_DATA = "/tasks/details";
+
 const task_type = ["Production", "Non-Production"];
 const sub_task_type = {
   Production: ["Audit", "Junking", "Coding"],
@@ -55,10 +59,15 @@ const validationSchema = Yup.object({
     .positive("Hours Spent must be a positive number")
     .required("Hours Spent is required")
 });
+
 const AllUsersTaskData = () => {
+  const [showFullCalendar, setShowFullCalendar] = useState(false);
+
   const [data, setData] = useState([]);
   const { allUsersData, setAllUsersData, auth } = useContent();
   const token = auth?.accessToken;
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -68,6 +77,11 @@ const AllUsersTaskData = () => {
   const onCloseModal = () => {
     setIsPopupOpen(false);
     onClose();
+  };
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
   };
 
   useEffect(() => {
@@ -92,11 +106,15 @@ const AllUsersTaskData = () => {
 
     fetchAllUsersData();
   }, []);
+  
+  const handleToggleCalendar = () => {
+    setShowFullCalendar(!showFullCalendar);
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
-
   const handleEdit = (taskId) => {
     const task = allUsersData.find((task) => task._id === taskId);
     setSelectedTask(task);
@@ -216,6 +234,37 @@ const AllUsersTaskData = () => {
     }
   };
 
+  const filteredData = React.useMemo(() => {
+    if (startDate && endDate) {
+      return data.filter((item) => {
+        const itemDate = new Date(item.date);
+        return itemDate >= startDate && itemDate <= endDate;
+      });
+    } else {
+      return data;
+    }
+  }, [data, startDate, endDate]);
+
+  const sortedData = React.useMemo(() => {
+    if (sortColumn === "date") {
+      return filteredData.slice().sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return sortDirection === "asc" ? dateA - dateB : dateB - dateA;
+      });
+    } else if (sortColumn === "taskType") {
+      return filteredData.slice().sort((a, b) => {
+        const taskTypeA = a.taskType.toLowerCase();
+        const taskTypeB = b.taskType.toLowerCase();
+        return sortDirection === "asc"
+          ? taskTypeA.localeCompare(taskTypeB)
+          : taskTypeB.localeCompare(taskTypeA);
+      });
+    } else {
+      return filteredData;
+    }
+  }, [filteredData, sortColumn, sortDirection]);
+
   function exportToExcel() {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Table Data");
@@ -327,10 +376,44 @@ const AllUsersTaskData = () => {
 
   return (
     <>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto flex flex-col ">
         <h2 className="m-8 mb-4 text-center text-2xl font-bold">
           Daily Tracker Sheet
         </h2>
+        {/* Date Range Picker */}
+        <div className="inline-flex justify-center">
+          <button
+            className="my-5 text-lg font-bold flex justify-center text-black text-center"
+            onClick={handleToggleCalendar}
+          >
+            <Link className="flex items-center justify-center gap-3">
+              <p>Pick Date</p>
+              <FaRegCalendarAlt />
+            </Link>
+          </button>
+        </div>
+        {showFullCalendar ? <>
+          <div className="mb-4 flex justify-center">
+          <DatePicker
+            selected={startDate}
+            onChange={handleDateChange}
+            startDate={startDate}
+            endDate={endDate}
+            selectsRange
+            inline
+            className="rounded-lg shadow-md p-4 bg-white" 
+          />
+        </div>
+        </> : ""}
+        <div className="mb-4 flex justify-center">
+          {startDate && endDate && (
+            <p className="text-gray-600">
+              Selected Date Range: {startDate.toLocaleDateString()} -{" "}
+              {endDate.toLocaleDateString()}
+            </p>
+          )}
+        </div>
+        
         <div className="mx-4 my-10 sm:overflow-hidden sm:rounded-lg sm:border-b sm:border-gray-400 sm:shadow lg:mx-32">
           <TableContainer className="min-w-full sm:rounded-lg">
             <Table className="min-w-full" id="tableId">
@@ -369,112 +452,94 @@ const AllUsersTaskData = () => {
                     )}
                   </TableCell>
                   <TableCell className="sm:px-4">Sub Task</TableCell>
-                  <TableCell className="sm:px-4">Hours</TableCell>
-                  <TableCell className="sm:px-4">Actions</TableCell>
+                  <TableCell className="sm:px-4">Hours</TableCell><TableCell className="sm:px-4">Actions</TableCell>
                 </TableRow>
               </TableHeader>
 
               <TableBody className=" text-center">
-                {allUsersData
-                  .sort((a, b) => {
-                    if (sortColumn === "date") {
-                      const dateA = new Date(a.date);
-                      const dateB = new Date(b.date);
-                      return sortDirection === "asc"
-                        ? dateA - dateB
-                        : dateB - dateA;
-                    } else if (sortColumn === "taskType") {
-                      const taskTypeA = a.taskType.toLowerCase();
-                      const taskTypeB = b.taskType.toLowerCase();
-                      return sortDirection === "asc"
-                        ? taskTypeA.localeCompare(taskTypeB)
-                        : taskTypeB.localeCompare(taskTypeA);
-                    }
-                    return 0;
-                  })
-                  .map(
-                    (
-                      {
-                        date,
-                        _id,
-                        userId,
-                        userName,
-                        taskType,
-                        subTaskType,
-                        hoursSpent
-                      },
-                      index
-                    ) => (
-                      <TableRow key={userId}>
-                        <TableCell
-                          className={`sm:px-4 ${
-                            index % 2 === 0 ? " bg-gray-100" : ""
-                          }`}
+                {sortedData.map(
+                  (
+                    {
+                      date,
+                      _id,
+                      userId,
+                      userName,
+                      taskType,
+                      subTaskType,
+                      hoursSpent
+                    },
+                    index
+                  ) => (
+                    <TableRow key={_id}>
+                      <TableCell
+                        className={`sm:px-4 ${
+                          index % 2 === 0 ? " bg-gray-100" : ""
+                        }`}
+                      >
+                        {formatDate(date)}
+                      </TableCell>
+                      <TableCell
+                        className={`sm:px-4 ${
+                          index % 2 === 0 ? "bg-gray-100" : ""
+                        }`}
+                      >
+                        {userId}
+                      </TableCell>
+                      <TableCell
+                        className={`sm:px-4 ${
+                          index % 2 === 0 ? "bg-gray-100" : ""
+                        }`}
+                      >
+                        {userName.charAt(0).toUpperCase() + userName.slice(1)}
+                      </TableCell>
+                      <TableCell
+                        className={`sm:px-4 ${
+                          index % 2 === 0 ? "bg-gray-100" : ""
+                        }`}
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        {taskType}
+                      </TableCell>
+                      <TableCell
+                        className={`sm:px-4 ${
+                          index % 2 === 0 ? "bg-gray-100" : ""
+                        }`}
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        {subTaskType}
+                      </TableCell>
+                      <TableCell
+                        className={`sm:px-4 ${
+                          index % 2 === 0 ? "bg-gray-100" : ""
+                        }`}
+                      >
+                        {hoursSpent} Hr
+                      </TableCell>
+                      <TableCell
+                        className={` flex-col items-center justify-center sm:flex sm:flex-row ${
+                          index % 2 === 0 ? "bg-gray-100" : ""
+                        }  sm:px-4`}
+                      >
+                        <button
+                          className="mr-2 scale-100 text-indigo-600 transition-all hover:scale-105 hover:text-indigo-900 focus:outline-none md:mr-3"
+                          onClick={() => handleEdit(_id)}
                         >
-                          {formatDate(date)}
-                        </TableCell>
-                        <TableCell
-                          className={`sm:px-4 ${
-                            index % 2 === 0 ? "bg-gray-100" : ""
-                          }`}
+                          <Icon color="grey" size="20">
+                            <Edit24Filled />
+                          </Icon>
+                        </button>
+                        <button
+                          className="scale-100 text-red-600 transition-all hover:scale-105 hover:text-red-900 focus:outline-none"
+                          onClick={() => handleDelete(_id)}
                         >
-                          {userId}
-                        </TableCell>
-                        <TableCell
-                          className={`sm:px-4 ${
-                            index % 2 === 0 ? "bg-gray-100" : ""
-                          }`}
-                        >
-                          {userName.charAt(0).toUpperCase() + userName.slice(1)}
-                        </TableCell>
-                        <TableCell
-                          className={`sm:px-4 ${
-                            index % 2 === 0 ? "bg-gray-100" : ""
-                          }`}
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          {taskType}
-                        </TableCell>
-                        <TableCell
-                          className={`sm:px-4 ${
-                            index % 2 === 0 ? "bg-gray-100" : ""
-                          }`}
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          {subTaskType}
-                        </TableCell>
-                        <TableCell
-                          className={`sm:px-4 ${
-                            index % 2 === 0 ? "bg-gray-100" : ""
-                          }`}
-                        >
-                          {hoursSpent} Hr
-                        </TableCell>
-                        <TableCell
-                          className={` flex-col items-center justify-center sm:flex sm:flex-row ${
-                            index % 2 === 0 ? "bg-gray-100" : ""
-                          }  sm:px-4`}
-                        >
-                          <button
-                            className="mr-2 scale-100 text-indigo-600 transition-all hover:scale-105 hover:text-indigo-900 focus:outline-none md:mr-3"
-                            onClick={() => handleEdit(_id)}
-                          >
-                            <Icon color="grey" size="20">
-                              <Edit24Filled />
-                            </Icon>
-                          </button>
-                          <button
-                            className="scale-100 text-red-600 transition-all hover:scale-105 hover:text-red-900 focus:outline-none"
-                            onClick={() => handleDelete(_id)}
-                          >
-                            <Icon color="grey" size="20">
-                              <Delete28Regular />
-                            </Icon>
-                          </button>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  )}
+                          <Icon color="grey" size="20">
+                            <Delete28Regular />
+                          </Icon>
+                        </button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                )}
               </TableBody>
             </Table>
             <div className="  border-t bg-gray-500 px-4 py-3 text-center text-gray-800  ">
@@ -644,6 +709,7 @@ const AllUsersTaskData = () => {
             </ModalBody>
           </ModalContent>
         </Modal>
+
         {/* Add the combined line chart */}
       </div>
       <AlertDialog
