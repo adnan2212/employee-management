@@ -16,7 +16,6 @@
     "@emotion/styled": "^11.11.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@mantine/dates": "^6.0.11",
     "@ricons/antd": "^0.12.0",
