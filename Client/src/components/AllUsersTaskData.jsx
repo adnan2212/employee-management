@@ -22,7 +22,7 @@ import {
   Button,
   useDisclosure,
   ModalFooter,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import {
   TableContainer,
@@ -32,7 +32,7 @@ import {
   TableRow,
   TableCell,
   TableFooter,
-  Pagination
+  Pagination,
 } from "@windmill/react-ui";
 
 import { FaCheckCircle, FaTimesCircle, FaEdit } from "react-icons/fa";
@@ -40,10 +40,12 @@ import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 
 const ALL_USERS_DATA = "/tasks/details";
+const ADMIN = "/tasks/admin";
+
 const task_type = ["Production", "Non-Production"];
 const sub_task_type = {
   Production: ["Audit", "Junking", "Coding"],
-  "Non-Production": ["Meeting", "Client Handling", "Networking"]
+  "Non-Production": ["Meeting", "Client Handling", "Networking"],
 };
 
 const validationSchema = Yup.object({
@@ -53,7 +55,7 @@ const validationSchema = Yup.object({
   ),
   hoursSpent: Yup.number()
     .positive("Hours Spent must be a positive number")
-    .required("Hours Spent is required")
+    .required("Hours Spent is required"),
 });
 const AllUsersTaskData = () => {
   const [data, setData] = useState([]);
@@ -70,21 +72,24 @@ const AllUsersTaskData = () => {
     onClose();
   };
 
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [deleteTaskId, setDeleteTaskId] = useState(null);
+
   useEffect(() => {
     const fetchAllUsersData = async () => {
       try {
         const response = await axios.get(ALL_USERS_DATA, {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
-          withCredentials: true
+          withCredentials: true,
         });
         console.log("ADMINallUserData ->>>", response.data);
         const sortedTaskData = response.data.sort(
           (a, b) => new Date(a.date) - new Date(b.date)
         );
-        setData(sortedTaskData);
-        setAllUsersData(sortedTaskData);
+        setData(response.data);
+        setAllUsersData(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -92,27 +97,26 @@ const AllUsersTaskData = () => {
 
     fetchAllUsersData();
   }, []);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
 
-  const handleEdit = (taskId) => {
+  const handleEdit = async (taskId) => {
     const task = allUsersData.find((task) => task._id === taskId);
     setSelectedTask(task);
     setIsPopupOpen(true);
     setInitialFormValues({
       taskType: task.taskType,
       subTaskType: task.subTaskType,
-      hoursSpent: task.hoursSpent
+      hoursSpent: task.hoursSpent,
     });
 
     onOpen();
 
     console.log("Edit Task ID:", taskId);
   };
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-  const [deleteTaskId, setDeleteTaskId] = useState(null);
 
   const handleDelete = (taskId) => {
     setDeleteTaskId(taskId);
@@ -126,20 +130,20 @@ const AllUsersTaskData = () => {
   };
   const handleConfirmationDelete = async () => {
     try {
-      await axios.delete(`${ALL_USERS_DATA}/${deleteTaskId}`, {
+      await axios.delete(`${ADMIN}/${deleteTaskId}`, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true
+        withCredentials: true,
       });
       setIsConfirmationOpen(false);
-      setSuccessMessage("Task deleted successfully");
+      setSuccessMessage("Task updated successfully");
       toast({
         title: "Task Deleted",
         description: "The task has been deleted successfully.",
         status: "success",
         duration: 3000,
-        isClosable: true
+        isClosable: true,
       });
 
       // Remove the task from getUserTaskData
@@ -154,16 +158,12 @@ const AllUsersTaskData = () => {
 
   const handleSubmit = async (values, formikBag) => {
     try {
-      const response = await axios.put(
-        `${ALL_USERS_DATA}/${selectedTask._id}`,
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          withCredentials: true
-        }
-      );
+      const response = await axios.put(`${ADMIN}/${selectedTask._id}`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       console.log("Updated Task:", response.data);
 
       formikBag.resetForm();
@@ -174,7 +174,7 @@ const AllUsersTaskData = () => {
             ...task,
             taskType: values.taskType,
             subTaskType: values.subTaskType,
-            hoursSpent: values.hoursSpent
+            hoursSpent: values.hoursSpent,
           };
         }
         return task;
@@ -188,7 +188,7 @@ const AllUsersTaskData = () => {
           title: "Task updated successfully",
           status: "success",
           duration: 3000,
-          isClosable: true
+          isClosable: true,
         });
       }, 400);
     } catch (err) {
@@ -200,7 +200,7 @@ const AllUsersTaskData = () => {
   const [initialFormValues, setInitialFormValues] = useState({
     taskType: "",
     subTaskType: "",
-    hoursSpent: ""
+    hoursSpent: "",
   });
 
   const [sortColumn, setSortColumn] = useState(""); // Column to sort
@@ -232,15 +232,15 @@ const AllUsersTaskData = () => {
         type: "pattern",
         pattern: "solid",
         fgColor: { argb: "007BFF" },
-        name: "Calibri"
+        name: "Calibri",
       },
       border: {
         top: { style: "thin", color: { argb: "000000" } },
         bottom: { style: "medium", color: { argb: "000000" } },
         left: { style: "thin", color: { argb: "000000" } },
-        right: { style: "thin", color: { argb: "000000" } }
+        right: { style: "thin", color: { argb: "000000" } },
       },
-      alignment: { vertical: "middle", horizontal: "center" }
+      alignment: { vertical: "middle", horizontal: "center" },
     };
 
     const cellStyle = {
@@ -250,9 +250,9 @@ const AllUsersTaskData = () => {
         top: { style: "thin", color: { argb: "D3D3D3" } },
         bottom: { style: "thin", color: { argb: "D3D3D3" } },
         left: { style: "thin", color: { argb: "D3D3D3" } },
-        right: { style: "thin", color: { argb: "D3D3D3" } }
+        right: { style: "thin", color: { argb: "D3D3D3" } },
       },
-      alignment: { vertical: "middle", horizontal: "center", wrapText: true }
+      alignment: { vertical: "middle", horizontal: "center", wrapText: true },
     };
 
     const tableRows = table.getElementsByTagName("tr");
@@ -306,7 +306,7 @@ const AllUsersTaskData = () => {
 
     workbook.xlsx.writeBuffer().then((buffer) => {
       const blob = new Blob([buffer], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -321,7 +321,7 @@ const AllUsersTaskData = () => {
       description: "The task data has been downloaded.",
       status: "success",
       duration: 3000,
-      isClosable: true
+      isClosable: true,
     });
   }
 
@@ -401,11 +401,11 @@ const AllUsersTaskData = () => {
                         userName,
                         taskType,
                         subTaskType,
-                        hoursSpent
+                        hoursSpent,
                       },
                       index
                     ) => (
-                      <TableRow key={userId}>
+                      <TableRow key={_id}>
                         <TableCell
                           className={`sm:px-4 ${
                             index % 2 === 0 ? " bg-gray-100" : ""

@@ -22,6 +22,7 @@ const createNewTask = async (req, res) => {
       taskType: req.body.taskType,
       subTaskType: req.body.subTaskType,
       hoursSpent: req.body.hoursSpent,
+      comment: req.body.comment,
     });
     console.log("LINE 24: ", newTask);
 
@@ -110,10 +111,48 @@ const getAllTaskData = async (req, res) => {
   }
 };
 
+const deleteUserTaskByAdmin = async (req, res) => {
+  try {
+    const taskId = req.params.taskId;
+    console.log("FROM ADMIN ROUTE taskId:", taskId); // Debug statement
+    const deletedTask = await Task.findByIdAndDelete(taskId);
+    if (!deletedTask) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+    res.status(204).json();
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    res.status(500).json({ error: "Failed to delete task" });
+  }
+};
+
+const updateUserTaskByAdmin = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    console.log("FROM ADMIN ROUTE taskId:", taskId); // Debug statement
+    const updatedTaskData = req.body; // Updated task data from the request body
+
+    // Update the task in the database using the taskId and updatedTaskData
+    const updatedTask = await Task.findByIdAndUpdate(taskId, updatedTaskData, {
+      new: true,
+    });
+    if (!updatedTask) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+    // Return the updated task as the response
+    res.json(updatedTask);
+  } catch (error) {
+    console.error("Error editing task:", error);
+    res.status(500).json({ error: "Failed to edit task" });
+  }
+};
+
 module.exports = {
   createNewTask,
   getAllTasks,
   updateTask,
   deleteTask,
   getAllTaskData,
+  deleteUserTaskByAdmin,
+  updateUserTaskByAdmin,
 };

@@ -5,29 +5,33 @@ const taskSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
   userName: {
     type: String,
-    required: true
+    required: true,
   },
   taskType: {
     type: String,
-    required: true
+    required: true,
   },
   subTaskType: {
     type: String,
-    required: true
+    required: true,
   },
   hoursSpent: {
     type: Number,
     required: true,
-    min: 0
+    min: 0,
+  },
+  comment: {
+    type: String,
+    required: false,
   },
   date: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("Task", taskSchema);

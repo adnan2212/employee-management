@@ -4,7 +4,7 @@ import {
   Bars3Icon,
   BellIcon,
   XMarkIcon,
-  UserCircleIcon
+  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate, Link, NavLink } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
@@ -25,49 +25,55 @@ const navigation = [
     link: "#",
     current: true,
     isProtected: false,
-    roles: [1000]
+    roles: [1000],
   },
   {
     name: "Team",
     link: "projects",
     current: false,
     isProtected: false,
-    roles: [1000]
+    roles: [1000],
   },
   {
     name: "Projects",
     link: "#",
     current: false,
     isProtected: false,
-    roles: [1000]
+    roles: [1000],
   },
   {
     name: "Calendar",
     link: "#",
     current: false,
     isProtected: false,
-    roles: [1000]
+    roles: [1000],
   },
   {
     name: "Reports",
     link: "yourTaskData",
     current: false,
     isProtected: false,
-    roles: [1000]
+    roles: [1000],
   },
   {
     name: "Admin",
     link: "data",
     current: false,
     isProtected: true,
-    roles: [5150]
-  }
+    roles: [5150],
+  },
+  {
+    name: "Allied Checker",
+    link: "allied-checker",
+    current: false,
+    isProtected: true,
+    roles: [5150],
+  },
 ];
 const userNavigation = [
   { name: "Your Profile", link: "#" },
   { name: "Settings", link: "#" },
-  { name: "Sign out", link: "#" }
-
+  { name: "Sign out", link: "#" },
 ];
 
 function classNames(...classes) {
@@ -75,7 +81,7 @@ function classNames(...classes) {
 }
 
 const Header = () => {
-  const { auth, allUsersData } = useContent();
+  const { auth } = useContent();
   const navigate = useNavigate();
   const logout = useLogout();
 
@@ -92,7 +98,6 @@ const Header = () => {
       // Handle other navigation logic
     }
   };
-
 
   const filterNav = () => {
     const decoded = auth?.accessToken ? jwtDecode(auth.accessToken) : undefined;
@@ -115,7 +120,6 @@ const Header = () => {
     });
     return nav;
   };
-
 
   return (
     <>

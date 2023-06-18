@@ -1,13 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-import Logo from "../components/Logo";
-import Header from "../Components/header";
-import Footer from "../components/Footer";
 import ProjectContainer from "../components/ProjectContainer";
 import HourSheet from "../Components/HourSheet";
 import Calendars from "../components/Calenders";
 
-const FirstPage = () => {
+const Dashboard = () => {
   const [dailyAllKPI, setDailyAllKPI] = useState(null);
 
   const [selectedDate, setSelectedDate] = useState(null); // Add selectedDate state
@@ -19,15 +16,13 @@ const FirstPage = () => {
 
   return (
     <>
-      <Logo />
-      <Header userName={"Rajesh Mehta"} />
+      {/* <Header userName={"Rajesh Mehta"} /> */}
       <Calendars onDateSelect={handleDateSelect} />
       <ProjectContainer selectedDate={selectedDate} dailyAllKPI={dailyAllKPI} />
 
       <HourSheet selectedDate={selectedDate} setDailyAllKPI={setDailyAllKPI} />
-      <Footer />
     </>
   );
 };
 
-export default FirstPage;
+export default Dashboard;
