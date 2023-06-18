@@ -19,7 +19,7 @@ import AlliedChecker from "./components/AlliedChecker";
 
 const ROLES = {
   User: 1000,
-  Admin: 5150,
+  Admin: 5150
 };
 
 function App() {
@@ -40,7 +40,6 @@ function App() {
             >
               <Route path="/" element={<Dashboard />} />
               {/* <Route path="unauthorized" element={<Unauthorized />} /> */}
-
               <Route path="yourTaskData" element={<UserTaskData />} />
               <Route path="projects" element={<Projects />} />
               <Route path="profile" element={<Profile />} />
@@ -59,3 +58,4 @@ function App() {
 }
 
 export default App;
+

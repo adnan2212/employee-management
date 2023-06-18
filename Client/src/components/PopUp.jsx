@@ -16,7 +16,7 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 
 const TASK_URL = "/tasks";
@@ -50,9 +50,9 @@ const PopUp = () => {
       const response = await axios.post(TASK_URL, JSON.stringify(values), {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
-        withCredentials: true,
+        withCredentials: true
       });
       console.log(response);
       setSuccessMessage("Form submitted successfully!");
@@ -65,7 +65,7 @@ const PopUp = () => {
           title: "Task submitted",
           status: "success",
           duration: 3000,
-          isClosable: true,
+          isClosable: true
         });
       }, 400);
     } catch (err) {
@@ -75,16 +75,21 @@ const PopUp = () => {
 
   return (
     <>
-      <div className="mb-2 flex flex-col items-center">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full">
         <Button
-          className="px-0"
+          className=""
           colorScheme=""
           onClick={() => {
             setOverlay(<OverlayOne />);
             onOpen();
           }}
+          size="lg"
+          rounded="full"
+          fontSize="2xl"
+          lineHeight="1" // Ensure the line height is set to 1 for vertical centering
+          transform="translateY(-1.5px) translateX(-0.5px)" // Adjust the vertical positioning if needed
         >
-          <img className="mb-2 " src={plus} alt="" />
+          +
         </Button>
       </div>
 
@@ -309,7 +314,7 @@ export default PopUp;
 const task_type = ["Production", "Non-Production"];
 const sub_task_type = {
   Production: ["Audit", "Junking", "Coding"],
-  "Non-Production": ["Meeting", "Client Handling", "Networking"],
+  "Non-Production": ["Meeting", "Client Handling", "Networking"]
 };
 
 const validationSchema = Yup.object({

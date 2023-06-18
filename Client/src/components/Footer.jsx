@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Home32Filled, PeopleTeam32Regular } from "@ricons/fluent";
 import { CalendarMonthOutlined, DataObjectRound } from "@ricons/material";
-import { UserAvatarFilledAlt } from "@ricons/carbon";
+import { UserAvatarFilledAlt, Report } from "@ricons/carbon";
 import { Icon } from "@ricons/utils";
 import { useState } from "react";
 
@@ -39,7 +39,7 @@ const Footer = (props) => {
           </div>
         </Link>
 
-        <span className="mr-[-5px] flex w-8 flex-col items-center pl-3">
+        <span className=" flex w-8 flex-col items-center pl-3">
           <Link
             to="/projects"
             className={`flex w-8 flex-col items-center ${
@@ -60,12 +60,14 @@ const Footer = (props) => {
           </Link>
         </span>
 
-        <Popup
-          formSubmitted={props.formSubmitted}
-          setFormSubmitted={props.setFormSubmitted}
-        />
+        <span className="mb-3 rounded-full bg-gradient-to-r from-blue-800  to-indigo-900">
+          <Popup
+            formSubmitted={props.formSubmitted}
+            setFormSubmitted={props.setFormSubmitted}
+          />
+        </span>
 
-        <span className="ml-[-5px] flex w-8 flex-col items-center">
+        <span className=" flex w-8 flex-col items-center">
           <Link
             to="/"
             className={`flex w-8 flex-col items-center ${
@@ -100,9 +102,9 @@ const Footer = (props) => {
               }`}
             >
               <Icon color="#D1D5DB" size="30">
-                <DataObjectRound />
+                <Report />
               </Icon>
-              <p className="text-gray-300">Data</p>
+              <p className="text-gray-300">Reports</p>
             </div>
           </Link>
         </span>
