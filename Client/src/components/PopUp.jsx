@@ -104,7 +104,8 @@ const PopUp = () => {
                 initialValues={{
                   taskType: "",
                   subTaskType: "",
-                  hoursSpent: ""
+                  hoursSpent: "",
+                  comment: "",
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { resetForm }) => {
@@ -244,6 +245,25 @@ const PopUp = () => {
                       )}
                     </div>
 
+                    <div className="mb-4">
+                      <label
+                        htmlFor="comment"
+                        className="mb-2 block text-sm font-bold text-gray-700"
+                      >
+                        Comment:
+                      </label>
+                      <Field
+                        as="textarea"
+                        name="comment"
+                        id="comment"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.comment}
+                        className="w-full rounded border border-gray-300 p-2 focus:outline-none"
+                        placeholder="Enter your comment"
+                      />
+                    </div>
+
                     {Object.keys(errors).length > 0 && (
                       <div className="mb-4 rounded border border-red-500 bg-red-100 px-4 py-3 text-red-700">
                         <ul>
@@ -304,5 +324,6 @@ const validationSchema = Yup.object({
   ),
   hoursSpent: Yup.number()
     .positive("Hours Spent must be a positive number")
-    .required("Hours Spent is required")
+    .required("Hours Spent is required"),
+  comment: Yup.string().notRequired(),
 });

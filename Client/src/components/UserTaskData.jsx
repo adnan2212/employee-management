@@ -26,7 +26,7 @@ import {
   Button,
   useDisclosure,
   ModalFooter,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import {
   TableContainer,
@@ -36,7 +36,7 @@ import {
   TableRow,
   TableCell,
   TableFooter,
-  Pagination
+  Pagination,
 } from "@windmill/react-ui";
 import {
   LineChart,
@@ -46,7 +46,7 @@ import {
   YAxis,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
 import { FaCheckCircle, FaTimesCircle, FaEdit, FaRegCalendarAlt } from "react-icons/fa";
 import { Formik, Field, Form } from "formik";
@@ -57,7 +57,7 @@ const TASK_URL = "/tasks";
 const task_type = ["Production", "Non-Production"];
 const sub_task_type = {
   Production: ["Audit", "Junking", "Coding"],
-  "Non-Production": ["Meeting", "Client Handling", "Networking"]
+  "Non-Production": ["Meeting", "Client Handling", "Networking"],
 };
 
 const validationSchema = Yup.object({
@@ -67,7 +67,7 @@ const validationSchema = Yup.object({
   ),
   hoursSpent: Yup.number()
     .positive("Hours Spent must be a positive number")
-    .required("Hours Spent is required")
+    .required("Hours Spent is required"),
 });
 
 const UserTaskData = () => {  
@@ -101,9 +101,9 @@ const UserTaskData = () => {
       try {
         const response = await axios.get(TASK_URL, {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
-          withCredentials: true
+          withCredentials: true,
         });
         console.log("UserTaskData ->>>", response.data);
         const sortedTaskData = response.data.sort(
@@ -133,7 +133,7 @@ const UserTaskData = () => {
     setInitialFormValues({
       taskType: task.taskType,
       subTaskType: task.subTaskType,
-      hoursSpent: task.hoursSpent
+      hoursSpent: task.hoursSpent,
     });
 
     onOpen();
@@ -157,9 +157,9 @@ const UserTaskData = () => {
     try {
       await axios.delete(`${TASK_URL}/${deleteTaskId}`, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true
+        withCredentials: true,
       });
       setIsConfirmationOpen(false);
       setSuccessMessage("Task deleted successfully");
@@ -168,7 +168,7 @@ const UserTaskData = () => {
         description: "The task has been deleted successfully.",
         status: "success",
         duration: 3000,
-        isClosable: true
+        isClosable: true,
       });
 
       // Remove the task from getUserTaskData
@@ -188,9 +188,9 @@ const UserTaskData = () => {
         values,
         {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
-          withCredentials: true
+          withCredentials: true,
         }
       );
       console.log("Updated Task:", response.data);
@@ -203,7 +203,7 @@ const UserTaskData = () => {
             ...task,
             taskType: values.taskType,
             subTaskType: values.subTaskType,
-            hoursSpent: values.hoursSpent
+            hoursSpent: values.hoursSpent,
           };
         }
         return task;
@@ -217,7 +217,7 @@ const UserTaskData = () => {
           title: "Task updated successfully",
           status: "success",
           duration: 3000,
-          isClosable: true
+          isClosable: true,
         });
       }, 400);
     } catch (err) {
@@ -229,7 +229,7 @@ const UserTaskData = () => {
   const [initialFormValues, setInitialFormValues] = useState({
     taskType: "",
     subTaskType: "",
-    hoursSpent: ""
+    hoursSpent: "",
   });
 
   const [sortColumn, setSortColumn] = useState(""); // Column to sort
@@ -290,15 +290,15 @@ const UserTaskData = () => {
         type: "pattern",
         pattern: "solid",
         fgColor: { argb: "007BFF" },
-        name: "Calibri"
+        name: "Calibri",
       },
       border: {
         top: { style: "thin", color: { argb: "000000" } },
         bottom: { style: "medium", color: { argb: "000000" } },
         left: { style: "thin", color: { argb: "000000" } },
-        right: { style: "thin", color: { argb: "000000" } }
+        right: { style: "thin", color: { argb: "000000" } },
       },
-      alignment: { vertical: "middle", horizontal: "center" }
+      alignment: { vertical: "middle", horizontal: "center" },
     };
 
     const cellStyle = {
@@ -308,9 +308,9 @@ const UserTaskData = () => {
         top: { style: "thin", color: { argb: "D3D3D3" } },
         bottom: { style: "thin", color: { argb: "D3D3D3" } },
         left: { style: "thin", color: { argb: "D3D3D3" } },
-        right: { style: "thin", color: { argb: "D3D3D3" } }
+        right: { style: "thin", color: { argb: "D3D3D3" } },
       },
-      alignment: { vertical: "middle", horizontal: "center", wrapText: true }
+      alignment: { vertical: "middle", horizontal: "center", wrapText: true },
     };
 
     const tableRows = table.getElementsByTagName("tr");
@@ -364,7 +364,7 @@ const UserTaskData = () => {
 
     workbook.xlsx.writeBuffer().then((buffer) => {
       const blob = new Blob([buffer], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -379,7 +379,7 @@ const UserTaskData = () => {
       description: "The task data has been downloaded.",
       status: "success",
       duration: 3000,
-      isClosable: true
+      isClosable: true,
     });
   }
 
@@ -399,7 +399,7 @@ const UserTaskData = () => {
       const newData = {
         date: formatDate(date),
         productionHours: taskType === "Production" ? hoursSpent : 0,
-        nonProductionHours: taskType !== "Production" ? hoursSpent : 0
+        nonProductionHours: taskType !== "Production" ? hoursSpent : 0,
       };
       chartData.push(newData);
     }
@@ -760,7 +760,7 @@ const UserTaskData = () => {
                   tickFormatter={(date) =>
                     new Date(date).toLocaleDateString(undefined, {
                       day: "numeric",
-                      month: "numeric"
+                      month: "numeric",
                     })
                   }
                 />
